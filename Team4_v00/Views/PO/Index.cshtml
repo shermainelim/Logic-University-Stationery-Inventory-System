@@ -1,0 +1,37 @@
+﻿@model IEnumerable<Ben_Project.Models.PO>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>PO Id</th>
+            <th>Order Date</th>
+            <th>Supplier Name</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var po in Model) {
+        <tr>
+            <td>@Html.ActionLink(@po.Id.ToString(), "Details", "PO", new { id = @po.Id }, null)</td>
+            <td>@po.OrderDate</td>
+            <td>@po.Supplier.Name</td>
+            <td>@po.POStatus</td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@po.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@po.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@po.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -696,10 +696,12 @@ namespace Ben_Project.DB
             PO po1 = new PO();
             po1.OrderDate = new DateTime(2020, 10, 10);
             po1.POStatus = POStatus.Submitted;
+            po1.Supplier = su1;
 
             PO po2 = new PO();
             po2.OrderDate = new DateTime(2020, 8, 20);
             po2.POStatus = POStatus.Submitted;
+            po2.Supplier = su2;
 
             dbContext.Add(po1);
             dbContext.Add(po2);
@@ -710,21 +712,25 @@ namespace Ben_Project.DB
             poD1.Qty = 10;
             poD1.SupplierDetail = suD1;
             poD1.PO = po1;
+            poD1.SupplierDetail.UnitPrice = 10;
 
             PODetail poD2 = new PODetail();
             poD2.Qty = 20;
             poD2.SupplierDetail = suD2;
             poD2.PO = po1;
+            poD2.SupplierDetail.UnitPrice = 10;
 
             PODetail poD3 = new PODetail();
             poD3.Qty = 10;
             poD3.SupplierDetail = suD3;
             poD3.PO = po2;
+            poD3.SupplierDetail.UnitPrice = 10;
 
             PODetail poD4 = new PODetail();
             poD4.Qty = 30;
             poD4.SupplierDetail = suD4;
             poD4.PO = po2;
+            poD4.SupplierDetail.UnitPrice = 10;
 
             dbContext.Add(poD1);
             dbContext.Add(poD2);
