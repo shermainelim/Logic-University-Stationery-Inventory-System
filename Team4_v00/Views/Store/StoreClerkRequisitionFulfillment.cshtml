@@ -1,0 +1,54 @@
+﻿@model Ben_Project.Models.Disbursement
+
+@{
+    ViewData["Title"] = "StoreClerkRequisitionFulfillment";
+    var stocks = (List<Stock>) ViewData["stocks"];
+    var requisition = (DeptRequisition) ViewData["requisition"];
+}
+
+<div class="text-center">
+    <h1 class="display-4">Store Clerk Requisition Fulfillment</h1>
+</div>
+
+
+<form asp-controller="Store" asp-action="StoreClerkSaveRequisition" method="post">
+
+    <table align="center" border="1">
+        <tr>
+            <th>Item Name</th>
+            <th>Requested Qty</th>
+            <th>Stock Qty</th>
+            <th>Collected Qty</th>
+            <th>To Withdraw Qty</th>
+            <th>Withdrawn</th>
+        </tr>
+        @for (int i = 0; i < requisition.RequisitionDetails.Count; i++)
+        {
+            var itemName = @requisition.RequisitionDetails[i].Stationery.Description;
+            var requestedQty = @requisition.RequisitionDetails[i].Qty;
+            var stockQty = @stocks.Find(s => s.Id == @requisition.RequisitionDetails[i].Stationery.Id).Qty;
+            var collectedQty = @requisition.RequisitionDetails[i].CollectedQty;
+            var toWithdrawQty = requestedQty - collectedQty;
+
+            var deptRequisitionId = @requisition.Id;
+            var stationeryId = @requisition.RequisitionDetails[i].Stationery.Id;
+
+
+            <tr>
+                <td>@itemName</td>
+                <td>@requestedQty</td>
+                <td>@stockQty</td>
+                <td>@collectedQty</td>
+                <td>@toWithdrawQty</td>
+                <td>
+                    <input asp-for="@Model.DeptRequisition.Id" type="hidden" value="@deptRequisitionId" />
+                    <input asp-for="@Model.DisbursementDetails[i].Stationery.Id" type="hidden" value="@stationeryId" />
+                    <input asp-for="@Model.DisbursementDetails[i].Qty" type="number" />
+                </td>
+            </tr>
+        }
+    </table>
+
+    <input id="saveBtn" type="submit" value="Save" />
+</form>
+

@@ -1,0 +1,28 @@
+﻿@model IEnumerable<Ben_Project.Models.RequisitionDetail>
+
+@{
+    ViewData["Title"] = "EmployeeRequisitionDetail";
+}
+
+
+<div class="text-center">
+    <h1 class="display-4">Requisition Details</h1>
+</div>
+
+<table align="center" border="1">
+    <tr>
+        <th>Item Name</th>
+        <th>Qty</th>
+    </tr>
+
+    @foreach (var requistionDetail in @Model)
+    {
+        var itemName = @requistionDetail.Stationery.Description;
+        var qty = @requistionDetail.Qty;
+
+        <tr>
+            <td>@itemName</td>
+            <td>@qty</td>
+        </tr>
+    }
+</table>

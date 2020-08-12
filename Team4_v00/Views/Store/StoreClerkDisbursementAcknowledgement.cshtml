@@ -1,0 +1,50 @@
+﻿@model Ben_Project.Models.Disbursement
+
+@{
+    ViewData["Title"] = "StoreClerkDisbursementAcknowledgement";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Store Clerk Disbursement Acknowledgement</h1>
+</div>
+
+
+<table align="center">
+    <tr>
+        <th>DISBURSEMENT ID:</th>
+        <th>@Model.Id</th>
+    </tr>
+    <tr>
+        <th>DEPARTMENT:</th>
+        <th>@Model.DeptRequisition.Employee.Dept.DeptName</th>
+    </tr>
+    <tr>
+        <th>DEPARTMENT REPRESENTATIVE:</th>
+        <th>@Model.DeptRequisition.Employee.Name</th>
+    </tr>
+    <tr>
+        <th>COLLECTION POINT:</th>
+        <th></th>
+    </tr>
+
+</table>
+
+
+<table align="center" border="1">
+    <tr>
+        <th>Item Name</th>
+        <th>Quantity</th>
+    </tr>
+
+    @foreach (var disbursementDetail in @Model.DisbursementDetails)
+    {
+        var itemName = @disbursementDetail.Stationery.Description;
+        var qty = @disbursementDetail.Qty;
+
+        <tr>
+            <td>@itemName</td>
+            <td>@qty</td>
+        </tr>
+    }
+</table>
+

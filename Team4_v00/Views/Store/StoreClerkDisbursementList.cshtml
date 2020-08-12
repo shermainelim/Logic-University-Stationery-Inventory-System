@@ -1,0 +1,23 @@
+﻿@model IEnumerable<Ben_Project.Models.Disbursement>
+
+@{
+    ViewData["Title"] = "StoreClerkDisbursementList";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Store Clerk Disbursement List</h1>
+</div>
+
+<table align="center" border="1">
+    <tr>
+        <th>Disbursement Id</th>
+    </tr>
+
+    @foreach (var disbursement in @Model)
+    {
+        <tr>
+            <td>@Html.ActionLink(@disbursement.Id.ToString(), "StoreClerkDisbursementAcknowledgement", "Store", new { id = @disbursement.Id }, null)</td>
+        </tr>
+    }
+</table>
+

@@ -1,0 +1,27 @@
+﻿@model IEnumerable<Ben_Project.Models.DeptRequisition>
+
+@{
+    ViewData["Title"] = "EmployeeRequisitionList";
+}
+
+
+<div class="text-center">
+    <h1 class="display-4">Employee Requisition List</h1>
+</div>
+
+<table align="center" border="1">
+    <tr>
+        <th>Requisition Id</th>
+        <th>Action</th>
+    </tr>
+
+    @foreach (var requisition in @Model)
+    {
+        var requisitionId = @requisition.Id;
+
+        <tr>
+            <td>@requisitionId</td>
+            <td>@Html.ActionLink("Details", "EmployeeRequisitionDetail", "Dept", new {id = requisitionId}, null)</td>
+        </tr>
+    }
+</table>

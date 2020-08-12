@@ -1,0 +1,36 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+<h3>Suppliers</h3>
+
+
+<table class="table table-bordered">
+    <tr>
+        <th>No</th>
+        <th>Supplier Name</th>
+        <th>Address</th>
+        <th>Phone Number</th>
+    </tr>
+    @{
+        int i = 1;
+
+
+
+
+        @foreach (var supplier in @Model)
+        {
+            <tr>
+                <td>@i</td>
+                <td>@supplier.Name</td>
+                <td>@supplier.Address</td>
+                <td>@supplier.TelephoneNo</td>
+            </tr>
+            i++;
+        }
+
+    }
+</table>
+    @*
+        <input class="rounded" type="button" value="Create New Supplier" style="float:right" onclick="location.href='@Url.Action("CreateForm","Supplier", routeValues: new { sessionid = sessionId })'">        
+    *@

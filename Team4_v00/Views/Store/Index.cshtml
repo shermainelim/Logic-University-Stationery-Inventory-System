@@ -1,0 +1,22 @@
+﻿
+@{
+    ViewData["Title"] = "Store Index Page";
+}
+
+<h1>Store Index Page</h1>
+<br />
+
+<h2>Store Clerk</h2>
+@Html.ActionLink("Stock List", "StoreClerkStockList", "Store", null, null)
+<br />
+@Html.ActionLink("Requisition List", "StoreClerkRequisitionList", "Store", null, null)
+<br />
+@Html.ActionLink("Disbursement List", "StoreClerkDisbursementList", "Store", null, null)
+<br />
+@Html.ActionLink("Adjustment Voucher List", "StoreClerkAdjustmentVoucherList", "Store", null, null)
+<br />
+@Html.ActionLink("Store Supplier List","StoreSupplierList","StoreSupplier",null,null)
+<br/>
+
+<h2>Store Supervisor</h2>
+<h2>Store Manager</h2>

@@ -1,0 +1,37 @@
+﻿@model IEnumerable<Ben_Project.Models.DeptRequisition>
+
+@{
+    ViewData["Title"] = "DeptHeadRequisitionList";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Dept Head Requisition List</h1>
+</div>
+
+<table align="center" border="1">
+    <tr>
+        <th>Requisition Id</th>
+        <th>Requestor</th>
+        <th>Approval Status</th>
+        <th>Action</th>
+    </tr>
+
+    @foreach (var requisition in @Model)
+    {
+        var requisitionId = @requisition.Id;
+        var requestor = @requisition.Employee.Name;
+        var approvalStatus = @requisition.RequisitionApprovalStatus;
+
+        <tr>
+            <td>@requisitionId</td>
+            <td>@requestor</td>
+            <td>@approvalStatus</td>
+            <td>
+                @Html.ActionLink("Approve", "DeptHeadChangeRequisitionStatus", "Dept", new {id = requisition.Id, status = "Approved"}, null)
+                |
+                @Html.ActionLink("Reject", "DeptHeadChangeRequisitionStatus", "Dept", new {id = requisition.Id, status = "Rejected"}, null)
+            </td>
+        </tr>
+    }
+</table>
+
