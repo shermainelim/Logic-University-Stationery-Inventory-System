@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Threading.Tasks;
 using Ben_Project.DB;
 using Ben_Project.Models;
@@ -66,13 +69,10 @@ namespace Ben_Project.Controllers
             var result = new Disbursement();
             result.DeptRequisition = deptRequisition;
             result.DisbursementDetails = new List<DisbursementDetail>();
-            _dbContext.Add(result);
-
 
             foreach (var disbursementDetail in disbursement.DisbursementDetails)
             {
                 // withdrawing qty from stock
-
                 var stationeryId = disbursementDetail.Stationery.Id;
                 var stock = _dbContext.Stocks.FirstOrDefault(s => s.Stationery.Id == stationeryId);
                 stock.Qty -= disbursementDetail.Qty;
@@ -92,31 +92,64 @@ namespace Ben_Project.Controllers
                 }
 
                 // updating collected qty
-
                 requisitionDetail.CollectedQty += disbursementDetail.Qty;
 
                 // Add disbursementDetail to disbursement
                 disbursementDetail.Stationery = _dbContext.Stationeries.FirstOrDefault(s => s.Id == stationeryId);
                 disbursementDetail.Disbursement = result;
-                _dbContext.Add(disbursementDetail);
+                result.DisbursementDetails.Add(disbursementDetail);
 
                 // If collected qty of item is not equal to requested qty, set fulfillment status to partial
-
                 if (requisitionDetail.Qty != requisitionDetail.CollectedQty)
                     fulfillmentStatus = RequisitionFulfillmentStatus.Partial;
             }
 
             // generating acknowledgement code for disbursement
-
-            // generating email content with disbursement list and acknowledgement code
+            var acknowledgementCode = Guid.NewGuid().ToString();
+            result.AcknowledgementCode = acknowledgementCode;
 
             // sending email to dept rep
+            SmtpClient client = new SmtpClient()
+            {
+                Host = "smtp.gmail.com",
+                Port = 587,
+                EnableSsl = true,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential()
+                {
+                    UserName = "storeclerk@email.com",
+                    Password = "storeclerkpassword"
+                }
+            };
+            MailAddress FromEmail = new MailAddress("sa50team4@gmail.com", "Store Clerk");
+            MailAddress ToEmail = new MailAddress("DeptRep@email.com", "Dept Rep");
+            string MessageBody = "The disbursement is ready for collection. The acknowledge code is " + acknowledgementCode;
+            MailMessage Message = new MailMessage()
+            {
+                From = FromEmail,
+                Subject = "Disbursement Details",
+                Body = MessageBody
+            };
+            Message.To.Add(ToEmail);
+
+            try
+            {
+                //client.Send(Message);
+            }
+            catch (Exception e)
+            {
+                Debug.Print(e.Message);
+            }
 
             // Changing fulfillment status of requisition
             deptRequisition.RequisitionFulfillmentStatus = fulfillmentStatus;
 
             // Adding adjustment voucher to database
             _dbContext.Add(adjustmentVoucher);
+
+            // Adding disbursement to database
+            _dbContext.Add(result);
 
             // Saving changes to database
             _dbContext.SaveChanges();

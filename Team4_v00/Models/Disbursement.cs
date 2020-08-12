@@ -8,6 +8,7 @@ namespace Ben_Project.Models
     public class Disbursement
     {
         public int Id { get; set; }
+        public string AcknowledgementCode { get; set; }
         public virtual DeptRequisition DeptRequisition { get; set; }
         public virtual List<DisbursementDetail> DisbursementDetails { get; set; }
     }
