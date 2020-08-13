@@ -7,6 +7,7 @@ using System.Net.Mail;
 using System.Threading.Tasks;
 using Ben_Project.DB;
 using Ben_Project.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
@@ -62,6 +63,7 @@ namespace Ben_Project.Controllers
         {
             var deptRequisition = _dbContext.DeptRequisitions.FirstOrDefault(dr => dr.Id == disbursement.DeptRequisition.Id);
             var adjustmentVoucher = new AdjustmentVoucher();
+            adjustmentVoucher.Status = AdjustmentVoucherStatus.Draft;
             adjustmentVoucher.AdjustmentDetails = new List<AdjustmentDetail>();
             var fulfillmentStatus = RequisitionFulfillmentStatus.Fulfilled;
 
@@ -173,12 +175,52 @@ namespace Ben_Project.Controllers
 
         public IActionResult StoreClerkAdjustmentVoucherList()
         {
-            var adjustmentVouchers = _dbContext.AdjustmentVouchers.ToList();
+            var adjustmentVouchers = _dbContext.AdjustmentVouchers.Where(av => av.Status == AdjustmentVoucherStatus.Draft).ToList();
+            
+            
+            return View(adjustmentVouchers);
+        }
+
+        public IActionResult AuthorizeAdjustmentVoucherList()
+        {
+            // get employee who is logged in from session
+            var username = HttpContext.Session.GetString("username");
+            var employee = _dbContext.Employees.FirstOrDefault(e => e.Username == username);
+            List<AdjustmentVoucher> adjustmentVouchers;
+
+            adjustmentVouchers = _dbContext.AdjustmentVouchers.Where(av => av.AuthorizedBy == employee.JobTitle && av.Status == AdjustmentVoucherStatus.PendingIssue).ToList();
 
             return View(adjustmentVouchers);
         }
 
         public IActionResult StoreClerkAdjustmentVoucherDetail(int id)
+        {
+            AdjustmentVoucher adjustmentVoucher;
+
+            if (id != 0)
+                adjustmentVoucher = _dbContext.AdjustmentVouchers.Find(id);
+            else
+            {
+                adjustmentVoucher = new AdjustmentVoucher();
+                adjustmentVoucher.AdjustmentDetails = new List<AdjustmentDetail>();
+                var stationeries = _dbContext.Stationeries.ToList();
+                _dbContext.Add(adjustmentVoucher);
+
+                // add stationeries to adjustmentDetails
+                foreach (var stationery in stationeries)
+                {
+                    var adjustmentDetail = new AdjustmentDetail();
+                    adjustmentDetail.Stationery = stationery;
+                    adjustmentVoucher.AdjustmentDetails.Add(adjustmentDetail);
+                }
+
+                _dbContext.SaveChanges();
+            }
+
+            return View(adjustmentVoucher);
+        }
+
+        public IActionResult AuthorizeAdjustmentVoucherDetail(int id)
         {
             var adjustmentVoucher = _dbContext.AdjustmentVouchers.Find(id);
 
@@ -190,6 +232,7 @@ namespace Ben_Project.Controllers
             var adjustmentVoucherId = adjustmentVoucher.Id;
             var result = new AdjustmentVoucher();
             result.AdjustmentDetails = new List<AdjustmentDetail>();
+            var authorizedBy = DeptRole.StoreSupervisor;
 
             if (adjustmentVoucherId != 0)
                 result = _dbContext.AdjustmentVouchers.Find(adjustmentVoucherId);
@@ -200,10 +243,20 @@ namespace Ben_Project.Controllers
                     _dbContext.Stationeries.Find(adjustmentVoucher.AdjustmentDetails[i].Stationery.Id);
                 result.AdjustmentDetails[i].AdjustedQty = adjustmentVoucher.AdjustmentDetails[i].AdjustedQty;
                 result.AdjustmentDetails[i].Reason = adjustmentVoucher.AdjustmentDetails[i].Reason;
+
+                // if adjustedCost is more than $250, assign StoreManager to "authorizedBy"
+                if (adjustmentVoucher.AdjustmentDetails[i].AdjustedCost > 250)
+                    authorizedBy = DeptRole.StoreManager;
             }
 
             if (adjustmentVoucherId == 0)
                 _dbContext.Add(result);
+
+            // Changing status to "PendingIssue"
+            result.Status = AdjustmentVoucherStatus.PendingIssue;
+
+            // Assign authorizing JobTitle
+            result.AuthorizedBy = authorizedBy;
 
             _dbContext.SaveChanges();
             
@@ -222,6 +275,36 @@ namespace Ben_Project.Controllers
             _dbContext.SaveChanges();
 
             return RedirectToAction("StoreClerkAdjustmentVoucherList", "Store");
+        }
+
+        public IActionResult IssueAdjustmentVoucher(AdjustmentVoucher adjustmentVoucher)
+        {
+            // get employee who is logged in from session
+            var username = HttpContext.Session.GetString("username");
+            var employee = _dbContext.Employees.FirstOrDefault(e => e.Username == username);
+
+            // retrieve adjustment voucher from database
+            var adjustmentVoucherId = adjustmentVoucher.Id;
+            var result = _dbContext.AdjustmentVouchers.Find(adjustmentVoucherId);
+
+            // add/deduct stocks from inventory according to adjustment voucher
+            foreach (var adjustmentDetail in adjustmentVoucher.AdjustmentDetails)
+            {
+                var stationeryId = adjustmentDetail.Stationery.Id;
+                var stock = _dbContext.Stocks.FirstOrDefault(s => s.Stationery.Id == stationeryId);
+                stock.Qty += adjustmentDetail.AdjustedQty;
+            }
+            
+            // update status of adjustment voucher to issued
+            result.Status = AdjustmentVoucherStatus.Issued;
+
+            // update adjustment voucher to reflect issuing employee
+            result.Employee = employee;
+
+            // save changes to database
+            _dbContext.SaveChanges();
+
+            return RedirectToAction("AuthorizeAdjustmentVoucherList", "Store");
         }
     }
 }

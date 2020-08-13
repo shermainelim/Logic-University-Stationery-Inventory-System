@@ -10,6 +10,7 @@ namespace Ben_Project.Models
         public int Id { get; set; }
         public virtual Stationery Stationery { get; set; }
         public int AdjustedQty { get; set; }
+        public double AdjustedCost { get; set; }
         public string Reason { get; set; }
     }
 }

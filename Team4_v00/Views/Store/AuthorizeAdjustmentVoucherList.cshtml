@@ -1,0 +1,22 @@
+﻿@model IEnumerable<Ben_Project.Models.AdjustmentVoucher>
+
+@{
+    ViewData["Title"] = "Authorize Adjustment Voucher List";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Authorize Adjustment Voucher List</h1>
+</div>
+
+<table align="center" border="1">
+    <tr>
+        <th>Adjustment Voucher Id</th>
+    </tr>
+
+    @foreach (var adjustmentVoucher in @Model)
+    {
+        <tr>
+            <td>@Html.ActionLink(@adjustmentVoucher.Id.ToString(), "AuthorizeAdjustmentVoucherDetail", "Store", new { id = @adjustmentVoucher.Id }, null)</td>
+        </tr>
+    }
+</table>

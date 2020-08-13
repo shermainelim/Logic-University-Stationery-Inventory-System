@@ -37,6 +37,8 @@ namespace Ben_Project.Controllers
 
             HttpContext.Session.SetString("username", username);
 
+            var employee = _dbContext.Employees.FirstOrDefault(e => e.Username == username);
+
             return RedirectToAction("Index", "Home");
         }
     }
