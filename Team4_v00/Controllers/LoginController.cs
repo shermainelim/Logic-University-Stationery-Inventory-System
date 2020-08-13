@@ -24,7 +24,7 @@ namespace Ben_Project.Controllers
 
         public IActionResult Login(string username, string hashPasswd)
         {
-            Employee user = _dbContext.Employees.SingleOrDefault(u => u.Username == username);
+            Employee user = _dbContext.Employees.FirstOrDefault(u => u.Username == username);
             if (user == null)
             {
                 return RedirectToAction("Index");

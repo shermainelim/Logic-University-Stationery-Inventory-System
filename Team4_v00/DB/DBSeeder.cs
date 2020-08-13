@@ -206,144 +206,168 @@ namespace Ben_Project.DB
             st1.ReorderLevel = 20;
             st1.ReorderQty =30;
             st1.Qty = 100;
+            st1.UnitPrice = 50.0;
 
             Stock st2 = new Stock();
             st2.Stationery = s2;
             st2.ReorderLevel = 20;
             st2.ReorderQty = 30;
             st2.Qty = 100;
+            st2.UnitPrice = 50.0;
 
             Stock st3 = new Stock();
             st3.Stationery = s3;
             st3.ReorderLevel = 20;
             st3.ReorderQty = 30;
             st3.Qty = 100;
+            st3.UnitPrice = 50.0;
 
             Stock st4 = new Stock();
             st4.Stationery = s4;
             st4.ReorderLevel = 20;
             st4.ReorderQty = 30;
             st4.Qty = 100;
+            st4.UnitPrice = 50.0;
 
             Stock st5 = new Stock();
             st5.Stationery = s5;
             st5.ReorderLevel = 20;
             st5.ReorderQty = 30;
             st5.Qty = 100;
+            st5.UnitPrice = 50.0;
 
             Stock st6 = new Stock();
             st6.Stationery = s6;
             st6.ReorderLevel = 20;
             st6.ReorderQty = 30;
             st6.Qty = 100;
+            st6.UnitPrice = 50.0;
 
             Stock st7 = new Stock();
             st7.Stationery = s7;
             st7.ReorderLevel = 20;
             st7.ReorderQty = 30;
             st7.Qty = 100;
+            st7.UnitPrice = 50.0;
 
             Stock st8 = new Stock();
             st8.Stationery = s8;
             st8.ReorderLevel = 20;
             st8.ReorderQty = 30;
             st8.Qty = 100;
+            st8.UnitPrice = 50.0;
 
             Stock st9 = new Stock();
             st9.Stationery = s9;
             st9.ReorderLevel = 20;
             st9.ReorderQty = 30;
             st9.Qty = 100;
+            st9.UnitPrice = 50.0;
 
             Stock st10 = new Stock();
             st10.Stationery = s10;
             st10.ReorderLevel = 20;
             st10.ReorderQty = 30;
             st10.Qty = 100;
+            st10.UnitPrice = 50.0;
 
             Stock st11 = new Stock();
             st11.Stationery = s11;
             st11.ReorderLevel = 20;
             st11.ReorderQty = 30;
             st11.Qty = 100;
+            st11.UnitPrice = 50.0;
 
             Stock st12 = new Stock();
             st12.Stationery = s12;
             st12.Qty = 100;
             st12.ReorderLevel = 20;
             st12.ReorderQty = 30;
+            st12.UnitPrice = 50.0;
 
             Stock st13 = new Stock();
             st13.Stationery = s13;
             st13.Qty = 100;
             st13.ReorderLevel = 20;
             st13.ReorderQty = 30;
+            st13.UnitPrice = 50.0;
 
             Stock st14 = new Stock();
             st14.Stationery = s14;
             st14.Qty = 100;
             st14.ReorderLevel = 20;
             st14.ReorderQty = 30;
+            st14.UnitPrice = 50.0;
 
             Stock st15 = new Stock();
             st15.Stationery = s15;
             st15.Qty = 100;
             st15.ReorderLevel = 20;
             st15.ReorderQty = 30;
+            st15.UnitPrice = 50.0;
 
             Stock st16 = new Stock();
             st16.Stationery = s16;
             st16.Qty = 100;
             st16.ReorderLevel = 20;
             st16.ReorderQty = 30;
+            st16.UnitPrice = 50.0;
 
             Stock st17 = new Stock();
             st17.Stationery = s17;
             st17.Qty = 100;
             st17.ReorderLevel = 20;
             st17.ReorderQty = 30;
+            st17.UnitPrice = 50.0;
 
             Stock st18 = new Stock();
             st18.Stationery = s18;
             st18.Qty = 100;
             st18.ReorderLevel = 20;
             st18.ReorderQty = 30;
+            st18.UnitPrice = 50.0;
 
             Stock st19 = new Stock();
             st19.Stationery = s19;
             st19.Qty = 100;
             st19.ReorderLevel = 20;
             st19.ReorderQty = 30;
+            st19.UnitPrice = 50.0;
 
             Stock st20 = new Stock();
             st20.Stationery = s20;
             st20.Qty = 100;
             st20.ReorderLevel = 20;
             st20.ReorderQty = 30;
+            st20.UnitPrice = 50.0;
 
             Stock st21 = new Stock();
             st21.Stationery = s21;
             st21.Qty = 100;
             st21.ReorderLevel = 20;
             st21.ReorderQty = 30;
+            st21.UnitPrice = 50.0;
 
             Stock st22 = new Stock();
             st22.Stationery = s22;
             st22.Qty = 100;
             st22.ReorderLevel = 20;
             st22.ReorderQty = 30;
+            st22.UnitPrice = 50.0;
 
             Stock st23 = new Stock();
             st23.Stationery = s23;
             st23.Qty = 100;
             st23.ReorderLevel = 20;
             st23.ReorderQty = 30;
+            st23.UnitPrice = 50.0;
 
             Stock st24 = new Stock();
             st24.Stationery = s24;
             st24.Qty = 100;
             st24.ReorderLevel = 20;
             st24.ReorderQty = 30;
+            st24.UnitPrice = 50.0;
 
             dbContext.Add(st1);
             dbContext.Add(st2);
@@ -529,6 +553,22 @@ namespace Ben_Project.DB
             e14.JobTitle = DeptRole.DeptRep;
             e14.Role = DeptRole.DeptRep;
 
+            Employee e15 = new Employee();
+            e15.Name = "Mr Tom Hanks";
+            e15.Username = "storesupervisor";
+            e15.Password = Crypto.Sha256("storesupervisor");
+            e15.Dept = d5;
+            e15.JobTitle = DeptRole.StoreSupervisor;
+            e15.Role = DeptRole.StoreSupervisor;
+
+            Employee e16 = new Employee();
+            e16.Name = "Mr Chris Hemsworth";
+            e16.Username = "storemanager";
+            e16.Password = Crypto.Sha256("storemanager");
+            e16.Dept = d5;
+            e16.JobTitle = DeptRole.StoreManager;
+            e16.Role = DeptRole.StoreManager;
+
             dbContext.Add(e1);
             dbContext.Add(e2);
             dbContext.Add(e3);
@@ -543,6 +583,8 @@ namespace Ben_Project.DB
             dbContext.Add(e12);
             dbContext.Add(e13);
             dbContext.Add(e14);
+            dbContext.Add(e15);
+            dbContext.Add(e16);
 
 
             // Adding Requisition

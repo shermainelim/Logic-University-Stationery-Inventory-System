@@ -62,10 +62,17 @@ namespace Ben_Project.Controllers
         public IActionResult StoreClerkSaveRequisition(Disbursement disbursement)
         {
             var deptRequisition = _dbContext.DeptRequisitions.FirstOrDefault(dr => dr.Id == disbursement.DeptRequisition.Id);
+            var fulfillmentStatus = RequisitionFulfillmentStatus.Fulfilled;
+
+            // Creating an adjustment voucher
             var adjustmentVoucher = new AdjustmentVoucher();
             adjustmentVoucher.Status = AdjustmentVoucherStatus.Draft;
             adjustmentVoucher.AdjustmentDetails = new List<AdjustmentDetail>();
-            var fulfillmentStatus = RequisitionFulfillmentStatus.Fulfilled;
+            _dbContext.Add(adjustmentVoucher);
+
+            // Generate adjustment voucher number
+            var avNo = "AV" + adjustmentVoucher.Id;
+            adjustmentVoucher.VoucherNo = avNo;
 
             // Create a disbursement
             var result = new Disbursement();
@@ -147,9 +154,6 @@ namespace Ben_Project.Controllers
             // Changing fulfillment status of requisition
             deptRequisition.RequisitionFulfillmentStatus = fulfillmentStatus;
 
-            // Adding adjustment voucher to database
-            _dbContext.Add(adjustmentVoucher);
-
             // Adding disbursement to database
             _dbContext.Add(result);
 
@@ -175,9 +179,10 @@ namespace Ben_Project.Controllers
 
         public IActionResult StoreClerkAdjustmentVoucherList()
         {
-            var adjustmentVouchers = _dbContext.AdjustmentVouchers.Where(av => av.Status == AdjustmentVoucherStatus.Draft).ToList();
-            
-            
+            //var adjustmentVouchers = _dbContext.AdjustmentVouchers.Where(av => av.Status == AdjustmentVoucherStatus.Draft).ToList();
+
+            var adjustmentVouchers = _dbContext.AdjustmentVouchers.ToList();
+
             return View(adjustmentVouchers);
         }
 
@@ -239,13 +244,16 @@ namespace Ben_Project.Controllers
 
             for (var i = 0; i < adjustmentVoucher.AdjustmentDetails.Count; i++)
             {
+                var stock = _dbContext.Stocks.Find(adjustmentVoucher.AdjustmentDetails[i].Stationery.Id);
                 result.AdjustmentDetails[i].Stationery =
                     _dbContext.Stationeries.Find(adjustmentVoucher.AdjustmentDetails[i].Stationery.Id);
                 result.AdjustmentDetails[i].AdjustedQty = adjustmentVoucher.AdjustmentDetails[i].AdjustedQty;
                 result.AdjustmentDetails[i].Reason = adjustmentVoucher.AdjustmentDetails[i].Reason;
+                result.AdjustmentDetails[i].AdjustedCost = result.AdjustmentDetails[i].AdjustedQty * stock.UnitPrice;
 
                 // if adjustedCost is more than $250, assign StoreManager to "authorizedBy"
-                if (adjustmentVoucher.AdjustmentDetails[i].AdjustedCost > 250)
+               
+                if (result.AdjustmentDetails[i].AdjustedCost <= -250.0)
                     authorizedBy = DeptRole.StoreManager;
             }
 
@@ -297,6 +305,9 @@ namespace Ben_Project.Controllers
             
             // update status of adjustment voucher to issued
             result.Status = AdjustmentVoucherStatus.Issued;
+
+            // update date of issue of adjustment voucher
+            result.IssueDate = DateTime.Now;
 
             // update adjustment voucher to reflect issuing employee
             result.Employee = employee;

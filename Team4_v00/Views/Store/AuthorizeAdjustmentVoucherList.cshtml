@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Ben_Project.Models.AdjustmentVoucher>
+﻿@using Microsoft.CodeAnalysis.CSharp.Syntax
+@model IEnumerable<Ben_Project.Models.AdjustmentVoucher>
 
 @{
     ViewData["Title"] = "Authorize Adjustment Voucher List";
@@ -11,12 +12,21 @@
 <table align="center" border="1">
     <tr>
         <th>Adjustment Voucher Id</th>
+        <th>Voucher#</th>
+        <th>Date issued</th>
+        <th>Authorised by</th>
+        <th>Status</th>
+
     </tr>
 
     @foreach (var adjustmentVoucher in @Model)
     {
         <tr>
             <td>@Html.ActionLink(@adjustmentVoucher.Id.ToString(), "AuthorizeAdjustmentVoucherDetail", "Store", new { id = @adjustmentVoucher.Id }, null)</td>
+            <td>@(adjustmentVoucher.VoucherNo != null ? adjustmentVoucher.VoucherNo : "N/A")</td>
+            <td>@(adjustmentVoucher.IssueDate != null ? adjustmentVoucher.IssueDate.ToString() : "N/A")</td>
+            <td>@(adjustmentVoucher.AuthorizedBy != null ? adjustmentVoucher.AuthorizedBy.ToString() : "N/A")</td>
+            <td>@(adjustmentVoucher.Status != null ? adjustmentVoucher.Status.ToString() : "N/A")</td>
         </tr>
     }
 </table>
