@@ -1,0 +1,60 @@
+﻿@model Ben_Project.Models.Department
+
+@{
+    ViewData["Title"] = "Details";
+    Employee emp = (Employee)ViewData["emp"];
+
+
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Department</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DeptCode)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DeptCode)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DeptName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DeptName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TelephoneNo)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TelephoneNo)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FaxNo)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FaxNo)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CollectionPoint)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CollectionPoint)
+        </dd>
+        <dt class="col-sm-2">
+           Department Head
+        </dt>
+        <dd class="col-sm-10">
+            @emp.Name
+              
+        </dd>
+
+
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

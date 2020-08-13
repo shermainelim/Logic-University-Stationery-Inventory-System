@@ -15,15 +15,8 @@ namespace Ben_Project.Models
 
         public POStatus POStatus { get; set; }
 
-        public double totalPrice()
-        {
-            double totalPrice = 0;
-            for (int i =0; i<PODetails.Count; i++)
-            {
-                totalPrice += PODetails[i].Amount;
-            }
-            return totalPrice;
-        }
+        
+        
 
     }
 }

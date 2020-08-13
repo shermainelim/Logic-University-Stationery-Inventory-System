@@ -10,62 +10,67 @@ using Ben_Project.Models;
 
 namespace Ben_Project.Controllers
 {
-    public class POController : Controller
+    public class StoreDeptController : Controller
     {
         private readonly LogicContext _context;
 
-        public POController(LogicContext context)
+        public StoreDeptController(LogicContext context)
         {
             _context = context;
         }
 
-        // GET: PO
+        // GET: StoreDept
         public async Task<IActionResult> Index()
         {
-            return View(await _context.POs.ToListAsync());
+            return View(await _context.Departments.ToListAsync());
         }
 
-        // GET: PO/Details/5
+        // GET: StoreDept/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+
+
             if (id == null)
             {
                 return NotFound();
             }
 
-            var pO = await _context.POs
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (pO == null)
+            var department = await _context.Departments
+                .FirstOrDefaultAsync(m => m.id == id);
+            var emp = department.Employees.FirstOrDefault(e => e.Role == DeptRole.DeptHead);
+            ViewData["emp"] = emp;
+
+            if (department == null)
             {
                 return NotFound();
             }
 
-            return View(pO);
+            return View(department);
         }
 
-        // GET: PO/Create
+        // GET: StoreDept/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: PO/Create
+        // POST: StoreDept/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,OrderDate,POStatus")] PO pO)
+        public async Task<IActionResult> Create([Bind("id,DeptCode,DeptName,TelephoneNo,FaxNo,CollectionPoint")] Department department)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(pO);
+                _context.Add(department);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(pO);
+            return View(department);
         }
 
-        // GET: PO/Edit/5
+        // GET: StoreDept/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -73,22 +78,22 @@ namespace Ben_Project.Controllers
                 return NotFound();
             }
 
-            var pO = await _context.POs.FindAsync(id);
-            if (pO == null)
+            var department = await _context.Departments.FindAsync(id);
+            if (department == null)
             {
                 return NotFound();
             }
-            return View(pO);
+            return View(department);
         }
 
-        // POST: PO/Edit/5
+        // POST: StoreDept/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,OrderDate,POStatus")] PO pO)
+        public async Task<IActionResult> Edit(int id, [Bind("id,DeptCode,DeptName,TelephoneNo,FaxNo,CollectionPoint")] Department department)
         {
-            if (id != pO.Id)
+            if (id != department.id)
             {
                 return NotFound();
             }
@@ -97,12 +102,12 @@ namespace Ben_Project.Controllers
             {
                 try
                 {
-                    _context.Update(pO);
+                    _context.Update(department);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!POExists(pO.Id))
+                    if (!DepartmentExists(department.id))
                     {
                         return NotFound();
                     }
@@ -113,10 +118,10 @@ namespace Ben_Project.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(pO);
+            return View(department);
         }
 
-        // GET: PO/Delete/5
+        // GET: StoreDept/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -124,35 +129,30 @@ namespace Ben_Project.Controllers
                 return NotFound();
             }
 
-            var pO = await _context.POs
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (pO == null)
+            var department = await _context.Departments
+                .FirstOrDefaultAsync(m => m.id == id);
+            if (department == null)
             {
                 return NotFound();
             }
 
-            return View(pO);
+            return View(department);
         }
 
-        // POST: PO/Delete/5
+        // POST: StoreDept/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var toDelete = await _context.POs.FindAsync(id);
-            foreach (var poDetail in toDelete.PODetails)
-            {
-                _context.Remove(poDetail);
-            }
-            _context.Remove(toDelete);
-
+            var department = await _context.Departments.FindAsync(id);
+            _context.Departments.Remove(department);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool POExists(int id)
+        private bool DepartmentExists(int id)
         {
-            return _context.POs.Any(e => e.Id == id);
+            return _context.Departments.Any(e => e.id == id);
         }
     }
 }
