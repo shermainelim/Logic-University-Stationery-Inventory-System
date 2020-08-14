@@ -7,6 +7,7 @@ namespace Ben_Project.Models
 {
     public enum Category
     {
+        nothing,
         Clip,
         Envelope,
         Eraser,

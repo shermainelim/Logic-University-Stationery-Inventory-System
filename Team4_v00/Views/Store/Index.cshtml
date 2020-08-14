@@ -6,6 +6,106 @@
 <h1>Store Index Page</h1>
 <br />
 
+
+<title>@ViewData["Title"] - Column Chart</title>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+<div id="chart_div"></div>
+<script type="text/javascript">
+
+    google.charts.load('current', {
+        packages: ['corechart', 'bar']
+    });
+    google.charts.setOnLoadCallback(LoadData);
+
+    function LoadData() {
+        $.ajax({
+
+            url: 'Store/PopulationChart',
+            dataType: "json",
+            type: "GET",
+            error: function (xhr, status, error) {
+                var err = eval("(" + xhr.responseText + ")");
+                toastr.error(err.message);
+            },
+            success: function (data) {
+                PopulationChart(data);
+                return false;
+            }
+        });
+        return false;
+    }
+
+    function PopulationChart(data) {
+        var dataArray = [
+            ['Department','Qty']
+        ];
+        $.each(data, function (i, item) {
+            dataArray.push([item.Department, parseInt(item.Qty)]);
+        });
+        var data = google.visualization.arrayToDataTable(dataArray);
+        var options = {
+            title: 'Qty Ordered by Department ',
+            chartArea: {
+                width: '50%'
+            },
+            colors: ['#b0120a'],
+            hAxis: {
+                title: 'Department',
+                minValue: 0
+            },
+            vAxis: {
+                title: 'Qty'
+            }
+        };
+        var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+
+        chart.draw(data, options);
+        return false;
+    }
+</script>
+
+
+<h2>@TempData["Message"]</h2>
+<h2>@TempData["result"]</h2>
+
+<form asp-controller="Store" asp-action="Prediction" method="post">
+    <table align="center">
+        <tr>
+            <td>Item Category:</td>
+            <td>
+                <input id="item_category" name="item_category" value="@ViewData["item_category"]" />
+                <sp
+            </td>
+        </tr>
+        <tr>
+            <td>Item ID:</td>
+            <td><input id="item_ID" name="item_ID" value="@ViewData["item_ID"]" /></td>
+        </tr>
+
+        <tr>
+            <td>Date:</td>
+            <td>
+                <input id="date" name="date" value="@ViewData["date"]" />
+            </td>
+        </tr>
+
+        <tr>
+            <td>IsHoliday?( write true or false only):</td>
+            <td>
+                <input id="IsHoliday" name="IsHoliday" value="@ViewData["IsHoliday"]" />
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="2" align="right">
+                <input id="PredictBtn" type="submit" value="Prediction" />
+            </td>
+        </tr>
+    </table>
+</form>
+
+
 <h2>Store Clerk</h2>
 @Html.ActionLink("Stock List", "StoreClerkStockList", "Store", null, null)
 <br />
@@ -20,6 +120,9 @@
 
 <h2>Store Supervisor</h2>
 @Html.ActionLink("Adjustment Voucher List", "AuthorizeAdjustmentVoucherList", "Store", null, null)
+<br />
+
+@Html.ActionLink("Bar Chart", "BarChart", "Store", null, null)
 <br />
 
 

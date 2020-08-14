@@ -14,15 +14,18 @@ namespace Ben_Project.DB
         {
             // Adding Stationery Data
 
+
             Stationery s1 = new Stationery();
             s1.ItemNumber = "C001";
             s1.Category = Category.Clip;
             s1.Description = "Clips Double 1";
+            s1.ReorderLevel = 50;
             s1.Uom = UOM.Dozen;
 
             Stationery s2 = new Stationery();
             s2.ItemNumber = "C004";
             s2.Category = Category.Clip;
+            s2.ReorderLevel = 50;
             s2.Description = "Clips Paper Large";
             
             s2.Uom = UOM.Box;
@@ -30,6 +33,7 @@ namespace Ben_Project.DB
             Stationery s3 = new Stationery();
             s3.ItemNumber = "E001";
             s3.Category = Category.Envelope;
+            s3.ReorderLevel = 600;
             s3.Description = "Envelope Brown (3\"x6\")";
             
             s3.Uom = UOM.Each;
@@ -37,6 +41,7 @@ namespace Ben_Project.DB
             Stationery s4 = new Stationery();
             s4.ItemNumber = "E020";
             s4.Category = Category.Eraser;
+            s4.ReorderLevel = 50;
             s4.Description = "Eraser (hard)";
             
             s4.Uom = UOM.Each;
@@ -44,6 +49,7 @@ namespace Ben_Project.DB
             Stationery s5 = new Stationery();
             s5.ItemNumber = "E030";
             s5.Category = Category.Exercise;
+            s5.ReorderLevel = 100;
             s5.Description = "Exercise Book (100 pg)";
             
             s5.Uom = UOM.Each;
@@ -51,6 +57,7 @@ namespace Ben_Project.DB
             Stationery s6 = new Stationery();
             s6.ItemNumber = "F020";
             s6.Category = Category.File;
+            s6.ReorderLevel = 100;
             s6.Description = "File Separator";
             
             s6.Uom = UOM.Set;
@@ -59,54 +66,63 @@ namespace Ben_Project.DB
             s7.ItemNumber = "F021";
             s7.Category = Category.File;
             s7.Description = "File-Blue Plain";
+            s7.ReorderLevel = 200;
             s7.Uom = UOM.Each;
 
             Stationery s8 = new Stationery();
             s8.ItemNumber = "H011";
             s8.Category = Category.Pen;
             s8.Description = "Highlighter Blue";
+            s8.ReorderLevel = 100;
             s8.Uom = UOM.Box;
 
             Stationery s9 = new Stationery();
             s9.ItemNumber = "H031";
             s9.Category = Category.Puncher;
             s9.Description = "Hole Puncher 2 holes";
+            s9.ReorderLevel = 50;
             s9.Uom = UOM.Each;
 
             Stationery s10 = new Stationery();
             s10.ItemNumber = "P010";
             s10.Category = Category.Pad;
             s10.Description = "Pad Postit Memo 1\"x2\"";
+            s10.ReorderLevel = 100;
             s10.Uom = UOM.Packet;
 
             Stationery s11 = new Stationery();
             s11.ItemNumber = "P020";
             s11.Category = Category.Paper;
             s11.Description = "Paper Photostat A3";
+            s11.ReorderLevel = 500;
             s11.Uom = UOM.Box;
 
             Stationery s12 = new Stationery();
             s12.ItemNumber = "P030";
             s12.Category = Category.Pen;
-            s12.Description = "Pen Ballpoint Black";          
+            s12.Description = "Pen Ballpoint Black";
+            s12.ReorderLevel = 100;
             s12.Uom = UOM.Dozen;
 
             Stationery s13 = new Stationery();
             s13.ItemNumber = "P036";
             s13.Category = Category.Pen;
-            s13.Description = "Pen Transparency Permanent";            
+            s13.Description = "Pen Transparency Permanent";
+            s13.ReorderLevel = 100;
             s13.Uom = UOM.Packet;
 
             Stationery s14 = new Stationery();
             s14.ItemNumber = "P038";
             s14.Category = Category.Pen;
             s14.Description = "Pen Whiteboard Marker Black";
-            
+            s14.ReorderLevel = 100;
+
             s14.Uom = UOM.Box;
 
             Stationery s15 = new Stationery();
             s15.ItemNumber = "P042";
             s15.Category = Category.Pen;
+            s15.ReorderLevel = 100;
             s15.Description = "Pencil 2B";
             
             s15.Uom = UOM.Dozen;
@@ -114,6 +130,7 @@ namespace Ben_Project.DB
             Stationery s16 = new Stationery();
             s16.ItemNumber = "R002";
             s16.Category = Category.Ruler;
+            s16.ReorderLevel = 50;
             s16.Description = "Ruler 12\"";
             
             s16.Uom = UOM.Dozen;
@@ -121,6 +138,7 @@ namespace Ben_Project.DB
             Stationery s17 = new Stationery();
             s17.ItemNumber = "S100";
             s17.Category = Category.Scissors;
+            s17.ReorderLevel = 50;
             s17.Description = "Scissors";
             
             s17.Uom = UOM.Each;
@@ -129,49 +147,49 @@ namespace Ben_Project.DB
             s18.ItemNumber = "S040";
             s18.Category = Category.Tape;
             s18.Description = "Scotch Tape";
-            
+            s18.ReorderLevel = 50;
             s18.Uom = UOM.Each;
 
             Stationery s19 = new Stationery();
             s19.ItemNumber = "S101";
             s19.Category = Category.Sharpener;
             s19.Description = "Sharpener";
-          
+            s19.ReorderLevel = 50;
             s19.Uom = UOM.Each;
 
             Stationery s20 = new Stationery();
             s20.ItemNumber = "S010";
             s20.Category = Category.Shorthand;
             s20.Description = "Shorthand Book (100 pg)";
-          
+            s20.ReorderLevel = 100;
             s20.Uom = UOM.Each;
 
             Stationery s21 = new Stationery();
             s21.ItemNumber = "S020";
             s21.Category = Category.Stapler;
             s21.Description = "Stapler No. 28";
-            
+            s21.ReorderLevel = 50;
             s21.Uom = UOM.Each;
 
             Stationery s22 = new Stationery();
             s22.ItemNumber = "T001";
             s22.Category = Category.Tacks;
             s22.Description = "Thumb Tacks Large";
-          
+            s22.ReorderLevel = 10;
             s22.Uom = UOM.Box;
 
             Stationery s23 = new Stationery();
             s23.ItemNumber = "T020";
             s23.Category = Category.Tparency;
             s23.Description = "Transparency Blue";
-           
+            s23.ReorderLevel = 100;
             s23.Uom = UOM.Box;
 
             Stationery s24 = new Stationery();
             s24.ItemNumber = "T100";
             s24.Category = Category.Tray;
             s24.Description = "Trays In/Out";
-           
+            s24.ReorderLevel = 20;
             s24.Uom = UOM.Set;
 
             dbContext.Add(s1);
@@ -205,7 +223,7 @@ namespace Ben_Project.DB
             st1.Stationery = s1;
             st1.ReorderLevel = 20;
             st1.ReorderQty =30;
-            st1.Qty = 100;
+            st1.Qty = 1000;
             st1.UnitPrice = 50.0;
 
             Stock st2 = new Stock();
@@ -856,6 +874,55 @@ namespace Ben_Project.DB
             dbContext.Add(poD2);
             dbContext.Add(poD3);
             dbContext.Add(poD4);
+
+            Disbursement disbursement1 = new Disbursement();
+            disbursement1.DeptRequisition = dr1;
+            Disbursement disbursement2 = new Disbursement();
+            disbursement2.DeptRequisition = dr2;
+            Disbursement disbursement3 = new Disbursement();
+            disbursement3.DeptRequisition = dr3;
+
+            DisbursementDetail dd1 = new DisbursementDetail();
+            dd1.Disbursement = disbursement1;
+            dd1.Stationery = s1;
+            DisbursementDetail dd2 = new DisbursementDetail();
+            dd2.Disbursement = disbursement2;
+            dd2.Stationery = s2;
+            DisbursementDetail dd3 = new DisbursementDetail();
+            dd3.Disbursement = disbursement3;
+            dd3.Stationery = s3;
+
+            dbContext.Add(disbursement1);
+            dbContext.Add(disbursement2);
+            dbContext.Add(disbursement3);
+            dbContext.Add(dd1);
+            dbContext.Add(dd2);
+            dbContext.Add(dd3);
+
+
+            UsageHistory usage1 = new UsageHistory();
+            usage1.Stationery = s1;
+            usage1.Department = d1;
+            usage1.Qty = 10;
+            usage1.DisbursementDetail = dd1;
+
+            UsageHistory usage2 = new UsageHistory();
+            usage2.Stationery = s2;
+            usage2.Department = d2;
+            usage2.Qty = 15;
+            usage2.DisbursementDetail = dd2;
+
+            UsageHistory usage3 = new UsageHistory();
+            usage3.Stationery = s3;
+            usage3.Department = d3;
+            usage3.Qty = 20;
+            usage3.DisbursementDetail = dd3;
+
+            dbContext.Add(usage1);
+            dbContext.Add(usage2);
+            dbContext.Add(usage3);
+
+
             // Saving Changes
 
             dbContext.SaveChanges();
