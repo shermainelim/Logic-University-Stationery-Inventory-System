@@ -1,6 +1,7 @@
 ﻿using Ben_Project.Models;
 using Castle.Core.Configuration;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace Ben_Project.DB
 {
@@ -22,6 +23,8 @@ namespace Ben_Project.DB
         public DbSet<PODetail> PODetails { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
         public DbSet<SupplierDetail> SupplierDetails { get; set; }
+        public DbSet<UsageHistory> UsageHistories { get; set; }
+
 
         public LogicContext(DbContextOptions<LogicContext> options)
             : base(options)
@@ -31,5 +34,6 @@ namespace Ben_Project.DB
         protected override void OnModelCreating(ModelBuilder model)
         {
         }
+
     }
 }

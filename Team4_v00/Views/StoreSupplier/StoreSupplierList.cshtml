@@ -1,36 +1,80 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿
+
 
 <h3>Suppliers</h3>
+<input type="button" title="Create" value="Create" onclick="location.href='@Url.Action("ManageSupplier", "StoreSupplier",  new { flag = "Create" },null)'" />
 
-
-<table class="table table-bordered">
-    <tr>
-        <th>No</th>
-        <th>Supplier Name</th>
-        <th>Address</th>
-        <th>Phone Number</th>
-    </tr>
-    @{
-        int i = 1;
-
-
-
-
-        @foreach (var supplier in @Model)
-        {
+<br />
+<br />
+<br />
+<form>
+    <table id="eg_tbl" class="table table-striped table-bordered display" style="width:100%">
+        <thead style="background-color: lightskyblue">
             <tr>
-                <td>@i</td>
-                <td>@supplier.Name</td>
-                <td>@supplier.Address</td>
-                <td>@supplier.TelephoneNo</td>
+                <th>No</th>
+                <th>Supplier Name</th>
+                <th>Address</th>
+                <th>Phone Number</th>
+                <th>Action</th>
             </tr>
-            i++;
-        }
+        </thead>
+        <tbody>
+            @{
+                @Html.Hidden("item-to-delete", "", new { @id = "item-to-delete" })
+                int i = 1;
+                @foreach (var supplier in @Model)
+                {
+                    var itemId = supplier.Id;
 
-    }
-</table>
-    @*
-        <input class="rounded" type="button" value="Create New Supplier" style="float:right" onclick="location.href='@Url.Action("CreateForm","Supplier", routeValues: new { sessionid = sessionId })'">        
-    *@
+                    <tr>
+                        <td>
+                            @i
+                            <input type="hidden" value="@supplier.Id" id="YourKey" />
+                        </td>
+                        <td>@supplier.Name</td>
+                        <td>@supplier.Address</td>
+                        <td>@supplier.TelephoneNo</td>
+                        <td>
+                            @*
+        @Html.ActionLink("Edit", "ManageSupplier", "StoreSupplier", new { id = supplier.Id, flag = "Edit" }, null)
+                            *@
+                            @Html.ActionLink("Details", "ManageSupplier", "StoreSupplier", new { id = supplier.Id, flag = "Detail" }, null)
+                            | @Html.ActionLink("Delete", "Delete", new { id = supplier.Id,flag = "Delete" }, new {@style = "color:#FF0000;" , data_toggle = "modal", data_target = "#myModal" })
+                        
+                        </td>
+                    </tr>
+                    i++;
+                    <!--
+                modal-->
+                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    Are you sure you wish to delete this nomination?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                    <input type="button" class="btn btn-danger" title="Delete" value="Delete" onclick="location.href='@Url.Action("ManageSupplier", "StoreSupplier",  new {  id = supplier.Id, flag = "Delete" },null)'" />
+                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <th>No</th>
+                <th>Supplier Name</th>
+                <th>Address</th>
+                <th>Phone Number</th>
+            </tr>
+
+        </tfoot>
+    </table>
+
+   
+
+</form>

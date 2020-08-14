@@ -1,0 +1,74 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model Ben_Project.Models.PO
+
+@{
+    // var supplier = (Supplier)ViewData["Supplier"];
+
+
+}
+
+<h3>Create Supplier</h3>
+
+<br />
+
+<form action="/PO/Save">
+
+    <div class="form-group row">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-6">
+
+
+            <table>
+                <tr>
+                    <th>
+                        Item Name
+                        <input asp-for="@Model.Id" type="hidden" value="@Model.Id" />
+                        <input asp-for="@Model.Supplier.Id" type="hidden" value="@Model.Supplier.Id" />
+                    </th>
+                    
+                    <th>Unit Price</th>
+                </tr>
+                
+                @for (int i = 0; i < Model.PODetails.Count; i++)
+                {
+                    var itemId = @Model.PODetails[i].Id;
+                    var supplierDetailID = @Model.PODetails[i].SupplierDetail.Id;
+                    var itemName = @Model.PODetails[i].SupplierDetail.Stationery.Description;
+                    var unitPrice = @Model.PODetails[i].SupplierDetail.UnitPrice;
+                    var qty = @Model.PODetails[i].Qty;
+
+
+                    <tr>
+                        <td>@itemName</td>
+                        <td>
+                            <input asp-for="@Model.PODetails[i].Id" type="hidden" value="@itemId" />
+                            <input asp-for="@Model.PODetails[i].SupplierDetail.Id" type="hidden" value="@supplierDetailID" />
+                            <input asp-for="@Model.PODetails[i].SupplierDetail.Stationery.Description" type="hidden" value="@itemName" />
+                            <input asp-for="@Model.PODetails[i].SupplierDetail.UnitPrice"value="@unitPrice" readonly/>
+                        </td>
+                        <td>
+                            <input asp-for="@Model.PODetails[i].Qty"/>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+        <div class="col-sm-3"></div>
+
+    </div>
+
+
+    <div class="form-group row">
+
+        <br />
+    </div>
+    <hr />
+    <div class="col-sm-2">
+        <button type="submit" class="btn btn-primary" value="Submit">Submit</button>
+    </div>
+
+</form>
+
+

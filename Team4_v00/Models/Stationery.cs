@@ -12,6 +12,8 @@ namespace Ben_Project.Models
         public Category Category { get; set; }
         public string Description { get; set; }
 
+        public int ReorderLevel { get; set; }
+
         public UOM Uom { get; set; }
     }
 }

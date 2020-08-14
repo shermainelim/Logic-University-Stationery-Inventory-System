@@ -10,20 +10,64 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form action="/PO/EditSave">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
-            <div class="form-group">
+            <div class="form-group row">
                 <label asp-for="OrderDate" class="control-label"></label>
                 <input asp-for="OrderDate" class="form-control" />
                 <span asp-validation-for="OrderDate" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group row">
                 <label asp-for="POStatus" class="control-label"></label>
-                <select asp-for="POStatus" class="form-control"></select>
+                <select asp-for=@Model.POStatus
+                        class="form-control">
+                    <option selected="selected" value="@Model.POStatus"></option>
+                    <option value="0">Edited</option>
+                    <option value="1">Submitted</option>
+                </select>
                 <span asp-validation-for="POStatus" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group row">
+
+                <table>
+                    <tr>
+                        <th>
+                            Item Name
+                            <input asp-for="@Model.Id" type="hidden" value="@Model.Id" />
+                            <input asp-for="@Model.Supplier.Id" type="hidden" value="@Model.Supplier.Id" />
+                            <input asp-for="@Model.Supplier.Name" type="hidden" value="@Model.Supplier.Name" />
+                        </th>
+
+                        <th>Unit Price</th>
+                    </tr>
+
+                    @for (int i = 0; i < Model.PODetails.Count; i++)
+                    {
+                        var itemId = @Model.PODetails[i].Id;
+                        var supplierDetailID = @Model.PODetails[i].SupplierDetail.Id;
+                        var itemName = @Model.PODetails[i].SupplierDetail.Stationery.Description;
+                        var unitPrice = @Model.PODetails[i].SupplierDetail.UnitPrice;
+                        var qty = @Model.PODetails[i].Qty;
+
+
+                        <tr>
+                            <td>@itemName</td>
+                            <td>
+                                <input asp-for="@Model.PODetails[i].Id" type="hidden" value="@itemId" />
+                                <input asp-for="@Model.PODetails[i].SupplierDetail.Id" type="hidden" value="@supplierDetailID" />
+                                <input asp-for="@Model.PODetails[i].SupplierDetail.Stationery.Description" type="hidden" value="@itemName" />
+                                <input asp-for="@Model.PODetails[i].SupplierDetail.UnitPrice" value="@unitPrice" readonly />
+                            </td>
+                            <td>
+                                <input asp-for="@Model.PODetails[i].Qty" />
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+
+            <div class="form-group row">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>

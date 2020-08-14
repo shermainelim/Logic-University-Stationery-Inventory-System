@@ -8,6 +8,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Ben_Project.DB;
 using Ben_Project.Models;
+using Ben_Project.Services.QtyServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
@@ -16,6 +17,7 @@ namespace Ben_Project.Controllers
 {
     public class StoreController : Controller
     {
+        //Hi saw was here...
         private readonly LogicContext _dbContext;
 
         public StoreController(LogicContext logicContext)
@@ -25,7 +27,50 @@ namespace Ben_Project.Controllers
 
         public IActionResult Index()
         {
+            //ViewData["Message"] = new QtyPredictionService().QtyPredict().Result;
+            //System.Diagnostics.Debug.Write("Here index");
             return View();
+        }
+
+        public IActionResult Prediction(string item_category, string item_ID, string date, string IsHoliday)
+        {
+            int itemid = Int32.Parse(item_ID);
+            
+            Stock stock = _dbContext.Stocks.SingleOrDefault(x => x.Stationery.Id == itemid);
+            int safetyStock = stock.Stationery.ReorderLevel;
+            int currentStock = stock.Qty;
+            var result = new QtyPredictionService().QtyPredict(item_category, item_ID, date, IsHoliday).Result;
+            //string jsonString;
+            //jsonString = JsonSerializer.Serialize(result);
+
+            //int res = Int32.Parse(result);
+            var result2 = result.Replace("Results", "")
+                .Replace("output1", "")
+                .Replace("Scored Label Mean", "")
+                .Replace("{", "")
+                .Replace("}", "")
+                .Replace(":", "")
+                .Replace("[", "")
+                .Replace("]", "")
+                .Replace('"', 'o')
+                .Replace("o", "");
+           
+            TempData["Message"] = result2;
+            
+            double final = Math.Round(Double.Parse(result2));
+            if (((final + safetyStock) > currentStock))
+            {
+                TempData["result"] = "You should order : " + ((final + safetyStock) - currentStock);
+            }
+            else if ((final + safetyStock) < currentStock)
+            {
+                TempData["result"] = "You have enough stock";
+            }
+            //HttpContext.Session.SetString("answer", answer);
+            //System.Diagnostics.Debug.Write("Hello");
+            return RedirectToAction("Index");
+
+            //return View();
         }
 
         public IActionResult StoreClerkStockList()
@@ -357,6 +402,13 @@ namespace Ben_Project.Controllers
             var stocks = _dbContext.Stocks.ToList();
 
             return JsonSerializer.Serialize(stocks);
+        }
+
+        public IActionResult BarChart()
+        {
+            var uh = _dbContext.UsageHistories.ToList();
+            ViewData["histories"] = uh;
+            return View();
         }
     }
 }
