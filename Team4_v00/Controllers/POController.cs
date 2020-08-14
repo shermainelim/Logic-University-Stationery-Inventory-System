@@ -46,7 +46,7 @@ namespace Ben_Project.Controllers
         // GET: PO/Create
         public IActionResult Create()
         {
-            
+            var po = new PO();
             var suppliers = _context.Suppliers.ToList();
             
             ViewData["suppliers"] = suppliers;
@@ -64,7 +64,19 @@ namespace Ben_Project.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(pO);
+                var po = new PO();
+                po.OrderDate = pO.OrderDate;
+                po.POStatus = po.POStatus;
+                po.Supplier = _context.Suppliers.FirstOrDefault(s => s.Id == pO.Supplier.Id);
+                /*var supplierDetails = _context.SupplierDetails.ToList();
+
+                foreach (SupplierDetail sd in supplierDetails) {
+                    if (sd.Supplier.Id == pO.Supplier.Id) {
+                        pO.Supplier.SupplierDetails.Add(sd);
+                    }
+                }*/
+                Console.WriteLine(po);
+                _context.Add(po);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -159,6 +171,53 @@ namespace Ben_Project.Controllers
         private bool POExists(int id)
         {
             return _context.POs.Any(e => e.Id == id);
+        }
+
+        //Joe
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult CreateNext([Bind("OrderDate,Supplier")] PO pO)
+        {
+                var po = new PO();
+                po.OrderDate = pO.OrderDate;
+                po.POStatus = po.POStatus;
+                po.Supplier = _context.Suppliers.FirstOrDefault(s => s.Id == pO.Supplier.Id);
+            po.PODetails = new List<PODetail>();
+
+            var sd = _context.SupplierDetails.ToList();
+
+            foreach (SupplierDetail s in sd) {
+                if (s.Supplier.Id == po.Supplier.Id) {
+                    var poDetails = new PODetail();
+                    poDetails.SupplierDetail = s;
+                    po.PODetails.Add(poDetails);
+
+                }
+            }
+            Console.WriteLine(po);
+
+            
+            return View(po);
+        }
+
+        public IActionResult Save(PO po)
+        {
+            var newPo = new PO();
+            newPo.OrderDate = po.OrderDate;
+            newPo.POStatus = po.POStatus;
+            var supplier = _context.Suppliers.FirstOrDefault(s => s.Id == po.Supplier.Id);
+            newPo.Supplier = supplier;
+            _context.Add(newPo);
+            foreach (PODetail pd in po.PODetails) {
+                pd.SupplierDetail = _context.SupplierDetails.FirstOrDefault(s => s.Id == pd.SupplierDetail.Id);
+                pd.PO = newPo;
+                _context.Add(pd);
+            }
+            _context.SaveChanges();
+            
+            
+
+            return RedirectToAction("Index");
         }
     }
 }

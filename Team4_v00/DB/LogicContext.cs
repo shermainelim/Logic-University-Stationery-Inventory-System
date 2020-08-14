@@ -1,6 +1,7 @@
 ﻿using Ben_Project.Models;
 using Castle.Core.Configuration;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace Ben_Project.DB
 {
@@ -31,5 +32,6 @@ namespace Ben_Project.DB
         protected override void OnModelCreating(ModelBuilder model)
         {
         }
+
     }
 }

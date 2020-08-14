@@ -12,5 +12,6 @@ namespace Ben_Project.Models
         public virtual SupplierDetail SupplierDetail { get; set; }
         public int Qty { get; set; }
         public double Amount => Qty * SupplierDetail.UnitPrice;
+
     }
 }

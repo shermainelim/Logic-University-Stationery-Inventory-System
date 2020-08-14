@@ -11,6 +11,7 @@ namespace Ben_Project.Models
         public string Name { set; get; }
         public string Address { get; set; }
         public string TelephoneNo { get; set; }
+        public SupplierStatus supplierStatus { get; set; }
         public virtual List<SupplierDetail> SupplierDetails { get; set; }
     }
 }

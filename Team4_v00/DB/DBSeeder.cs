@@ -719,32 +719,36 @@ namespace Ben_Project.DB
             dbContext.Add(rd11);
             dbContext.Add(rd12);
             dbContext.Add(rd13);
-
             // Add Supplier
             Supplier su1 = new Supplier();
             su1.Name = "FairPrice";
-            su1.TelephoneNo= "8668 8668";
+            su1.TelephoneNo = "8668 8668";
             su1.Address = "Ang Mo Kio";
+            su1.supplierStatus = SupplierStatus.ContractApproved;
 
             Supplier su2 = new Supplier();
             su2.Name = "ColdStorage";
             su2.TelephoneNo = "8224 4228";
             su2.Address = "Kovan";
+            su2.supplierStatus = SupplierStatus.ContractApproved;
 
             Supplier su3 = new Supplier();
             su3.Name = "Metro";
             su3.TelephoneNo = "8112 2118";
             su3.Address = "Marina Bay";
+            su3.supplierStatus = SupplierStatus.ContractApproved;
 
             Supplier su4 = new Supplier();
             su4.Name = "Giant";
             su4.TelephoneNo = "8334 4338";
             su4.Address = "Bukit Batok";
+            su4.supplierStatus = SupplierStatus.ContractApproved;
 
             Supplier su5 = new Supplier();
             su5.Name = "Citimart";
             su5.TelephoneNo = "86664 4668";
             su5.Address = "Jurong East";
+            su5.supplierStatus = SupplierStatus.ContractApproved;
 
             dbContext.Add(su1);
             dbContext.Add(su2);

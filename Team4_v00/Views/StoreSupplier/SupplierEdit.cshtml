@@ -1,0 +1,130 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@{
+    //var supplier = (Supplier)ViewData["Supplier"];
+
+
+}
+
+<div class="form-group row">
+    <div class="col-sm-4"></div>
+    <div class="col-sm-4">
+        <h3 style="text-align:center">Edit Supplier</h3>
+    </div>
+    <div class="col-sm-4"></div>
+</div>
+
+<br />
+
+<form id="loginForm" action="/StoreSupplier/Save" method="POST">
+
+    <div class="form-group row">
+        <div class="col-sm-3">
+
+        </div>
+        <div class="col-sm-3">
+            <label for="SupplierName">Supplier Name</label>
+        </div>
+        <div class="col-sm-3">
+            <input name="Name" class="form-control" id="Name" placeholder="Supplier Name" value="@Model.Name" />
+        </div>
+    </div>
+
+
+    <div class="form-group row">
+        <div class="col-sm-3">
+
+        </div>
+        <div class="col-sm-3">
+            <label for="Address">Address</label>
+        </div>
+        <div class="col-sm-3">
+            <input name="Address" class="form-control" id="Address" placeholder="Address" value="@Model.Address" />
+        </div>
+
+    </div>
+
+    <div class="form-group row">
+        <div class="col-sm-3">
+
+        </div>
+        <div class="col-sm-3">
+            <label for="TelephoneNo">TelephoneNo</label>
+        </div>
+        <div class="col-sm-3">
+            <input name="TelephoneNo" class="form-control" id="TelephoneNo" placeholder="TelephoneNo" value="@Model.TelephoneNo" />
+        </div>
+
+    </div>
+    <div class="form-group row">
+
+        <br />
+    </div>
+    <hr />
+            <div class="form-group row">
+            <div class="col-sm-1">
+
+            </div>
+            <div class="col-sm-10">
+                @*<input type="button" title="Create" value="Create" onclick="location.href='@Url.Action("ManageSupplier", "StoreSupplier", new { s = supplier, flag = "Edit" },null)'" />
+                *@
+                <br />
+                <table id="item_tbl" class="table table-striped table-bordered display" style="width:100%">
+                    <thead style="background-color: lightskyblue">
+                        <tr>
+                            <th>No</th>
+                            <th>Supplier Name</th>
+                            <th>Unit Price</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @{
+                            int i = 1;
+                            @foreach (var s in @Model.SupplierDetails)
+                            {
+                                <tr>
+                                    <td>@i</td>
+                                    <td>@s.Stationery.Description</td>
+                                    <td>@s.UnitPrice</td>
+                                    <td>
+                                        @Html.ActionLink("Edit", "ManageSupplier", "StoreSupplier", new { id = Model.Id, flag = "Edit" }, null)
+                                        |
+                                        @Html.ActionLink("Delete", "ManageSupplier", "StoreSupplier", new { id = Model.Id, flag = "Delete" }, new { @style = "color:#FF0000;" })
+                                    </td>
+                                </tr>
+                                i++;
+                            }
+
+                        }
+
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>No</th>
+                            <th>Supplier Name</th>
+                            <th>Address</th>
+                            <th>Phone Number</th>
+                        </tr>
+
+                    </tfoot>
+                </table>
+            </div>
+            <div class="col-sm-1">
+
+            </div>
+
+        </div>
+
+
+
+
+    <div class="col-sm-2">
+        <button type="submit" class="btn btn-primary" value="Submit">Submit</button>
+    </div>
+
+</form>
+
