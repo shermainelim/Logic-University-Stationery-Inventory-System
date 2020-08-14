@@ -132,7 +132,8 @@ namespace Ben_Project.Controllers
                 var stock = _dbContext.Stocks.FirstOrDefault(s => s.Stationery.Id == stationeryId);
 
                 // redirect to StoreClerkRequisitionFulfillment with deptrequisition id if disbursement is MORE than stock
-
+                if (disbursementDetail.Qty > stock.Qty)
+                    return RedirectToAction("StoreClerkRequisitionFulfillment", new { id = disbursement.DeptRequisition.Id });
                 //
                 //
                 //

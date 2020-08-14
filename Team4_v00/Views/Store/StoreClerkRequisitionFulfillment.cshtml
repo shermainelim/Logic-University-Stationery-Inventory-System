@@ -26,7 +26,7 @@
         {
             var itemName = @requisition.RequisitionDetails[i].Stationery.Description;
             var requestedQty = @requisition.RequisitionDetails[i].Qty;
-            var stockQty = @stocks.Find(s => s.Id == @requisition.RequisitionDetails[i].Stationery.Id).Qty;
+            var stockQty = @stocks.Find(s => s.Stationery.Id == @requisition.RequisitionDetails[i].Stationery.Id).Qty;
             var collectedQty = @requisition.RequisitionDetails[i].CollectedQty;
             var toWithdrawQty = requestedQty - collectedQty;
 
