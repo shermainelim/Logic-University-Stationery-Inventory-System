@@ -115,7 +115,9 @@ namespace Ben_Project.Controllers
             {
                 try
                 {
+                    var poDetail = pO.PODetails;
                     _context.Update(pO);
+                    _context.Update(poDetail);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -216,6 +218,14 @@ namespace Ben_Project.Controllers
             _context.SaveChanges();
             
             
+
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult EditSave(PO po)
+        {
+            _context.Update(po);
+            _context.SaveChanges();
 
             return RedirectToAction("Index");
         }
