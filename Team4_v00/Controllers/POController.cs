@@ -46,6 +46,12 @@ namespace Ben_Project.Controllers
         // GET: PO/Create
         public IActionResult Create()
         {
+            
+            var suppliers = _context.Suppliers.ToList();
+            
+            ViewData["suppliers"] = suppliers;
+            
+
             return View();
         }
 
@@ -54,7 +60,7 @@ namespace Ben_Project.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,OrderDate,POStatus")] PO pO)
+        public async Task<IActionResult> Create([Bind("OrderDate,Supplier")] PO pO)
         {
             if (ModelState.IsValid)
             {

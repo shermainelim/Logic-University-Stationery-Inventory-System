@@ -32,16 +32,11 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Supplier.Name)
         </dd>
-        <dt class="col-sm-2">
-            Supplier Address
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Supplier.Address)
-        </dd>
+        
     </dl>
 </div>
 <div>
-    <table align="center" border="1">
+    <table class="table">
         <tr>
             <th>Item Number</th>
             <th>Item Name</th>
@@ -81,11 +76,8 @@
 </div>
 <div>
     <dl class="row">
-        <dt class="c
-        <dt class="col-sm-2"> Total Price</dt>
-        <dd class="col-sm-10">
-            @cost
-        </dd>
+        <dt class="col-sm-5"> Total Price</dt>
+        <dd class="col-sm-12"> @cost</dd>
     </dl>
 </div>
 
