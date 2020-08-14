@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Ben_Project.DB;
 using Ben_Project.Models;
@@ -98,6 +99,11 @@ namespace Ben_Project.Controllers
                     adjustmentDetail.Stationery = _dbContext.Stationeries.Find(stationeryId);
                     adjustmentDetail.AdjustedQty = unaccountedQty;
                     adjustmentVoucher.AdjustmentDetails.Add(adjustmentDetail);
+                }
+
+                if (disbursementDetail.Qty > (requisitionDetail.Qty - requisitionDetail.CollectedQty))
+                {
+                    return RedirectToAction("StoreClerkRequisitionFulfillment", new {id = deptRequisition.Id});
                 }
 
                 // updating collected qty
@@ -316,6 +322,14 @@ namespace Ben_Project.Controllers
             _dbContext.SaveChanges();
 
             return RedirectToAction("AuthorizeAdjustmentVoucherList", "Store");
+        }
+
+        // api endpoint
+        public string StoreClerkStockListApi()
+        {
+            var stocks = _dbContext.Stocks.ToList();
+
+            return JsonSerializer.Serialize(stocks);
         }
     }
 }
