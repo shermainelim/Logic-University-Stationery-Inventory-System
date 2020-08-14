@@ -17,6 +17,7 @@ namespace Ben_Project.Controllers
 {
     public class StoreController : Controller
     {
+        //Hi saw was here...
         private readonly LogicContext _dbContext;
 
         public StoreController(LogicContext logicContext)
