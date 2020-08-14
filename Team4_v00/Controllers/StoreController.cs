@@ -69,7 +69,7 @@ namespace Ben_Project.Controllers
             var adjustmentVoucher = new AdjustmentVoucher();
             adjustmentVoucher.Status = AdjustmentVoucherStatus.Draft;
             adjustmentVoucher.AdjustmentDetails = new List<AdjustmentDetail>();
-            _dbContext.Add(adjustmentVoucher);
+            
 
             // Generate adjustment voucher number
             var avNo = "AV" + adjustmentVoucher.Id;
@@ -85,6 +85,30 @@ namespace Ben_Project.Controllers
                 // withdrawing qty from stock
                 var stationeryId = disbursementDetail.Stationery.Id;
                 var stock = _dbContext.Stocks.FirstOrDefault(s => s.Stationery.Id == stationeryId);
+
+                // redirect to StoreClerkRequisitionFulfillment with deptrequisition id if disbursement is MORE than stock
+
+                //
+                //
+                //
+                //
+                //
+                //
+                //
+                //
+                //
+                //
+                //
+                //
+                //
+                //
+                //
+                //
+                //
+                //
+                //
+
+
                 stock.Qty -= disbursementDetail.Qty;
 
                 var requisitionDetail = _dbContext.RequisitionDetails.FirstOrDefault(rd =>
@@ -162,6 +186,9 @@ namespace Ben_Project.Controllers
 
             // Adding disbursement to database
             _dbContext.Add(result);
+
+            // Adding adjustment voucher to database
+            _dbContext.Add(adjustmentVoucher);
 
             // Saving changes to database
             _dbContext.SaveChanges();
