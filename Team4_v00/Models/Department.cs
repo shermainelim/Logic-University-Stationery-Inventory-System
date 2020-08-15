@@ -14,5 +14,6 @@ namespace Ben_Project.Models
         public string FaxNo { get; set; }
         public CollectionPoint CollectionPoint { get; set; }
         public virtual List<Employee> Employees { get; set; }
+        public DepartmentStatus DepartmentStatus { get; set; }
     }
 }

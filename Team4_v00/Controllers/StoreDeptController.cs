@@ -22,7 +22,17 @@ namespace Ben_Project.Controllers
         // GET: StoreDept
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Departments.ToListAsync());
+            var departments = await _context.Departments.ToListAsync();
+            var dList = new List<Department>();
+            foreach (var d  in departments)
+            {
+                if (d.DepartmentStatus == DepartmentStatus.Active)
+                {
+                    dList.Add(d);
+                }
+            }
+            return View(dList);
+            
         }
 
         // GET: StoreDept/Details/5
@@ -39,6 +49,8 @@ namespace Ben_Project.Controllers
                 .FirstOrDefaultAsync(m => m.id == id);
             var emp = department.Employees.FirstOrDefault(e => e.Role == DeptRole.DeptHead);
             ViewData["emp"] = emp;
+
+
 
             if (department == null)
             {
@@ -145,7 +157,8 @@ namespace Ben_Project.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var department = await _context.Departments.FindAsync(id);
-            _context.Departments.Remove(department);
+            department.DepartmentStatus = DepartmentStatus.Cancelled;
+            _context.Departments.Update(department);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
