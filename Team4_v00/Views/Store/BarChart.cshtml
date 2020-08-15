@@ -59,13 +59,49 @@
         }
     </script>
     <div id="chart_div"></div>-->*@
+<form asp-controller="Store" asp-action="BarChart" method="post">
+    <table align="center">
+        <tr>
+            <td>Item Category:</td>
+            <td>
+                <input id="item_category" name="item_category" value="@ViewData["item_category"]" />
 
+            </td>
+        </tr>
+        <tr>
+            <td>Item ID:</td>
+            <td><input id="item_ID" name="item_ID" value="@ViewData["item_ID"]" /></td>
+        </tr>
+
+        <tr>
+            <td>Date:</td>
+            <td>
+                <input id="date" name="date" type="date" value="@ViewData["date"]" />
+            </td>
+        </tr>
+
+        <tr>
+            <td>IsHoliday?( write true or false only):</td>
+            <td>
+                <input id="IsHoliday" name="IsHoliday" type="radio" value="true" />
+                "true  &nbsp;&nbsp;"
+                <input id="IsHoliday" name="IsHoliday" type="radio" value="false" />
+                "false"
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="2" align="right">
+                <input id="PredictBtn" type="submit" value="Prediction" />
+            </td>
+        </tr>
+    </table>
+</form>
 
 <html>
-    <head>
-        Load the AJAX API
-        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-        <script type="text/javascript">
+<head>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
 
                 // Load the Visualization API and the controls package.
                 google.charts.load('current', { 'packages': ['corechart', 'controls'] });
@@ -81,11 +117,11 @@
                     // Create our data table.
                 var data = google.visualization.arrayToDataTable([
                     ['DeptName', 'Qty'],
-                    @for (var i = 0; i < 2; i++)
+                    @for (var i = 0; i < history.Count-1 ; i++)
                      {
-                        <text>['@history[@i].Department.DeptName', @history[@i].Qty],</text>
+                        <text>['@history[@i].Department.DeptName @history[@i].A_Date.ToString("yyyyMMMM")',@history[@i].Qty ],</text>
                          }
-                    ['@history[2].Department.DeptName',@history[2].Qty]
+                    ['@history[history.Count-1].Department.DeptName @history[history.Count-1].A_Date.ToString("yyyyMMMM")',@history[history.Count-1].Qty]
                     ]);
 
 
@@ -115,8 +151,8 @@
                         'chartType': 'BarChart',
                         'containerId': 'chart_div',
                         'options': {
-                            'width': 300,
-                            'height': 300,
+                            'width': 3000,
+                            'height': 1000,
                             'pieSliceText': 'value',
                             'legend': 'right'
                         }
@@ -125,20 +161,21 @@
                     // Establish dependencies, declaring that 'filter' drives 'pieChart',
                     // so that the pie chart will only display entries that are let through
                     // given the chosen slider range.
-                    dashboard.bind(donutRangeSlider, pieChart);
+                dashboard.bind(donutRangeSlider,pieChart);
 
                     // Draw the dashboard.
                     dashboard.draw(data);
                 }
-        </script>
-    </head>
+    </script>
+</head>
 
-    <body>
-        Div that will hold the dashboard
-        <div id="dashboard_div">
-            Divs that will hold each control and chart
-            <div id="filter_div"></div>
-            <div id="chart_div"></div>
-        </div>
-    </body>
-    </html>
+<body>
+
+    <div id="dashboard_div">
+
+        <div id="filter_div"></div>
+        <div id="chart_div"></div>
+    </div>
+</body>
+</html>
+

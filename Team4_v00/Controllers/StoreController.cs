@@ -34,6 +34,28 @@ namespace Ben_Project.Controllers
 
         public IActionResult Prediction(string item_category, string item_ID, string date, string IsHoliday)
         {
+            
+            int number;
+            var result5 = int.TryParse(item_category, out number);
+            var result6 = int.TryParse(item_ID, out number);
+
+             if (item_category == null || item_ID== null || date == null|| IsHoliday == null)
+            {
+                TempData["Error"]= "Enter the empty fields";
+                return RedirectToAction("Index");
+            }
+             else if(result5==false || result6 == false)
+            {
+                TempData["Error"] = "Enter only int fields";
+                return RedirectToAction("Index");
+            }
+            // else if (((Int32.Parse(item_category)) == null) || ((Int32.Parse(item_ID)) == null))
+
+            //{
+            //    TempData["Error"] = "Enter only integer";
+            //    return RedirectToAction("Index");
+            //}
+
             int itemid = Int32.Parse(item_ID);
             
             Stock stock = _dbContext.Stocks.SingleOrDefault(x => x.Stationery.Id == itemid);
