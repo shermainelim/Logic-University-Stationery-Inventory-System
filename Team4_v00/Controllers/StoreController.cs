@@ -11,6 +11,7 @@ using Ben_Project.Models;
 using Ben_Project.Services.QtyServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Ben_Project.Controllers
@@ -429,8 +430,13 @@ namespace Ben_Project.Controllers
 
         public IActionResult BarChart()
         {
-            var uh = _dbContext.UsageHistories.ToList();
+           
+            var uh = _dbContext.UsageHistories.FromSqlRaw("SELECT [Id],[StationeryId],[Departmentid],[Qty],[A_Date],[DisbursementDetailId]FROM[BenProject].[dbo].[UsageHistories]ORDER BY[Departmentid], [A_Date]").ToList();
+
+            //var blogs = _dbContext.UsageHistories.ToList();
             ViewData["histories"] = uh;
+
+
             return View();
         }
     }
