@@ -1,0 +1,77 @@
+﻿<div class="form-group row">
+    <div class="col-sm-4"></div>
+    <div class="col-sm-4">
+        <h3 style="text-align:center">Extend Delegation</h3>
+    </div>
+    <div class="col-sm-4"></div>
+</div>
+
+<br />
+
+<form id="loginForm" action="/Delegate/SaveEmployeeDelegation" method="POST">
+
+    <div class="form-group row">
+        <div class="col-sm-3">
+
+        </div>
+        <div class="col-sm-3">
+            <label for="DelegatedEmployeeName">Delegated Employee Name</label>
+        </div>
+        <div class="col-sm-3">
+            <input name="Name" class="form-control" id="Name" placeholder="Delegated Employee Name" value="@Model.Name" />
+        </div>
+    </div>
+
+@*
+    <div class="form-group row">
+        <div class="col-sm-3">
+
+        </div>
+        <div class="col-sm-3">
+            <label for="StartDate">Start Date</label>
+        </div>
+        <div class="col-sm-3">
+            <input name="StartDate" class="form-control" id="StartDate" placeholder="StartDate" value="@Model.StartDate" type="date" />
+        </div>
+   
+    </div>
+     *@
+
+    <div class="form-group row">
+        <div class="col-sm-3">
+
+        </div>
+        <div class="col-sm-3">
+            <label for="EndDate">EndDate</label>
+        </div>
+        <div class="col-sm-3">
+            <input name="EndDate" class="form-control" id="EndDate" placeholder="EndDate" value="@Model.EndDate" type="date" />
+        </div>
+
+    </div>
+
+    <div class="col-sm-3">
+        <input name="Employee.id" class="form-control" id="empid" placeholder="StartDate" value="@Model.Employee.Id" type="hidden" />
+    </div>
+    <div class="col-sm-3">
+        <input name="Id" class="form-control" id="empid" placeholder="StartDate" value="@Model.Id" type="hidden" />
+    </div>
+
+
+    <div class="col-sm-2">
+        <button type="submit" class="btn btn-primary" value="Submit">Submit</button>
+    </div>
+
+</form>
+
+<p style="color:red">
+    @TempData["error"]
+</p>
+
+
+
+
+
+
+
+

@@ -1178,8 +1178,10 @@ namespace Ben_Project.DB
             dbContext.Add(usage53m3);
             dbContext.Add(usage63m3);
 
-           
 
+            DelegatedEmployee de = new DelegatedEmployee();
+            de.EndDate = new DateTime(2020, 1, 1);
+            dbContext.Add(de);
 
             // Saving Changes
 

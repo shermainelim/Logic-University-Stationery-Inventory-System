@@ -1,0 +1,140 @@
+﻿@model Ben_Project.Models.DelegatedEmployee
+
+@{
+    ViewData["Title"] = "DelegateNewEmployee";
+    var now = TempData["now"];
+}
+
+
+<h3>Create New Employee Delegation</h3>
+
+<br />
+@*
+<form asp-controller="Delegate" asp-action="SaveEmployeeDelegation" method="post">
+
+    
+
+    <table>
+        <div class="form-group row">
+            <div class="col-sm-6">
+                <tr>
+                    <div class="form-group row">
+                        <td>
+                            <div class="col-sm-4">
+                                <label for="DelegatedEmployeeName">Delegated Employee Name</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="col-sm-6">
+                                <select name="Name" class="form-control" id="Name" placeholder="Delegated Employee Name" value="@Model.Name" />
+                                @for (int i = 0; i < Model.DelegateEmployeeDetails.Count; i++)
+                                {
+                                    var employeeName = @Model.DelegateEmployeeDetails[i].Employee.Name;
+                                    var startDate = @Model.DelegateEmployeeDetails[i].StartDate;
+                                    var endDate = @Model.DelegateEmployeeDetails[i].EndDate;
+                                    <option>@employeeName</option>
+
+                                    <input asp-for="@Model.DelegateEmployeeDetails[i].StartDate" type="hidden" value="@startDate" />
+                                    <input asp-for="@Model.DelegateEmployeeDetails[i].EndDate" type="hidden" value="@endDate" />
+                                    <input asp-for="@Model.DelegateEmployeeDetails[i].Employee.Name" type="" />
+
+                                }
+                            </div>
+                        </td>
+                    </div>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group row">
+                            <div class="col-sm-4">
+                                <label for="StartDate">Start Date</label>
+                            </div>
+                    </td>
+                    <td>
+                        <div class="col-sm-6">
+                            <input name="StartDate" class="form-control" id="StartDate" placeholder="StartDate" value="@Model.StartDate" type="date" />
+                        </div>
+                    </td>
+            </div>
+            </tr>
+            <tr>
+                <div class="form-group row">
+                    <td>
+                        <div class="col-sm-4">
+                            <label for="EndDate">End Date</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="col-sm-6">
+                            <input name="EndDate" class="form-control" id="EndDate" placeholder="EndDate" value="@Model.EndDate" type="date" />
+                        </div>
+                    </td>
+                </div>
+        </div>
+        </tr>
+        <div class="col-sm-6">
+
+        </div>
+        </div>
+    </table>
+    
+    <div class="form-group row">
+        <br />
+    </div>
+    <hr />
+
+
+    <div class="col-sm-2">
+        <button type="submit" class="btn btn-primary" value="Submit">Submit</button>
+    </div>
+</form>
+*@
+<form asp-controller="Delegate" asp-action="SaveEmployeeDelegation" method="post">
+    <table>
+        <tr>
+            <td>
+                Employee Name : 
+            </td>
+            <td>
+
+                <select name="Employee.Id" class="form-control" id="Name" placeholder="Delegated Employee Name" />
+                @for (int i = 0; i < Model.DelegateEmployeeDetails.Count; i++)
+                {
+                    <option value="@Model.DelegateEmployeeDetails[i].Employee.Id" selected>@Model.DelegateEmployeeDetails[i].Employee.Name</option>                    
+                }
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Start Date :
+            </td>
+            <td>
+                <input name="StartDate" class="form-control" id="StartDate" placeholder="StartDate" min= now  value="@Model.StartDate" type="date" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                End Date :
+            </td>
+            <td>
+                <input name="EndDate" class="form-control" id="EndDate" placeholder="EndDate" min= now value="@Model.EndDate" type="date" />
+            </td>
+        </tr>
+    </table>
+
+    <div class="col-sm-2">
+        <button type="submit" class="btn btn-primary" value="Submit">Submit</button>
+    </div>
+</form>
+<p style="color:red">
+    @TempData["error"]
+</p>
+
+
+
+  
+
+
+
+
