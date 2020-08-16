@@ -11,6 +11,7 @@ using Ben_Project.Models;
 using Ben_Project.Services.QtyServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Ben_Project.Controllers
@@ -34,6 +35,28 @@ namespace Ben_Project.Controllers
 
         public IActionResult Prediction(string item_category, string item_ID, string date, string IsHoliday)
         {
+            
+            int number;
+            var result5 = int.TryParse(item_category, out number);
+            var result6 = int.TryParse(item_ID, out number);
+
+             if (item_category == null || item_ID== null || date == null|| IsHoliday == null)
+            {
+                TempData["Error"]= "Enter the empty fields";
+                return RedirectToAction("Index");
+            }
+             else if(result5==false || result6 == false)
+            {
+                TempData["Error"] = "Enter only int fields";
+                return RedirectToAction("Index");
+            }
+            // else if (((Int32.Parse(item_category)) == null) || ((Int32.Parse(item_ID)) == null))
+
+            //{
+            //    TempData["Error"] = "Enter only integer";
+            //    return RedirectToAction("Index");
+            //}
+
             int itemid = Int32.Parse(item_ID);
             
             Stock stock = _dbContext.Stocks.SingleOrDefault(x => x.Stationery.Id == itemid);
@@ -408,8 +431,13 @@ namespace Ben_Project.Controllers
 
         public IActionResult BarChart()
         {
-            var uh = _dbContext.UsageHistories.ToList();
+           
+            var uh = _dbContext.UsageHistories.FromSqlRaw("SELECT [Id],[StationeryId],[Departmentid],[Qty],[A_Date],[DisbursementDetailId]FROM[BenProject].[dbo].[UsageHistories]ORDER BY[Departmentid], [A_Date]").ToList();
+
+            //var blogs = _dbContext.UsageHistories.ToList();
             ViewData["histories"] = uh;
+
+
             return View();
         }
     }

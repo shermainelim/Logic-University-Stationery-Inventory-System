@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,5 +17,7 @@ namespace Ben_Project.Models
         public int ReorderLevel { get; set; }
 
         public UOM Uom { get; set; }
+
     }
+
 }

@@ -5,6 +5,7 @@ using System.Runtime.Intrinsics.X86;
 using System.Threading.Tasks;
 using Ben_Project.Models;
 using Ben_Project.Utils;
+using Microsoft.EntityFrameworkCore;
 
 namespace Ben_Project.DB
 {
@@ -446,6 +447,7 @@ namespace Ben_Project.DB
             d5.DeptName = "Store Dept";
             d5.TelephoneNo = "890 1266";
             d5.FaxNo = "892 1465";
+            d5.CollectionPoint = CollectionPoint.StationeryStore;
 
             dbContext.Add(d1);
             dbContext.Add(d2);
@@ -899,28 +901,284 @@ namespace Ben_Project.DB
             dbContext.Add(dd2);
             dbContext.Add(dd3);
 
+            //UsageHistory usage11m1 = new UsageHistory();
+            //usage11m1.Stationery = s1;
+            //usage11m1.Department = d1;
+            //usage11m1.Qty = 15;
+            //usage11m1.A_Date = new DateTime(2020, 01, 25);
+            //usage11m1.DisbursementDetail = dd1;
 
-            UsageHistory usage1 = new UsageHistory();
-            usage1.Stationery = s1;
-            usage1.Department = d1;
-            usage1.Qty = 10;
-            usage1.DisbursementDetail = dd1;
+            //UsageHistory usage11m2 = new UsageHistory();
+            //usage11m2.Stationery = s1;
+            //usage11m2.Department = d1;
+            //usage11m2.Qty = 25;
+            //usage11m2.A_Date = new DateTime(2020, 02, 25);
 
-            UsageHistory usage2 = new UsageHistory();
-            usage2.Stationery = s2;
-            usage2.Department = d2;
-            usage2.Qty = 15;
-            usage2.DisbursementDetail = dd2;
+            //UsageHistory usage11m3 = new UsageHistory();
+            //usage11m3.Stationery = s1;
+            //usage11m3.Department = d1;
+            //usage11m3.Qty = 80;
+            //usage11m3.A_Date = new DateTime(2020, 03, 25);
 
-            UsageHistory usage3 = new UsageHistory();
-            usage3.Stationery = s3;
-            usage3.Department = d3;
-            usage3.Qty = 20;
-            usage3.DisbursementDetail = dd3;
 
-            dbContext.Add(usage1);
-            dbContext.Add(usage2);
-            dbContext.Add(usage3);
+
+            //UsageHistory usage12m1 = new UsageHistory();
+            //usage12m1.Stationery = s2;
+            //usage12m1.Department = d1;
+            //usage12m1.Qty = 15;
+            //usage12m1.A_Date = new DateTime(2020, 01, 25);
+            //usage12m1.DisbursementDetail = dd1;
+
+            //UsageHistory usage12m2 = new UsageHistory();
+            //usage12m2.Stationery = s2;
+            //usage12m2.Department = d1;
+            //usage12m2.Qty = 25;
+            //usage12m2.A_Date = new DateTime(2020, 02, 25);
+
+            //UsageHistory usage12m3 = new UsageHistory();
+            //usage12m3.Stationery = s2;
+            //usage12m3.Department = d1;
+            //usage12m3.Qty = 80;
+            //usage12m3.A_Date = new DateTime(2020, 03, 25);
+
+
+            //UsageHistory usage13m1 = new UsageHistory();
+            //usage13m1.Stationery = s3;
+            //usage13m1.Department = d1;
+            //usage13m1.Qty = 20;
+            //usage13m1.A_Date = new DateTime(2020, 01, 25);
+            //usage13m1.DisbursementDetail = dd1;
+
+            //UsageHistory usage13m2 = new UsageHistory();
+            //usage13m2.Stationery = s3;
+            //usage13m2.Department = d1;
+            //usage13m2.Qty = 30;
+            //usage13m2.A_Date = new DateTime(2020, 02, 25);
+
+            //UsageHistory usage13m3 = new UsageHistory();
+            //usage13m3.Stationery = s3;
+            //usage13m3.Department = d1;
+            //usage13m3.Qty = 85;
+            //usage13m3.A_Date = new DateTime(2020, 03, 25);
+
+
+            //UsageHistory usage21m1 = new UsageHistory();
+            //usage21m1.Stationery = s1;
+            //usage21m1.Department = d2;
+            //usage21m1.Qty = 150;
+            //usage21m1.A_Date = new DateTime(2020, 01, 25);
+            
+            //UsageHistory usage21m2 = new UsageHistory();
+            //usage21m2.Stationery = s1;
+            //usage21m2.Department = d2;
+            //usage21m2.Qty = 250;
+            //usage21m2.A_Date = new DateTime(2020, 02, 25);
+
+            //UsageHistory usage21m3 = new UsageHistory();
+            //usage21m3.Stationery = s1;
+            //usage21m3.Department = d2;
+            //usage21m3.Qty = 80;
+            //usage21m3.A_Date = new DateTime(2020, 03, 25);
+
+
+            //UsageHistory usage22m1 = new UsageHistory();
+            //usage22m1.Stationery = s2;
+            //usage22m1.Department = d2;
+            //usage22m1.Qty = 220;
+            //usage22m1.A_Date = new DateTime(2020, 01, 25);
+
+            //UsageHistory usage22m2 = new UsageHistory();
+            //usage22m2.Stationery = s2;
+            //usage22m2.Department = d2;
+            //usage22m2.Qty = 230;
+            //usage22m2.A_Date = new DateTime(2020, 02, 25);
+
+            //UsageHistory usage22m3 = new UsageHistory();
+            //usage22m3.Stationery = s2;
+            //usage22m3.Department = d2;
+            //usage22m3.Qty = 285;
+            //usage22m3.A_Date = new DateTime(2020, 03, 25);
+
+
+            //UsageHistory usage23m1 = new UsageHistory();
+            //usage23m1.Stationery = s3;
+            //usage23m1.Department = d2;
+            //usage23m1.Qty = 320;
+            //usage23m1.A_Date = new DateTime(2020, 01, 25);
+
+            //UsageHistory usage23m2 = new UsageHistory();
+            //usage23m2.Stationery = s3;
+            //usage23m2.Department = d2;
+            //usage23m2.Qty = 330;
+            //usage23m2.A_Date = new DateTime(2020, 02, 25);
+
+            //UsageHistory usage23m3 = new UsageHistory();
+            //usage23m3.Stationery = s3;
+            //usage23m3.Department = d2;
+            //usage23m3.Qty = 285;
+            //usage23m3.A_Date = new DateTime(2020, 03, 25);
+
+
+
+
+            //UsageHistory usage31m1 = new UsageHistory();
+            //usage31m1.Stationery = s1;
+            //usage31m1.Department = d3;
+            //usage31m1.Qty = 40;
+            //usage31m1.A_Date = new DateTime(2020, 01, 25);
+
+            //UsageHistory usage31m2 = new UsageHistory();
+            //usage31m2.Stationery = s1;
+            //usage31m2.Department = d3;
+            //usage31m2.Qty = 150;
+            //usage31m2.A_Date = new DateTime(2020, 02, 25);
+
+            //UsageHistory usage31m3 = new UsageHistory();
+            //usage31m3.Stationery = s1;
+            //usage31m3.Department = d3;
+            //usage31m3.Qty = 300;
+            //usage31m3.A_Date = new DateTime(2020, 03, 25);
+
+            //UsageHistory usage32m1 = new UsageHistory();
+            //usage32m1.Stationery = s2;
+            //usage32m1.Department = d3;
+            //usage32m1.Qty = 80;
+
+            //usage32m1.A_Date = new DateTime(2020, 01, 25);
+
+            //UsageHistory usage32m2 = new UsageHistory();
+            //usage32m2.Stationery = s2;
+            //usage32m2.Department = d3;
+            //usage32m2.Qty = 200;
+            //usage32m2.A_Date = new DateTime(2020, 02, 25);
+
+            //UsageHistory usage32m3 = new UsageHistory();
+            //usage32m3.Stationery = s2;
+            //usage32m3.Department = d3;
+            //usage32m3.Qty = 400;
+            //usage32m3.A_Date = new DateTime(2020, 03, 25);
+
+            //UsageHistory usage33m1 = new UsageHistory();
+            //usage33m1.Stationery = s3;
+            //usage33m1.Department = d3;
+            //usage33m1.Qty = 280;
+
+            //usage33m1.A_Date = new DateTime(2020, 01, 25);
+
+            //UsageHistory usage33m2 = new UsageHistory();
+            //usage33m2.Stationery = s3;
+            //usage33m2.Department = d3;
+            //usage33m2.Qty = 200;
+            //usage33m2.A_Date = new DateTime(2020, 02, 25);
+
+            //UsageHistory usage33m3 = new UsageHistory();
+            //usage33m3.Stationery = s3;
+            //usage33m3.Department = d3;
+            //usage33m3.Qty = 400;
+            //usage33m3.A_Date = new DateTime(2020, 03, 25);
+
+            //dbContext.Add(usage11m1);
+            //dbContext.Add(usage12m1);
+            //dbContext.Add(usage13m1);
+            //dbContext.Add(usage21m1);
+            //dbContext.Add(usage22m1);
+            //dbContext.Add(usage23m1);
+            //dbContext.Add(usage31m1);
+            //dbContext.Add(usage32m1);
+            //dbContext.Add(usage33m1);
+
+            //dbContext.Add(usage11m2);
+            //dbContext.Add(usage12m2);
+            //dbContext.Add(usage13m2);
+            //dbContext.Add(usage21m2);
+            //dbContext.Add(usage22m2);
+            //dbContext.Add(usage23m2);
+            //dbContext.Add(usage31m2);
+            //dbContext.Add(usage32m2);
+            //dbContext.Add(usage33m2);
+
+            //dbContext.Add(usage11m3);
+            //dbContext.Add(usage12m3);
+            //dbContext.Add(usage13m3);
+            //dbContext.Add(usage21m3);
+            //dbContext.Add(usage22m3);
+            //dbContext.Add(usage23m3);
+            //dbContext.Add(usage31m3);
+            //dbContext.Add(usage32m3);
+            //dbContext.Add(usage33m3);
+
+
+            UsageHistory usage43m1 = new UsageHistory();
+            usage43m1.Stationery = s3;
+            usage43m1.Department = d3;
+            usage43m1.Qty = 280;
+
+            usage43m1.A_Date = new DateTime(2020, 01, 25);
+
+            UsageHistory usage43m2 = new UsageHistory();
+            usage43m2.Stationery = s3;
+            usage43m2.Department = d3;
+            usage43m2.Qty = 200;
+            usage43m2.A_Date = new DateTime(2020, 02, 25);
+
+            UsageHistory usage43m3 = new UsageHistory();
+            usage43m3.Stationery = s3;
+            usage43m3.Department = d3;
+            usage43m3.Qty = 200;
+            usage43m3.A_Date = new DateTime(2020, 03, 25);
+
+
+            UsageHistory usage53m1 = new UsageHistory();
+            usage53m1.Stationery = s3;
+            usage53m1.Department = d2;
+            usage53m1.Qty = 280;
+
+            usage53m1.A_Date = new DateTime(2020, 01, 25);
+
+            UsageHistory usage53m2 = new UsageHistory();
+            usage53m2.Stationery = s3;
+            usage53m2.Department = d2;
+            usage53m2.Qty = 200;
+            usage53m2.A_Date = new DateTime(2020, 02, 25);
+
+            UsageHistory usage53m3 = new UsageHistory();
+            usage53m3.Stationery = s3;
+            usage53m3.Department = d2;
+            usage53m3.Qty = 400;
+            usage53m3.A_Date = new DateTime(2020, 03, 25);
+
+            UsageHistory usage63m1 = new UsageHistory();
+            usage63m1.Stationery = s3;
+            usage63m1.Department = d1;
+            usage63m1.Qty = 280;
+
+            usage63m1.A_Date = new DateTime(2020, 01, 25);
+
+            UsageHistory usage63m2 = new UsageHistory();
+            usage63m2.Stationery = s3;
+            usage63m2.Department = d1;
+            usage63m2.Qty = 200;
+            usage63m2.A_Date = new DateTime(2020, 02, 25);
+
+            UsageHistory usage63m3 = new UsageHistory();
+            usage63m3.Stationery = s3;
+            usage63m3.Department = d1;
+            usage63m3.Qty = 400;
+            usage63m3.A_Date = new DateTime(2020, 03, 25);
+
+            dbContext.Add(usage43m1);
+            dbContext.Add(usage53m1);
+            dbContext.Add(usage63m1);
+
+            dbContext.Add(usage43m2);
+            dbContext.Add(usage53m2);
+            dbContext.Add(usage63m2);
+
+            dbContext.Add(usage43m3);
+            dbContext.Add(usage53m3);
+            dbContext.Add(usage63m3);
+
+           
 
 
             // Saving Changes

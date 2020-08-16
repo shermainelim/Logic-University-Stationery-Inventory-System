@@ -1,69 +1,11 @@
 ﻿
-@{
-    ViewData["Title"] = "Store Index Page";
-}
+@{ ViewData["Title"] = "Store Index Page"; }
 
 <h1>Store Index Page</h1>
 <br />
 
 
-<title>@ViewData["Title"] - Column Chart</title>
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-
-<div id="chart_div"></div>
-<script type="text/javascript">
-
-    google.charts.load('current', {
-        packages: ['corechart', 'bar']
-    });
-    google.charts.setOnLoadCallback(LoadData);
-
-    function LoadData() {
-        $.ajax({
-
-            url: 'Store/PopulationChart',
-            dataType: "json",
-            type: "GET",
-            error: function (xhr, status, error) {
-                var err = eval("(" + xhr.responseText + ")");
-                toastr.error(err.message);
-            },
-            success: function (data) {
-                PopulationChart(data);
-                return false;
-            }
-        });
-        return false;
-    }
-
-    function PopulationChart(data) {
-        var dataArray = [
-            ['Department','Qty']
-        ];
-        $.each(data, function (i, item) {
-            dataArray.push([item.Department, parseInt(item.Qty)]);
-        });
-        var data = google.visualization.arrayToDataTable(dataArray);
-        var options = {
-            title: 'Qty Ordered by Department ',
-            chartArea: {
-                width: '50%'
-            },
-            colors: ['#b0120a'],
-            hAxis: {
-                title: 'Department',
-                minValue: 0
-            },
-            vAxis: {
-                title: 'Qty'
-            }
-        };
-        var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
-
-        chart.draw(data, options);
-        return false;
-    }
-</script>
+<p style="color:red">@TempData["Error"]</p>
 
 
 <h2>@TempData["Message"]</h2>
@@ -75,7 +17,7 @@
             <td>Item Category:</td>
             <td>
                 <input id="item_category" name="item_category" value="@ViewData["item_category"]" />
-                <sp
+
             </td>
         </tr>
         <tr>
@@ -86,14 +28,17 @@
         <tr>
             <td>Date:</td>
             <td>
-                <input id="date" name="date" value="@ViewData["date"]" />
+                <input id="date" name="date" type="date" value="@ViewData["date"]" />
             </td>
         </tr>
 
         <tr>
             <td>IsHoliday?( write true or false only):</td>
             <td>
-                <input id="IsHoliday" name="IsHoliday" value="@ViewData["IsHoliday"]" />
+                <input id="IsHoliday" name="IsHoliday" type="radio" value="true" />
+                "true  &nbsp;&nbsp;"
+                <input id="IsHoliday" name="IsHoliday" type="radio" value="false" />
+                "false"
             </td>
         </tr>
 
@@ -104,6 +49,8 @@
         </tr>
     </table>
 </form>
+
+
 
 
 <h2>Store Clerk</h2>
