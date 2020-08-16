@@ -1112,59 +1112,65 @@ namespace Ben_Project.DB
             usage43m1.Stationery = s3;
             usage43m1.Department = d3;
             usage43m1.Qty = 280;
-
             usage43m1.A_Date = new DateTime(2020, 01, 25);
+            //usage43m1.Description = "Envelope Brown (3\"x6\")";
 
             UsageHistory usage43m2 = new UsageHistory();
             usage43m2.Stationery = s3;
             usage43m2.Department = d3;
             usage43m2.Qty = 200;
             usage43m2.A_Date = new DateTime(2020, 02, 25);
+            //usage43m2.Description = "Envelope Brown (3\"x6\")";
 
             UsageHistory usage43m3 = new UsageHistory();
             usage43m3.Stationery = s3;
             usage43m3.Department = d3;
             usage43m3.Qty = 200;
             usage43m3.A_Date = new DateTime(2020, 03, 25);
+            //usage43m3.Description = "Envelope Brown (3\"x6\")";
 
 
             UsageHistory usage53m1 = new UsageHistory();
             usage53m1.Stationery = s3;
             usage53m1.Department = d2;
             usage53m1.Qty = 280;
-
             usage53m1.A_Date = new DateTime(2020, 01, 25);
+            //usage53m1.Description = "Envelope Brown (3\"x6\")";
 
             UsageHistory usage53m2 = new UsageHistory();
             usage53m2.Stationery = s3;
             usage53m2.Department = d2;
             usage53m2.Qty = 200;
             usage53m2.A_Date = new DateTime(2020, 02, 25);
+            //usage53m2.Description = "Envelope Brown (3\"x6\")";
 
             UsageHistory usage53m3 = new UsageHistory();
             usage53m3.Stationery = s3;
             usage53m3.Department = d2;
             usage53m3.Qty = 400;
             usage53m3.A_Date = new DateTime(2020, 03, 25);
+            //usage53m3.Description = "Envelope Brown (3\"x6\")";
 
             UsageHistory usage63m1 = new UsageHistory();
             usage63m1.Stationery = s3;
             usage63m1.Department = d1;
             usage63m1.Qty = 280;
-
             usage63m1.A_Date = new DateTime(2020, 01, 25);
+            //usage63m1.Description = "Envelope Brown (3\"x6\")";
 
             UsageHistory usage63m2 = new UsageHistory();
             usage63m2.Stationery = s3;
             usage63m2.Department = d1;
             usage63m2.Qty = 200;
             usage63m2.A_Date = new DateTime(2020, 02, 25);
+            //usage63m2.Description = "Envelope Brown (3\"x6\")";
 
             UsageHistory usage63m3 = new UsageHistory();
             usage63m3.Stationery = s3;
             usage63m3.Department = d1;
             usage63m3.Qty = 400;
             usage63m3.A_Date = new DateTime(2020, 03, 25);
+            //usage63m3.Description = "Envelope Brown (3\"x6\")";
 
             dbContext.Add(usage43m1);
             dbContext.Add(usage53m1);
@@ -1178,7 +1184,84 @@ namespace Ben_Project.DB
             dbContext.Add(usage53m3);
             dbContext.Add(usage63m3);
 
-           
+            //2nd product
+            UsageHistory p2usage43m1 = new UsageHistory();
+            p2usage43m1.Stationery = s1;
+            p2usage43m1.Department = d3;
+            p2usage43m1.Qty = 280;
+            p2usage43m1.A_Date = new DateTime(2020, 01, 25);
+            //p2usage43m1.Description = "Clips Double 1";
+
+
+            UsageHistory p2usage43m2 = new UsageHistory();
+            p2usage43m2.Stationery = s1;
+            p2usage43m2.Department = d3;
+            p2usage43m2.Qty = 200;
+            p2usage43m2.A_Date = new DateTime(2020, 02, 25);
+            //p2usage43m2.Description = "Clips Double 1";
+
+            UsageHistory p2usage43m3 = new UsageHistory();
+            p2usage43m3.Stationery = s1;
+            p2usage43m3.Department = d3;
+            p2usage43m3.Qty = 200;
+            p2usage43m3.A_Date = new DateTime(2020, 03, 25);
+            //p2usage43m3.Description = "Clips Double 1";
+
+
+            UsageHistory p2usage53m1 = new UsageHistory();
+            p2usage53m1.Stationery = s1;
+            p2usage53m1.Department = d2;
+            p2usage53m1.Qty = 280;
+            p2usage53m1.A_Date = new DateTime(2020, 01, 25);
+            //p2usage53m1.Description = "Clips Double 1";
+
+            UsageHistory p2usage53m2 = new UsageHistory();
+            p2usage53m2.Stationery = s1;
+            p2usage53m2.Department = d2;
+            p2usage53m2.Qty = 200;
+            p2usage53m2.A_Date = new DateTime(2020, 02, 25);
+            //p2usage53m2.Description = "Clips Double 1";
+
+
+            UsageHistory p2usage53m3 = new UsageHistory();
+            p2usage53m3.Stationery = s1;
+            p2usage53m3.Department = d2;
+            p2usage53m3.Qty = 400;
+            p2usage53m3.A_Date = new DateTime(2020, 03, 25);
+            //p2usage53m3.Description = "Clips Double 1";
+
+            UsageHistory p2usage63m1 = new UsageHistory();
+            p2usage63m1.Stationery = s1;
+            p2usage63m1.Department = d1;
+            p2usage63m1.Qty = 280;
+            p2usage63m1.A_Date = new DateTime(2020, 01, 25);
+            //p2usage63m1.Description = "Clips Double 1";
+
+            UsageHistory p2usage63m2 = new UsageHistory();
+            p2usage63m2.Stationery = s1;
+            p2usage63m2.Department = d1;
+            p2usage63m2.Qty = 200;
+            p2usage63m2.A_Date = new DateTime(2020, 02, 25);
+            //p2usage63m2.Description = "Clips Double 1";
+
+            UsageHistory p2usage63m3 = new UsageHistory();
+            p2usage63m3.Stationery = s1;
+            p2usage63m3.Department = d1;
+            p2usage63m3.Qty = 400;
+            p2usage63m3.A_Date = new DateTime(2020, 03, 25);
+            //p2usage63m3.Description = "Clips Double 1";
+
+            dbContext.Add(p2usage43m1);
+            dbContext.Add(p2usage53m1);
+            dbContext.Add(p2usage63m1);
+
+            dbContext.Add(p2usage43m2);
+            dbContext.Add(p2usage53m2);
+            dbContext.Add(p2usage63m2);
+
+            dbContext.Add(p2usage43m3);
+            dbContext.Add(p2usage53m3);
+            dbContext.Add(p2usage63m3);
 
 
             // Saving Changes
