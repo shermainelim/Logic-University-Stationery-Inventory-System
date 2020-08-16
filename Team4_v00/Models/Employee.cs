@@ -14,5 +14,6 @@ namespace Ben_Project.Models
         public DeptRole JobTitle { get; set; }
         public DeptRole Role { get; set; }
         public virtual Department Dept { get; set; }
+        public virtual List<DelegatedEmployee> DelegatedEmployees { get; set; }
     }
 }

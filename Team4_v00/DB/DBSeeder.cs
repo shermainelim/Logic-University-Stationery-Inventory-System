@@ -28,7 +28,7 @@ namespace Ben_Project.DB
             s2.Category = Category.Clip;
             s2.ReorderLevel = 50;
             s2.Description = "Clips Paper Large";
-            
+
             s2.Uom = UOM.Box;
 
             Stationery s3 = new Stationery();
@@ -36,7 +36,7 @@ namespace Ben_Project.DB
             s3.Category = Category.Envelope;
             s3.ReorderLevel = 600;
             s3.Description = "Envelope Brown (3\"x6\")";
-            
+
             s3.Uom = UOM.Each;
 
             Stationery s4 = new Stationery();
@@ -44,7 +44,7 @@ namespace Ben_Project.DB
             s4.Category = Category.Eraser;
             s4.ReorderLevel = 50;
             s4.Description = "Eraser (hard)";
-            
+
             s4.Uom = UOM.Each;
 
             Stationery s5 = new Stationery();
@@ -52,7 +52,7 @@ namespace Ben_Project.DB
             s5.Category = Category.Exercise;
             s5.ReorderLevel = 100;
             s5.Description = "Exercise Book (100 pg)";
-            
+
             s5.Uom = UOM.Each;
 
             Stationery s6 = new Stationery();
@@ -60,7 +60,7 @@ namespace Ben_Project.DB
             s6.Category = Category.File;
             s6.ReorderLevel = 100;
             s6.Description = "File Separator";
-            
+
             s6.Uom = UOM.Set;
 
             Stationery s7 = new Stationery();
@@ -125,7 +125,7 @@ namespace Ben_Project.DB
             s15.Category = Category.Pen;
             s15.ReorderLevel = 100;
             s15.Description = "Pencil 2B";
-            
+
             s15.Uom = UOM.Dozen;
 
             Stationery s16 = new Stationery();
@@ -133,7 +133,7 @@ namespace Ben_Project.DB
             s16.Category = Category.Ruler;
             s16.ReorderLevel = 50;
             s16.Description = "Ruler 12\"";
-            
+
             s16.Uom = UOM.Dozen;
 
             Stationery s17 = new Stationery();
@@ -141,7 +141,7 @@ namespace Ben_Project.DB
             s17.Category = Category.Scissors;
             s17.ReorderLevel = 50;
             s17.Description = "Scissors";
-            
+
             s17.Uom = UOM.Each;
 
             Stationery s18 = new Stationery();
@@ -412,7 +412,7 @@ namespace Ben_Project.DB
             dbContext.Add(st22);
             dbContext.Add(st23);
             dbContext.Add(st24);
-            
+
             // Adding Departments
             Department d1 = new Department();
             d1.DeptCode = "ENGL";
@@ -555,7 +555,7 @@ namespace Ben_Project.DB
             e12.JobTitle = DeptRole.DeptHead;
             e12.Role = DeptRole.DeptHead;
 
-           
+
 
             Employee e13 = new Employee();
             e13.Name = "Mr Ken ";
@@ -967,7 +967,7 @@ namespace Ben_Project.DB
             //usage21m1.Department = d2;
             //usage21m1.Qty = 150;
             //usage21m1.A_Date = new DateTime(2020, 01, 25);
-            
+
             //UsageHistory usage21m2 = new UsageHistory();
             //usage21m2.Stationery = s1;
             //usage21m2.Department = d2;
@@ -1263,6 +1263,16 @@ namespace Ben_Project.DB
             dbContext.Add(p2usage53m3);
             dbContext.Add(p2usage63m3);
 
+            DelegatedEmployee de = new DelegatedEmployee();
+            de.EndDate = new DateTime(2020, 1, 1);
+            dbContext.Add(de);
+
+            // Saving Changes
+
+
+            DelegatedEmployee de = new DelegatedEmployee();
+            de.EndDate = new DateTime(2020, 1, 1);
+            dbContext.Add(de);
 
             // Saving Changes
 

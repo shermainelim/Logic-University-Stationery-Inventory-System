@@ -24,6 +24,8 @@ namespace Ben_Project.DB
         public DbSet<Supplier> Suppliers { get; set; }
         public DbSet<SupplierDetail> SupplierDetails { get; set; }
         public DbSet<UsageHistory> UsageHistories { get; set; }
+        public DbSet<DelegatedEmployee> DelegatedEmployees { get; set; }
+        public DbSet<DelegateEmployeeDetail> DelegateEmployeeDetails { get; set; }
 
 
         public LogicContext(DbContextOptions<LogicContext> options)
