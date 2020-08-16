@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -20,6 +21,9 @@ namespace Ben_Project.Models
         
         public int Id { get; set; }
         public virtual Stationery Stationery { get; set; }
+
+
+
         public virtual Department Department { get; set; }
         public int Qty { get; set; }
 

@@ -13,6 +13,7 @@ namespace Ben_Project.Models
         DeptRep,
         StoreClerk,
         StoreSupervisor,
-        StoreManager
+        StoreManager,
+        DelegatedEmployee
     }
 }

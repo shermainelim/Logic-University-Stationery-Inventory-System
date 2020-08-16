@@ -1,0 +1,140 @@
+﻿
+@{
+    var history = (List<UsageHistory>)ViewData["histories"];
+    var history2 = history;
+}
+<h1>write something</h1>
+
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>CategoryFilter as column selector</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="googlebot" content="noindex, nofollow">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <script type="text/javascript"
+            src="//cdnjs.cloudflare.com/ajax/libs/mootools/1.4.5/mootools-core-full-nocompat.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="/css/result-light.css">
+
+    <script type="text/javascript" src="http://www.google.com/jsapi?fake=.js"></script>
+
+    <style id="compiled-css" type="text/css">
+
+        /* EOS */
+    </style>
+
+    <script id="insert"></script>
+
+
+</head>
+<body>
+    <div id="colFilter_div"></div>
+    <div id="chart_div"></div>
+    <div id="creativeCommons" style="text-align: center; width: 400px;">
+        <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/InteractiveResource" property="dct:title" rel="dct:type">Code to use a CategoryFilter as a column selector</span> by <span xmlns:cc="http://creativecommons.org/ns#" property="cc:attributionName">Andrew Gallant</span> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US">Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License</a>.
+    </div>
+
+    <script type="text/javascript">
+        //<![CDATA[
+
+
+            google.load('visualization', '1', { packages: ['controls'] });
+            google.setOnLoadCallback(drawChart);
+
+           function drawChart() {
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Year/Month');
+            data.addColumn('number', '@history[0].Department.DeptName');
+            data.addColumn('number', '@history[3].Department.DeptName');
+            data.addColumn('number', '@history[6].Department.DeptName');
+            data.addRows([
+                ['@history[0].A_Date.ToString("yyyyMMMM") @history[0].Stationery.Description',@history[0].Qty, @history[3].Qty, @history[6].Qty],
+                ['@history[1].A_Date.ToString("yyyyMMMM") @history[1].Stationery.Description', @history[1].Qty, @history[4].Qty, @history[7].Qty],
+                ['@history[2].A_Date.ToString("yyyyMMMM") @history[2].Stationery.Description', @history[2].Qty, @history[5].Qty, @history[8].Qty]
+            ]);
+
+
+                var columnsTable = new google.visualization.DataTable();
+                columnsTable.addColumn('number', 'colIndex');
+                columnsTable.addColumn('string', 'colLabel');
+                var initState = { selectedValues: [] };
+                // put the columns into this data table (skip column 0)
+                for (var i = 1; i < data.getNumberOfColumns(); i++) {
+                    columnsTable.addRow([i, data.getColumnLabel(i)]);
+                    // you can comment out this next line if you want to have a default selection other than the whole list
+                    initState.selectedValues.push(data.getColumnLabel(i));
+                }
+                // you can set individual columns to be the default columns (instead of populating via the loop above) like this:
+                // initState.selectedValues.push(data.getColumnLabel(4));
+
+                var chart = new google.visualization.ChartWrapper({
+                    chartType: 'BarChart',
+                    containerId: 'chart_div',
+                    dataTable: data,
+                    options: {
+                        title: 'Dept',
+                        width: 1000,
+                        height: 1000
+                    }
+                });
+
+                var columnFilter = new google.visualization.ControlWrapper({
+                    controlType: 'CategoryFilter',
+                    containerId: 'colFilter_div',
+                    dataTable: columnsTable,
+                    options: {
+                        filterColumnLabel: 'colLabel',
+                        ui: {
+                            label: 'Columns',
+                            allowTyping: false,
+                            allowMultiple: true,
+                            allowNone: false,
+                            selectedValuesLayout: 'belowStacked'
+                        }
+                    },
+                    state: initState
+                });
+
+                function setChartView() {
+                    var state = columnFilter.getState();
+                    var row;
+                    var view = {
+                        columns: [0]
+                    };
+                    for (var i = 0; i < state.selectedValues.length; i++) {
+                        row = columnsTable.getFilteredRows([{ column: 1, value: state.selectedValues[i] }])[0];
+                        view.columns.push(columnsTable.getValue(row, 0));
+                    }
+                    // sort the indices into their original order
+                    view.columns.sort(function (a, b) {
+                        return (a - b);
+                    });
+                    chart.setView(view);
+                    chart.draw();
+                }
+                google.visualization.events.addListener(columnFilter, 'statechange', setChartView);
+
+                setChartView();
+                columnFilter.draw();
+            }
+            //]]></script>
+
+    <script>
+        // tell the embed parent frame the height of the content
+        if (window.parent && window.parent.parent) {
+            window.parent.parent.postMessage(["resultsFrame", {
+                height: document.body.getBoundingClientRect().height,
+                slug: "WaUu2"
+            }], "*")
+        }
+
+        // always overwrite window.name, in case users try to set it manually
+        window.name = "result"
+    </script>
+</body>
+</html>
+

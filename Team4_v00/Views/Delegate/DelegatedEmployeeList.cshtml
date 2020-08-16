@@ -1,0 +1,86 @@
+﻿<h3>Delegated Employee List</h3>
+<input type="button" title="Create" value="Create" onclick="location.href='@Url.Action("ManageDelegatedEmployee", "Delegate",  new { flag = "Create" },null)'" />
+
+<br />
+<br />
+<br />
+<form>
+    <table id="eg_tbl" class="table table-striped table-bordered display" style="width:100%">
+        <thead style="background-color: lightskyblue">
+            <tr>
+                <th>No</th>
+                <th>Employee Name</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                @Html.Hidden("item-to-delete", "", new { @id = "item-to-delete" })
+                int i = 1;
+                @foreach (var delegatedEmployee in @Model)
+                {
+                    var employeeId = delegatedEmployee.Id;
+
+            <tr>
+                <td>
+                    @i
+                    <input type="hidden" value="@delegatedEmployee.Id" id="YourKey" />
+                </td>
+                <td>@delegatedEmployee.Name</td>
+                <td>
+                    @delegatedEmployee.StartDate.ToString("dd-MMMM-yyyy")
+                </td>
+                <td>
+                    @delegatedEmployee.EndDate.ToString("dd-MMMM-yyyy")
+                </td>
+                <td>
+                @delegatedEmployee.delegationStatus
+                </td>
+                <td>
+                    @*
+            @Html.ActionLink("Edit", "ManageDelegatedEmployee", "Delegate", new { id = delegatedEmployee.Id, flag = "Edit" }, null)
+                    *@
+                    @Html.ActionLink("Cancel", "ManageDelegatedEmployee", "Delegate", new { id = delegatedEmployee.Id, flag = "Cancel" }, new { @style = "color:#FF0000;" })
+                   @*new { @style = "color:#FF0000;", data_toggle = "modal", data_target = "#myModal" })*@
+                    | @Html.ActionLink("Extend", "ManageDelegatedEmployee", "Delegate", new { id = delegatedEmployee.Id, flag = "Extend" }, null)
+
+                </td>
+            </tr>
+                    i++;
+                <!--
+                modal-->
+                    @*
+                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                Are you sure you want to cancel this delegation ?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Abort Cancellation</button>
+                                <input type="button" class="btn btn-danger" title="Cancel" value="Cancel" onclick="location.href='@Url.Action("ManageDelegatedEmployee", "Delegate",  new {  id = delegatedEmployee.Id, flag = "Cancel" },null)'" />
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                        *@
+                }
+
+            }
+        </tbody>
+        
+    </table>
+
+
+
+</form>
+<p style="color:red">
+    @TempData["error"]
+</p>
+
+
+

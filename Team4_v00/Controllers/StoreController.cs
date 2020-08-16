@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
+using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Ben_Project.DB;
@@ -11,6 +12,7 @@ using Ben_Project.Models;
 using Ben_Project.Services.QtyServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
@@ -30,6 +32,8 @@ namespace Ben_Project.Controllers
         {
             //ViewData["Message"] = new QtyPredictionService().QtyPredict().Result;
             //System.Diagnostics.Debug.Write("Here index");
+            TempData["result"] = "";
+
             return View();
         }
 
@@ -84,6 +88,7 @@ namespace Ben_Project.Controllers
             if (((final + safetyStock) > currentStock))
             {
                 TempData["result"] = "You should order : " + ((final + safetyStock) - currentStock);
+
             }
             else if ((final + safetyStock) < currentStock)
             {
@@ -101,6 +106,12 @@ namespace Ben_Project.Controllers
             var stocks = _dbContext.Stocks.ToList();
 
             return View(stocks);
+        }
+
+        public IActionResult PO_Form()
+        {
+
+            return View();
         }
 
         public IActionResult StoreClerkRequisitionList()
@@ -432,13 +443,32 @@ namespace Ben_Project.Controllers
         public IActionResult BarChart()
         {
            
-            var uh = _dbContext.UsageHistories.FromSqlRaw("SELECT [Id],[StationeryId],[Departmentid],[Qty],[A_Date],[DisbursementDetailId]FROM[BenProject].[dbo].[UsageHistories]ORDER BY[Departmentid], [A_Date]").ToList();
+            var uh = _dbContext.UsageHistories.FromSqlRaw("SELECT [UsageHistories].[Id], [StationeryId], [Departmentid], [Qty],[A_Date], [Description], [DisbursementDetailId] FROM [BenProject].[dbo].[UsageHistories] INNER JOIN [Stationeries] ON [UsageHistories].[StationeryId] = [Stationeries].[Id] ORDER BY [StationeryId],[Departmentid], [A_Date]").ToList();
 
             //var blogs = _dbContext.UsageHistories.ToList();
             ViewData["histories"] = uh;
 
+            var uh2 = _dbContext.Stationeries.ToList();
+            ViewData["histories2"] = uh2;
+
 
             return View();
+        }
+        
+        public ActionResult BarChartFilter(string IsHoliday2)
+        {
+            //var user = new SqlParameter("user", IsHoliday2);
+
+            //var uhold3 = _dbContext.UsageHistories.FromSqlRaw(("SELECT[Id],[StationeryId],[Description],[Departmentid],[Qty],[A_Date],[DisbursementDetailId] FROM[BenProject].[dbo].[UsageHistories] WHERE[Description]= @user", user)+("ORDER BY[StationeryId],[Departmentid], [A_Date]")).ToList();
+            var uh = _dbContext.UsageHistories.FromSqlRaw("SELECT [UsageHistories].[Id], [StationeryId], [Departmentid], [Qty], [A_Date], [Description], [DisbursementDetailId] FROM [BenProject].[dbo].[UsageHistories] INNER JOIN [Stationeries] ON [UsageHistories].[StationeryId] = [Stationeries].[Id] WHERE[Description] = '" + IsHoliday2 + "' ORDER BY [StationeryId],[Departmentid], [A_Date]").ToList();
+            //var blogs = _dbContext.UsageHistories.ToList();
+            ViewData["histories"] = uh;
+
+            //var uh2 = _dbContext.Stationeries.ToList();
+            //ViewData["histories2"] = uh2;
+
+
+            return View("BarChart2");
         }
     }
 }
