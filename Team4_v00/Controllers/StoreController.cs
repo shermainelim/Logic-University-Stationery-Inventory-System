@@ -423,10 +423,10 @@ namespace Ben_Project.Controllers
         // api endpoint
         public string StoreClerkStockListApi()
         {
-            var stocks = new Stocks();
-            stocks.stocks = _dbContext.Stocks.ToList();
-
-            return JsonSerializer.Serialize(stocks);
+            return JsonSerializer.Serialize(new
+            {
+                stocks = _dbContext.Stocks.ToList()
+            });
         }
 
         public IActionResult BarChart()
