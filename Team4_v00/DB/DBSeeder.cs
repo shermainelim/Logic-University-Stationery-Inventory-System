@@ -1269,13 +1269,6 @@ namespace Ben_Project.DB
 
             // Saving Changes
 
-
-            DelegatedEmployee de = new DelegatedEmployee();
-            de.EndDate = new DateTime(2020, 1, 1);
-            dbContext.Add(de);
-
-            // Saving Changes
-
             dbContext.SaveChanges();
         }
     }
