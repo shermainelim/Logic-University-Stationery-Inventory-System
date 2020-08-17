@@ -25,7 +25,7 @@
     </tr>
     <tr>
         <th>COLLECTION POINT:</th>
-        <th></th>
+        <th>@Model.DeptRequisition.Employee.Dept.CollectionPoint</th>
     </tr>
     <tr>
         <th>ACKNOWLEDGEMENT CODE:</th>
@@ -35,8 +35,8 @@
 </table>
 
 <form asp-controller="Store" asp-action="StoreClerkDisbursementAcknowledgementValidation" method="post">
-    <table align="center" border="1">
-        <thead>
+    <table id="DisburseAcknowledge" align="center" border="1">
+        <thead style="background-color: lightskyblue">
         <tr>
             <th>Item Name</th>
             <th>Quantity</th>
@@ -58,5 +58,6 @@
 
     <input asp-for="@Model.AcknowledgementCode" />
     <input asp-for="@Model.Id" type="hidden" value="@Model.Id" />
+
     <input id="saveBtn" type="submit" value="Acknowledge" />
 </form>

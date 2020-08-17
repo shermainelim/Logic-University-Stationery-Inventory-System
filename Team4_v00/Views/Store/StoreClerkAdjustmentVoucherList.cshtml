@@ -10,21 +10,24 @@
 </div>
 
 
-<table align="center" border="1">
-    <tr>
-        <th>Voucher#</th>
-        <th>Date issued</th>
-        <th>Authorised by</th>
-        <th>Status</th>
-    </tr>
-
+<table id="AdjVoucherList" align="center" border="1">
+    <thead style="background-color: lightskyblue">
+        <tr>
+            <th>Voucher#</th>
+            <th>Date issued</th>
+            <th>Authorised by</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
     @foreach (var adjustmentVoucher in @Model)
     {
         <tr>
-            <td>@Html.ActionLink(@adjustmentVoucher.VoucherNo, "StoreClerkAdjustmentVoucherDetail", "Store", new { id = @adjustmentVoucher.Id }, null)</td>
+            <td>@Html.ActionLink(@adjustmentVoucher.VoucherNo, "StoreClerkAdjustmentVoucherDetail", "Store", new {id = @adjustmentVoucher.Id}, null)</td>
             <td>@(adjustmentVoucher.IssueDate != null ? adjustmentVoucher.IssueDate.ToString() : "N/A")</td>
             <td>@(adjustmentVoucher.AuthorizedBy != null ? adjustmentVoucher.AuthorizedBy.ToString() : "N/A")</td>
             <td>@(adjustmentVoucher.Status != null ? adjustmentVoucher.Status.ToString() : "N/A")</td>
         </tr>
     }
+    </tbody>
 </table>

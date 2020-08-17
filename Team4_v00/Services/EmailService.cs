@@ -34,7 +34,7 @@ namespace Ben_Project.Services
                 Subject = Subject,
                 Body = MessageBody
             };
-            
+
             Message.To.Add(ToEmail);
 
             try
@@ -46,5 +46,6 @@ namespace Ben_Project.Services
                 Debug.Print(e.Message);
             }
         }
-        
+    }
+
 }

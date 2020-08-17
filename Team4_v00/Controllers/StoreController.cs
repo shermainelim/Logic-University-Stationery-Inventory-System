@@ -284,17 +284,6 @@ namespace Ben_Project.Controllers
         }
 
         // Disbursement Acknowledgement
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
         public IActionResult StoreClerkDisbursementAcknowledgement(int id)
         {
             var disbursement = _dbContext.Disbursements.FirstOrDefault(d => d.Id == id);
@@ -314,6 +303,9 @@ namespace Ben_Project.Controllers
 
             // change status of disbursement to acknowledged
             disbursement.DisbursementStatus = DisbursementStatus.Acknowledged;
+
+            _dbContext.SaveChanges();
+
             return RedirectToAction("StoreClerkDisbursementList", "Store");
         }
 

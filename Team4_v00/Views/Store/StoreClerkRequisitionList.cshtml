@@ -8,7 +8,7 @@
     <h1 class="display-4">Store Clerk Requisition List</h1>
 </div>
 
-<table id="StoreClerkRequisitionList" align="center" border="1">
+<table id="ReqList" align="center" border="1">
     <thead style="background-color: lightskyblue">
         <tr>
             <th>Requisition Id</th>
@@ -16,8 +16,7 @@
             <th>Fulfillment Status</th>
         </tr>
     </thead>
-    
-
+    <tbody>
     @foreach (var requisition in @Model)
     {
         <tr>
@@ -26,5 +25,6 @@
             <td>@requisition.RequisitionFulfillmentStatus</td>
         </tr>
     }
+    </tbody>
 </table>
 
