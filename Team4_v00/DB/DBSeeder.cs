@@ -887,9 +887,11 @@ namespace Ben_Project.DB
             DisbursementDetail dd1 = new DisbursementDetail();
             dd1.Disbursement = disbursement1;
             dd1.Stationery = s1;
+
             DisbursementDetail dd2 = new DisbursementDetail();
             dd2.Disbursement = disbursement2;
             dd2.Stationery = s2;
+            
             DisbursementDetail dd3 = new DisbursementDetail();
             dd3.Disbursement = disbursement3;
             dd3.Stationery = s3;
