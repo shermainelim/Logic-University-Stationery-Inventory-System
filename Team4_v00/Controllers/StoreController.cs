@@ -531,7 +531,7 @@ namespace Ben_Project.Controllers
         public IActionResult BarChart()
         {
 
-            var uh = _dbContext.UsageHistories.FromSqlRaw("SELECT [UsageHistories].[Id], [StationeryId], [Departmentid], [Qty],[A_Date], [Description], [DisbursementDetailId] FROM [BenProject].[dbo].[UsageHistories] INNER JOIN [Stationeries] ON [UsageHistories].[StationeryId] = [Stationeries].[Id] ORDER BY [StationeryId],[Departmentid], [A_Date]").ToList();
+            var uh = _dbContext.DisbursementDetails.FromSqlRaw("SELECT [DisbursementDetail].[Id], [StationeryId],[Description],[Qty],[DisbursementId],[A_Date],[Departmentid],[Month],[Year] FROM[BenProject].[dbo].[DisbursementDetail] INNER JOIN[Stationeries] ON[DisbursementDetail].[StationeryId] = [Stationeries].[Id] WHERE[Description] = 'Pencil 2B' AND([Month] BETWEEN '5' AND '7') ORDER BY[A_Date], [Departmentid], [DisbursementId],[StationeryId] ").ToList();
 
             //var blogs = _dbContext.UsageHistories.ToList();
             ViewData["histories"] = uh;
@@ -539,16 +539,18 @@ namespace Ben_Project.Controllers
             var uh2 = _dbContext.Stationeries.ToList();
             ViewData["histories2"] = uh2;
 
-
             return View();
         }
 
-        public ActionResult BarChartFilter(string IsHoliday2)
+        public ActionResult BarChartFilter(string IsHoliday2, string startMonth, string endMonth, string Year)
         {
             //var user = new SqlParameter("user", IsHoliday2);
+            //int startMonthInt = Int32.Parse(startMonth);
+            //int endMonthInt = Int32.Parse(endMonth);
+            //int YearInt = Int32.Parse(Year);
 
             //var uhold3 = _dbContext.UsageHistories.FromSqlRaw(("SELECT[Id],[StationeryId],[Description],[Departmentid],[Qty],[A_Date],[DisbursementDetailId] FROM[BenProject].[dbo].[UsageHistories] WHERE[Description]= @user", user)+("ORDER BY[StationeryId],[Departmentid], [A_Date]")).ToList();
-            var uh = _dbContext.UsageHistories.FromSqlRaw("SELECT [UsageHistories].[Id], [StationeryId], [Departmentid], [Qty], [A_Date], [Description], [DisbursementDetailId] FROM [BenProject].[dbo].[UsageHistories] INNER JOIN [Stationeries] ON [UsageHistories].[StationeryId] = [Stationeries].[Id] WHERE[Description] = '" + IsHoliday2 + "' ORDER BY [StationeryId],[Departmentid], [A_Date]").ToList();
+            var uh = _dbContext.DisbursementDetails.FromSqlRaw("SELECT [DisbursementDetail].[Id],[StationeryId],[Description],[Qty],[DisbursementId],[A_Date],[Departmentid],[Month],[Year] FROM[BenProject].[dbo].[DisbursementDetail] INNER JOIN[Stationeries] ON[DisbursementDetail].[StationeryId] = [Stationeries].[Id] WHERE[Description] = '" + IsHoliday2 + "' AND([Month] BETWEEN '" + startMonth + "' AND '" + endMonth + "' AND[Year] = '" + Year + "') ORDER BY[A_Date], [Departmentid], [DisbursementId],[StationeryId] ").ToList();
             //var blogs = _dbContext.UsageHistories.ToList();
             ViewData["histories"] = uh;
 

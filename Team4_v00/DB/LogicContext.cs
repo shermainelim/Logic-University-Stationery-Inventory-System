@@ -23,7 +23,7 @@ namespace Ben_Project.DB
         public DbSet<PODetail> PODetails { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
         public DbSet<SupplierDetail> SupplierDetails { get; set; }
-        public DbSet<UsageHistory> UsageHistories { get; set; }
+        public DbSet<DisbursementDetail> UsageHistories { get; set; }
         public DbSet<DelegatedEmployee> DelegatedEmployees { get; set; }
         public DbSet<DelegateEmployeeDetail> DelegateEmployeeDetails { get; set; }
 

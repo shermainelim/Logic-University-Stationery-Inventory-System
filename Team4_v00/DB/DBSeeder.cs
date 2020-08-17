@@ -648,6 +648,10 @@ namespace Ben_Project.DB
             dr9.Employee = e1;
             dr9.RequisitionApprovalStatus = RequisitionApprovalStatus.Rejected;
 
+            DeptRequisition dr10 = new DeptRequisition();
+            dr10.Employee = e1;
+            dr10.RequisitionApprovalStatus = RequisitionApprovalStatus.Rejected;
+
             dbContext.Add(dr1);
             dbContext.Add(dr2);
             dbContext.Add(dr3);
@@ -877,30 +881,6 @@ namespace Ben_Project.DB
             dbContext.Add(poD3);
             dbContext.Add(poD4);
 
-            Disbursement disbursement1 = new Disbursement();
-            disbursement1.DeptRequisition = dr1;
-            Disbursement disbursement2 = new Disbursement();
-            disbursement2.DeptRequisition = dr2;
-            Disbursement disbursement3 = new Disbursement();
-            disbursement3.DeptRequisition = dr3;
-
-            DisbursementDetail dd1 = new DisbursementDetail();
-            dd1.Disbursement = disbursement1;
-            dd1.Stationery = s1;
-            DisbursementDetail dd2 = new DisbursementDetail();
-            dd2.Disbursement = disbursement2;
-            dd2.Stationery = s2;
-            DisbursementDetail dd3 = new DisbursementDetail();
-            dd3.Disbursement = disbursement3;
-            dd3.Stationery = s3;
-
-            dbContext.Add(disbursement1);
-            dbContext.Add(disbursement2);
-            dbContext.Add(disbursement3);
-            dbContext.Add(dd1);
-            dbContext.Add(dd2);
-            dbContext.Add(dd3);
-
             //UsageHistory usage11m1 = new UsageHistory();
             //usage11m1.Stationery = s1;
             //usage11m1.Department = d1;
@@ -1108,160 +1088,913 @@ namespace Ben_Project.DB
             //dbContext.Add(usage33m3);
 
 
-            UsageHistory usage43m1 = new UsageHistory();
-            usage43m1.Stationery = s3;
-            usage43m1.Department = d3;
-            usage43m1.Qty = 280;
-            usage43m1.A_Date = new DateTime(2020, 01, 25);
-            //usage43m1.Description = "Envelope Brown (3\"x6\")";
+            //Ben
+            //create disbursementid
+            //Disbursement disbursement1 = new Disbursement();
+            //disbursement1.DeptRequisition = dr1;
+            //disbursement1.DeptRequisition.Employee.Dept = d1;
 
-            UsageHistory usage43m2 = new UsageHistory();
-            usage43m2.Stationery = s3;
-            usage43m2.Department = d3;
-            usage43m2.Qty = 200;
-            usage43m2.A_Date = new DateTime(2020, 02, 25);
-            //usage43m2.Description = "Envelope Brown (3\"x6\")";
+            //Disbursement disbursement2 = new Disbursement();
+            //disbursement2.DeptRequisition = dr2;
+            //disbursement2.DeptRequisition.Employee.Dept = d1;
 
-            UsageHistory usage43m3 = new UsageHistory();
-            usage43m3.Stationery = s3;
-            usage43m3.Department = d3;
-            usage43m3.Qty = 200;
-            usage43m3.A_Date = new DateTime(2020, 03, 25);
-            //usage43m3.Description = "Envelope Brown (3\"x6\")";
+            //Disbursement disbursement3 = new Disbursement();
+            //disbursement3.DeptRequisition = dr3;
+            //disbursement3.DeptRequisition.Employee.Dept = d1;
 
+            //Disbursement disbursement4 = new Disbursement();
+            //disbursement4.DeptRequisition = dr4;
+            //disbursement4.DeptRequisition.Employee.Dept = d1;
 
-            UsageHistory usage53m1 = new UsageHistory();
-            usage53m1.Stationery = s3;
-            usage53m1.Department = d2;
-            usage53m1.Qty = 280;
-            usage53m1.A_Date = new DateTime(2020, 01, 25);
-            //usage53m1.Description = "Envelope Brown (3\"x6\")";
+            //Disbursement disbursement5 = new Disbursement();
+            //disbursement5.DeptRequisition = dr5;
+            //disbursement5.DeptRequisition.Employee.Dept = d1;
 
-            UsageHistory usage53m2 = new UsageHistory();
-            usage53m2.Stationery = s3;
-            usage53m2.Department = d2;
-            usage53m2.Qty = 200;
-            usage53m2.A_Date = new DateTime(2020, 02, 25);
-            //usage53m2.Description = "Envelope Brown (3\"x6\")";
+            //Disbursement disbursement6 = new Disbursement();
+            //disbursement6.DeptRequisition = dr6;
+            //disbursement6.DeptRequisition.Employee.Dept = d1;
 
-            UsageHistory usage53m3 = new UsageHistory();
-            usage53m3.Stationery = s3;
-            usage53m3.Department = d2;
-            usage53m3.Qty = 400;
-            usage53m3.A_Date = new DateTime(2020, 03, 25);
-            //usage53m3.Description = "Envelope Brown (3\"x6\")";
+            //Disbursement disbursement7 = new Disbursement();
+            //disbursement7.DeptRequisition = dr7;
+            //disbursement7.DeptRequisition.Employee.Dept = d1;
 
-            UsageHistory usage63m1 = new UsageHistory();
-            usage63m1.Stationery = s3;
-            usage63m1.Department = d1;
-            usage63m1.Qty = 280;
-            usage63m1.A_Date = new DateTime(2020, 01, 25);
-            //usage63m1.Description = "Envelope Brown (3\"x6\")";
+            //Disbursement disbursement8 = new Disbursement();
+            //disbursement8.DeptRequisition = dr8;
+            //disbursement8.DeptRequisition.Employee.Dept = d1;
 
-            UsageHistory usage63m2 = new UsageHistory();
-            usage63m2.Stationery = s3;
-            usage63m2.Department = d1;
-            usage63m2.Qty = 200;
-            usage63m2.A_Date = new DateTime(2020, 02, 25);
-            //usage63m2.Description = "Envelope Brown (3\"x6\")";
+            //Disbursement disbursement9 = new Disbursement();
+            //disbursement9.DeptRequisition = dr9;
+            //disbursement9.DeptRequisition.Employee.Dept = d1;
 
-            UsageHistory usage63m3 = new UsageHistory();
-            usage63m3.Stationery = s3;
-            usage63m3.Department = d1;
-            usage63m3.Qty = 400;
-            usage63m3.A_Date = new DateTime(2020, 03, 25);
-            //usage63m3.Description = "Envelope Brown (3\"x6\")";
-
-            dbContext.Add(usage43m1);
-            dbContext.Add(usage53m1);
-            dbContext.Add(usage63m1);
-
-            dbContext.Add(usage43m2);
-            dbContext.Add(usage53m2);
-            dbContext.Add(usage63m2);
-
-            dbContext.Add(usage43m3);
-            dbContext.Add(usage53m3);
-            dbContext.Add(usage63m3);
-
-            //2nd product
-            UsageHistory p2usage43m1 = new UsageHistory();
-            p2usage43m1.Stationery = s1;
-            p2usage43m1.Department = d3;
-            p2usage43m1.Qty = 280;
-            p2usage43m1.A_Date = new DateTime(2020, 01, 25);
-            //p2usage43m1.Description = "Clips Double 1";
+            //Disbursement disbursement10 = new Disbursement();
+            //disbursement10.DeptRequisition = dr10;
+            //disbursement10.DeptRequisition.Employee.Dept = d1;
 
 
-            UsageHistory p2usage43m2 = new UsageHistory();
-            p2usage43m2.Stationery = s1;
-            p2usage43m2.Department = d3;
-            p2usage43m2.Qty = 200;
-            p2usage43m2.A_Date = new DateTime(2020, 02, 25);
-            //p2usage43m2.Description = "Clips Double 1";
+            //DisbursementDetail dd1 = new DisbursementDetail();
+            //dd1.Disbursement = disbursement1;
+            //dd1.Stationery = s1;
+            //DisbursementDetail dd2 = new DisbursementDetail();
+            //dd2.Disbursement = disbursement2;
+            //dd2.Stationery = s2;
+            //DisbursementDetail dd3 = new DisbursementDetail();
+            //dd3.Disbursement = disbursement3;
+            //dd3.Stationery = s3;
 
-            UsageHistory p2usage43m3 = new UsageHistory();
-            p2usage43m3.Stationery = s1;
-            p2usage43m3.Department = d3;
-            p2usage43m3.Qty = 200;
-            p2usage43m3.A_Date = new DateTime(2020, 03, 25);
-            //p2usage43m3.Description = "Clips Double 1";
-
-
-            UsageHistory p2usage53m1 = new UsageHistory();
-            p2usage53m1.Stationery = s1;
-            p2usage53m1.Department = d2;
-            p2usage53m1.Qty = 280;
-            p2usage53m1.A_Date = new DateTime(2020, 01, 25);
-            //p2usage53m1.Description = "Clips Double 1";
-
-            UsageHistory p2usage53m2 = new UsageHistory();
-            p2usage53m2.Stationery = s1;
-            p2usage53m2.Department = d2;
-            p2usage53m2.Qty = 200;
-            p2usage53m2.A_Date = new DateTime(2020, 02, 25);
-            //p2usage53m2.Description = "Clips Double 1";
+            //dbContext.Add(disbursement1);
+            //dbContext.Add(disbursement2);
+            //dbContext.Add(disbursement3);
+            //dbContext.Add(disbursement4);
+            //dbContext.Add(disbursement5);
+            //dbContext.Add(disbursement6);
+            //dbContext.Add(disbursement7);
+            //dbContext.Add(disbursement8);
+            //dbContext.Add(disbursement9);
+            //dbContext.Add(disbursement10);
+            //dbContext.Add(dd1);
+            //dbContext.Add(dd2);
+            //dbContext.Add(dd3);
 
 
-            UsageHistory p2usage53m3 = new UsageHistory();
-            p2usage53m3.Stationery = s1;
-            p2usage53m3.Department = d2;
-            p2usage53m3.Qty = 400;
-            p2usage53m3.A_Date = new DateTime(2020, 03, 25);
-            //p2usage53m3.Description = "Clips Double 1";
+            //start by Saw
 
-            UsageHistory p2usage63m1 = new UsageHistory();
-            p2usage63m1.Stationery = s1;
-            p2usage63m1.Department = d1;
-            p2usage63m1.Qty = 280;
-            p2usage63m1.A_Date = new DateTime(2020, 01, 25);
-            //p2usage63m1.Description = "Clips Double 1";
+            Disbursement dbur1 = new Disbursement();
+            Disbursement dbur2 = new Disbursement();
+            Disbursement dbur3 = new Disbursement();
+            Disbursement dbur4 = new Disbursement();
+            Disbursement dbur5 = new Disbursement();
+            Disbursement dbur6 = new Disbursement();
+            Disbursement dbur7 = new Disbursement();
+            Disbursement dbur8 = new Disbursement();
+            Disbursement dbur9 = new Disbursement();
+            Disbursement dbur10 = new Disbursement();
+            Disbursement dbur11 = new Disbursement();
+            Disbursement dbur12 = new Disbursement();
+            Disbursement dbur13 = new Disbursement();
+            Disbursement dbur14 = new Disbursement();
 
-            UsageHistory p2usage63m2 = new UsageHistory();
-            p2usage63m2.Stationery = s1;
-            p2usage63m2.Department = d1;
-            p2usage63m2.Qty = 200;
-            p2usage63m2.A_Date = new DateTime(2020, 02, 25);
-            //p2usage63m2.Description = "Clips Double 1";
+            dbContext.Add(dbur1);
+            dbContext.Add(dbur2);
+            dbContext.Add(dbur3);
+            dbContext.Add(dbur4);
+            dbContext.Add(dbur5);
+            dbContext.Add(dbur6);
+            dbContext.Add(dbur7);
+            dbContext.Add(dbur8);
+            dbContext.Add(dbur9);
+            dbContext.Add(dbur10);
+            dbContext.Add(dbur11);
+            dbContext.Add(dbur12);
+            dbContext.Add(dbur13);
+            dbContext.Add(dbur14);
 
-            UsageHistory p2usage63m3 = new UsageHistory();
-            p2usage63m3.Stationery = s1;
-            p2usage63m3.Department = d1;
-            p2usage63m3.Qty = 400;
-            p2usage63m3.A_Date = new DateTime(2020, 03, 25);
-            //p2usage63m3.Description = "Clips Double 1";
+            DisbursementDetail dd1dbur1 = new DisbursementDetail();
+            dd1dbur1.A_Date = new DateTime(2020, 1, 25);
+            dd1dbur1.Department = d4;
+            dd1dbur1.Disbursement = dbur1;
+            dd1dbur1.Stationery = s13;
+            dd1dbur1.Qty = 175;
+            dd1dbur1.Month = 1;
+            dd1dbur1.Year = 2020;
+            dbContext.Add(dd1dbur1);
 
-            dbContext.Add(p2usage43m1);
-            dbContext.Add(p2usage53m1);
-            dbContext.Add(p2usage63m1);
+            DisbursementDetail dd2dbur1 = new DisbursementDetail();
+            dd2dbur1.A_Date = new DateTime(2020, 1, 25);
+            dd2dbur1.Department = d4;
+            dd2dbur1.Disbursement = dbur1;
+            dd2dbur1.Stationery = s14;
+            dd2dbur1.Qty = 180;
+            dd2dbur1.Month = 1;
+            dd2dbur1.Year = 2020;
+            dbContext.Add(dd2dbur1);
 
-            dbContext.Add(p2usage43m2);
-            dbContext.Add(p2usage53m2);
-            dbContext.Add(p2usage63m2);
+            DisbursementDetail dd3dbur1 = new DisbursementDetail();
+            dd3dbur1.A_Date = new DateTime(2020, 1, 25);
+            dd3dbur1.Department = d4;
+            dd3dbur1.Disbursement = dbur1;
+            dd3dbur1.Stationery = s15;
+            dd3dbur1.Qty = 185;
+            dd3dbur1.Month = 1;
+            dd3dbur1.Year = 2020;
+            dbContext.Add(dd3dbur1);
 
-            dbContext.Add(p2usage43m3);
-            dbContext.Add(p2usage53m3);
-            dbContext.Add(p2usage63m3);
+            DisbursementDetail dd1dbur2 = new DisbursementDetail();
+            dd1dbur2.A_Date = new DateTime(2020, 2, 25);
+            dd1dbur2.Department = d4;
+            dd1dbur2.Disbursement = dbur2;
+            dd1dbur2.Stationery = s13;
+            dd1dbur2.Qty = 160;
+            dd1dbur2.Month = 2;
+            dd1dbur2.Year = 2020;
+            dbContext.Add(dd1dbur2);
+
+            DisbursementDetail dd2dbur2 = new DisbursementDetail();
+            dd2dbur2.A_Date = new DateTime(2020, 2, 25);
+            dd2dbur2.Department = d4;
+            dd2dbur2.Disbursement = dbur2;
+            dd2dbur2.Stationery = s14;
+            dd2dbur2.Qty = 275;
+            dd2dbur2.Month = 2;
+            dd2dbur2.Year = 2020;
+            dbContext.Add(dd2dbur2);
+
+            DisbursementDetail dd3dbur2 = new DisbursementDetail();
+            dd3dbur2.A_Date = new DateTime(2020, 2, 25);
+            dd3dbur2.Department = d4;
+            dd3dbur2.Disbursement = dbur2;
+            dd3dbur2.Stationery = s15;
+            dd3dbur2.Qty = 75;
+            dd3dbur2.Month = 2;
+            dd3dbur2.Year = 2020;
+            dbContext.Add(dd3dbur2);
+
+
+            DisbursementDetail dd1dbur3 = new DisbursementDetail();
+            dd1dbur3.A_Date = new DateTime(2020, 3, 25);
+            dd1dbur3.Department = d4;
+            dd1dbur3.Disbursement = dbur3;
+            dd1dbur3.Stationery = s13;
+            dd1dbur3.Qty = 175;
+            dd1dbur3.Month = 3;
+            dd1dbur3.Year = 2020;
+            dbContext.Add(dd1dbur3);
+
+            DisbursementDetail dd2dbur3 = new DisbursementDetail();
+            dd2dbur3.A_Date = new DateTime(2020, 3, 25);
+            dd2dbur3.Department = d4;
+            dd2dbur3.Disbursement = dbur3;
+            dd2dbur3.Stationery = s14;
+            dd2dbur3.Qty = 175;
+            dd2dbur3.Month = 3;
+            dd2dbur3.Year = 2020;
+            dbContext.Add(dd2dbur3);
+
+            DisbursementDetail dd3dbur3 = new DisbursementDetail();
+            dd3dbur3.A_Date = new DateTime(2020, 3, 25);
+            dd3dbur3.Department = d4;
+            dd3dbur3.Disbursement = dbur3;
+            dd3dbur3.Stationery = s15;
+            dd3dbur3.Qty = 175;
+            dd3dbur3.Month = 3;
+            dd3dbur3.Year = 2020;
+            dbContext.Add(dd3dbur3);
+
+
+            DisbursementDetail dd1dbur4 = new DisbursementDetail();
+            dd1dbur4.A_Date = new DateTime(2020, 4, 25);
+            dd1dbur4.Department = d4;
+            dd1dbur4.Disbursement = dbur4;
+            dd1dbur4.Stationery = s13;
+            dd1dbur4.Qty = 88;
+            dd1dbur4.Month = 4;
+            dd1dbur4.Year = 2020;
+            dbContext.Add(dd1dbur4);
+
+            DisbursementDetail dd2dbur4 = new DisbursementDetail();
+            dd2dbur4.A_Date = new DateTime(2020, 4, 25);
+            dd2dbur4.Department = d4;
+            dd2dbur4.Disbursement = dbur4;
+            dd2dbur4.Stationery = s14;
+            dd2dbur4.Qty = 288;
+            dd2dbur4.Month = 4;
+            dd2dbur4.Year = 2020;
+            dbContext.Add(dd2dbur4);
+
+            DisbursementDetail dd3dbur4 = new DisbursementDetail();
+            dd3dbur4.A_Date = new DateTime(2020, 4, 25);
+            dd3dbur4.Department = d4;
+            dd3dbur4.Disbursement = dbur4;
+            dd3dbur4.Stationery = s15;
+            dd3dbur4.Qty = 379;
+            dd3dbur4.Month = 4;
+            dd3dbur4.Year = 2020;
+            dbContext.Add(dd3dbur4);
+
+
+            DisbursementDetail dd1dbur5 = new DisbursementDetail();
+            dd1dbur5.A_Date = new DateTime(2020, 5, 25);
+            dd1dbur5.Department = d4;
+            dd1dbur5.Disbursement = dbur5;
+            dd1dbur5.Stationery = s13;
+            dd1dbur5.Qty = 157;
+            dd1dbur5.Month = 5;
+            dd1dbur5.Year = 2020;
+            dbContext.Add(dd1dbur5);
+
+            DisbursementDetail dd2dbur5 = new DisbursementDetail();
+            dd2dbur5.A_Date = new DateTime(2020, 5, 25);
+            dd2dbur5.Department = d4;
+            dd2dbur5.Disbursement = dbur5;
+            dd2dbur5.Stationery = s14;
+            dd2dbur5.Qty = 340;
+            dd2dbur5.Month = 5;
+            dd2dbur5.Year = 2020;
+            dbContext.Add(dd2dbur5);
+
+            DisbursementDetail dd3dbur5 = new DisbursementDetail();
+            dd3dbur5.A_Date = new DateTime(2020, 5, 25);
+            dd3dbur5.Department = d4;
+            dd3dbur5.Disbursement = dbur5;
+            dd3dbur5.Stationery = s15;
+            dd3dbur5.Qty = 485;
+            dd3dbur5.Month = 5;
+            dd3dbur5.Year = 2020;
+            dbContext.Add(dd3dbur5);
+
+
+            DisbursementDetail dd1dbur6 = new DisbursementDetail();
+            dd1dbur6.A_Date = new DateTime(2020, 6, 25);
+            dd1dbur6.Department = d4;
+            dd1dbur6.Disbursement = dbur6;
+            dd1dbur6.Stationery = s13;
+            dd1dbur6.Qty = 270;
+            dd1dbur6.Month = 6;
+            dd1dbur6.Year = 2020;
+            dbContext.Add(dd1dbur6);
+
+            DisbursementDetail dd2dbur6 = new DisbursementDetail();
+            dd2dbur6.A_Date = new DateTime(2020, 6, 25);
+            dd2dbur6.Department = d4;
+            dd2dbur6.Disbursement = dbur6;
+            dd2dbur6.Stationery = s14;
+            dd2dbur6.Qty = 335;
+            dd2dbur6.Month = 6;
+            dd2dbur6.Year = 2020;
+            dbContext.Add(dd2dbur6);
+
+            DisbursementDetail dd3dbur6 = new DisbursementDetail();
+            dd3dbur6.A_Date = new DateTime(2020, 6, 25);
+            dd3dbur6.Department = d4;
+            dd3dbur6.Disbursement = dbur6;
+            dd3dbur6.Stationery = s15;
+            dd3dbur6.Qty = 245;
+            dd3dbur6.Month = 6;
+            dd3dbur6.Year = 2020;
+            dbContext.Add(dd3dbur6);
+
+
+            DisbursementDetail dd1dbur7 = new DisbursementDetail();
+            dd1dbur7.A_Date = new DateTime(2020, 7, 25);
+            dd1dbur7.Department = d4;
+            dd1dbur7.Disbursement = dbur7;
+            dd1dbur7.Stationery = s13;
+            dd1dbur7.Qty = 95;
+            dd1dbur7.Month = 7;
+            dd1dbur7.Year = 2020;
+            dbContext.Add(dd1dbur7);
+
+            DisbursementDetail dd2dbur7 = new DisbursementDetail();
+            dd2dbur7.A_Date = new DateTime(2020, 7, 25);
+            dd2dbur7.Department = d4;
+            dd2dbur7.Disbursement = dbur7;
+            dd2dbur7.Stationery = s14;
+            dd2dbur7.Qty = 135;
+            dd2dbur7.Month = 7;
+            dd2dbur7.Year = 2020;
+            dbContext.Add(dd2dbur7);
+
+            DisbursementDetail dd3dbur7 = new DisbursementDetail();
+            dd3dbur7.A_Date = new DateTime(2020, 7, 25);
+            dd3dbur7.Department = d4;
+            dd3dbur7.Disbursement = dbur7;
+            dd3dbur7.Stationery = s15;
+            dd3dbur7.Qty = 226;
+            dd3dbur7.Month = 7;
+            dd3dbur7.Year = 2020;
+            dbContext.Add(dd3dbur7);
+
+
+            DisbursementDetail dd1dbur8 = new DisbursementDetail();
+            dd1dbur8.A_Date = new DateTime(2020, 3, 25);
+            dd1dbur8.Department = d5;
+            dd1dbur8.Disbursement = dbur8;
+            dd1dbur8.Stationery = s13;
+            dd1dbur8.Qty = 90;
+            dd1dbur8.Month = 3;
+            dd1dbur8.Year = 2020;
+            dbContext.Add(dd1dbur8);
+
+            DisbursementDetail dd2dbur8 = new DisbursementDetail();
+            dd2dbur8.A_Date = new DateTime(2020, 3, 25);
+            dd2dbur8.Department = d5;
+            dd2dbur8.Disbursement = dbur8;
+            dd2dbur8.Stationery = s14;
+            dd2dbur8.Qty = 180;
+            dd2dbur8.Month = 3;
+            dd2dbur8.Year = 2020;
+            dbContext.Add(dd2dbur8);
+
+            DisbursementDetail dd3dbur8 = new DisbursementDetail();
+            dd3dbur8.A_Date = new DateTime(2020, 3, 25);
+            dd3dbur8.Department = d5;
+            dd3dbur8.Disbursement = dbur8;
+            dd3dbur8.Stationery = s15;
+            dd3dbur8.Qty = 400;
+            dd3dbur8.Month = 3;
+            dd3dbur8.Year = 2020;
+            dbContext.Add(dd3dbur8);
+
+
+            DisbursementDetail dd1dbur9 = new DisbursementDetail();
+            dd1dbur9.A_Date = new DateTime(2020, 1, 25);
+            dd1dbur9.Department = d5;
+            dd1dbur9.Disbursement = dbur9;
+            dd1dbur9.Stationery = s13;
+            dd1dbur9.Qty = 100;
+            dd1dbur9.Month = 1;
+            dd1dbur9.Year = 2020;
+            dbContext.Add(dd1dbur4);
+
+            DisbursementDetail dd2dbur9 = new DisbursementDetail();
+            dd2dbur9.A_Date = new DateTime(2020, 1, 25);
+            dd2dbur9.Department = d5;
+            dd2dbur9.Disbursement = dbur9;
+            dd2dbur9.Stationery = s14;
+            dd2dbur9.Qty = 250;
+            dd2dbur9.Month = 1;
+            dd2dbur9.Year = 2020;
+            dbContext.Add(dd2dbur4);
+
+            DisbursementDetail dd3dbur9 = new DisbursementDetail();
+            dd3dbur4.A_Date = new DateTime(2020, 1, 25);
+            dd3dbur4.Department = d5;
+            dd3dbur4.Disbursement = dbur9;
+            dd3dbur4.Stationery = s15;
+            dd3dbur4.Qty = 345;
+            dd3dbur4.Month = 1;
+            dd3dbur4.Year = 2020;
+            dbContext.Add(dd3dbur4);
+
+
+            DisbursementDetail dd1dbur10 = new DisbursementDetail();
+            dd1dbur10.A_Date = new DateTime(2020, 2, 25);
+            dd1dbur10.Department = d5;
+            dd1dbur10.Disbursement = dbur10;
+            dd1dbur10.Stationery = s13;
+            dd1dbur10.Qty = 95;
+            dd1dbur10.Month = 2;
+            dd1dbur10.Year = 2020;
+            dbContext.Add(dd1dbur10);
+
+            DisbursementDetail dd2dbur10 = new DisbursementDetail();
+            dd2dbur10.A_Date = new DateTime(2020, 2, 25);
+            dd2dbur10.Department = d5;
+            dd2dbur10.Disbursement = dbur10;
+            dd2dbur10.Stationery = s14;
+            dd2dbur10.Qty = 278;
+            dd2dbur10.Month = 2;
+            dd2dbur10.Year = 2020;
+            dbContext.Add(dd2dbur10);
+
+            DisbursementDetail dd3dbur10 = new DisbursementDetail();
+            dd3dbur10.A_Date = new DateTime(2020, 2, 25);
+            dd3dbur10.Department = d5;
+            dd3dbur10.Disbursement = dbur10;
+            dd3dbur10.Stationery = s15;
+            dd3dbur10.Qty = 360;
+            dd3dbur10.Month = 2;
+            dd3dbur10.Year = 2020;
+            dbContext.Add(dd3dbur10);
+
+
+
+            DisbursementDetail dd1dbur11 = new DisbursementDetail();
+            dd1dbur11.A_Date = new DateTime(2020, 4, 25);
+            dd1dbur11.Department = d5;
+            dd1dbur11.Disbursement = dbur11;
+            dd1dbur11.Stationery = s13;
+            dd1dbur11.Qty = 120;
+            dd1dbur11.Month = 4;
+            dd1dbur11.Year = 2020;
+            dbContext.Add(dd1dbur11);
+
+            DisbursementDetail dd2dbur11 = new DisbursementDetail();
+            dd2dbur11.A_Date = new DateTime(2020, 4, 25);
+            dd2dbur11.Department = d5;
+            dd2dbur11.Disbursement = dbur11;
+            dd2dbur11.Stationery = s14;
+            dd2dbur11.Qty = 245;
+            dd2dbur11.Month = 4;
+            dd2dbur11.Year = 2020;
+            dbContext.Add(dd2dbur11);
+
+            DisbursementDetail dd3dbur11 = new DisbursementDetail();
+            dd3dbur11.A_Date = new DateTime(2020, 4, 25);
+            dd3dbur11.Department = d5;
+            dd3dbur11.Disbursement = dbur11;
+            dd3dbur11.Stationery = s15;
+            dd3dbur11.Qty = 315;
+            dd3dbur11.Month = 4;
+            dd3dbur11.Year = 2020;
+            dbContext.Add(dd3dbur11);
+
+
+            DisbursementDetail dd1dbur12 = new DisbursementDetail();
+            dd1dbur12.A_Date = new DateTime(2020, 5, 25);
+            dd1dbur12.Department = d5;
+            dd1dbur12.Disbursement = dbur12;
+            dd1dbur12.Stationery = s13;
+            dd1dbur12.Qty = 110;
+            dd1dbur12.Month = 5;
+            dd1dbur12.Year = 2020;
+            dbContext.Add(dd1dbur12);
+
+            DisbursementDetail dd2dbur12 = new DisbursementDetail();
+            dd2dbur12.A_Date = new DateTime(2020, 5, 25);
+            dd2dbur12.Department = d5;
+            dd2dbur12.Disbursement = dbur12;
+            dd2dbur12.Stationery = s14;
+            dd2dbur12.Qty = 230;
+            dd2dbur12.Month = 5;
+            dd2dbur12.Year = 2020;
+            dbContext.Add(dd2dbur12);
+
+            DisbursementDetail dd3dbur12 = new DisbursementDetail();
+            dd3dbur12.A_Date = new DateTime(2020, 5, 25);
+            dd3dbur12.Department = d5;
+            dd3dbur12.Disbursement = dbur12;
+            dd3dbur12.Stationery = s15;
+            dd3dbur12.Qty = 345;
+            dd3dbur12.Month = 5;
+            dd3dbur12.Year = 2020;
+            dbContext.Add(dd3dbur12);
+
+
+            DisbursementDetail dd1dbur13 = new DisbursementDetail();
+            dd1dbur13.A_Date = new DateTime(2020, 6, 25);
+            dd1dbur13.Department = d5;
+            dd1dbur13.Disbursement = dbur13;
+            dd1dbur13.Stationery = s13;
+            dd1dbur13.Qty = 130;
+            dd1dbur13.Month = 6;
+            dd1dbur13.Year = 2020;
+            dbContext.Add(dd1dbur13);
+
+            DisbursementDetail dd2dbur13 = new DisbursementDetail();
+            dd2dbur13.A_Date = new DateTime(2020, 6, 25);
+            dd2dbur13.Department = d5;
+            dd2dbur13.Disbursement = dbur13;
+            dd2dbur13.Stationery = s14;
+            dd2dbur13.Qty = 225;
+            dd2dbur13.Month = 6;
+            dd2dbur13.Year = 2020;
+            dbContext.Add(dd2dbur13);
+
+            DisbursementDetail dd3dbur13 = new DisbursementDetail();
+            dd3dbur13.A_Date = new DateTime(2020, 6, 25);
+            dd3dbur13.Department = d5;
+            dd3dbur13.Disbursement = dbur13;
+            dd3dbur13.Stationery = s15;
+            dd3dbur13.Qty = 380;
+            dd3dbur13.Month = 6;
+            dd3dbur13.Year = 2020;
+            dbContext.Add(dd3dbur13);
+
+
+            DisbursementDetail dd1dbur14 = new DisbursementDetail();
+            dd1dbur14.A_Date = new DateTime(2020, 7, 25);
+            dd1dbur14.Department = d5;
+            dd1dbur14.Disbursement = dbur14;
+            dd1dbur14.Stationery = s13;
+            dd1dbur14.Qty = 125;
+            dd1dbur14.Month = 7;
+            dd1dbur14.Year = 2020;
+            dbContext.Add(dd1dbur14);
+
+            DisbursementDetail dd2dbur14 = new DisbursementDetail();
+            dd2dbur14.A_Date = new DateTime(2020, 7, 25);
+            dd2dbur14.Department = d5;
+            dd2dbur14.Disbursement = dbur14;
+            dd2dbur14.Stationery = s14;
+            dd2dbur14.Qty = 250;
+            dd2dbur14.Month = 7;
+            dd2dbur14.Year = 2020;
+            dbContext.Add(dd2dbur14);
+
+            DisbursementDetail dd3dbur14 = new DisbursementDetail();
+            dd3dbur14.A_Date = new DateTime(2020, 7, 25);
+            dd3dbur14.Department = d5;
+            dd3dbur14.Disbursement = dbur14;
+            dd3dbur14.Stationery = s15;
+            dd3dbur14.Qty = 320;
+            dd3dbur14.Month = 7;
+            dd3dbur14.Year = 2020;
+            dbContext.Add(dd3dbur14);
+
+
+
+            //Saw/Shermaine
+
+
+            //Departmemt 3 , 1 Disbursement, 3 stationery, Jan 
+            DisbursementDetail product1m1d1 = new DisbursementDetail();
+            product1m1d1.Stationery = s13;
+            product1m1d1.Department = d3;
+            product1m1d1.Qty = 200;
+            product1m1d1.A_Date = new DateTime(2020, 01, 25);
+
+            product1m1d1.Disbursement = dbur1;
+            product1m1d1.Month = 1;
+            product1m1d1.Year = 2020;
+
+            DisbursementDetail product2m1d1 = new DisbursementDetail();
+            product2m1d1.Stationery = s14;
+            product2m1d1.Department = d3;
+            product2m1d1.Qty = 100;
+            product2m1d1.A_Date = new DateTime(2020, 01, 25);
+
+            product2m1d1.Disbursement = dbur1;
+            product2m1d1.Month = 1;
+            product2m1d1.Year = 2020;
+
+            DisbursementDetail product3m1d1 = new DisbursementDetail();
+            product3m1d1.Stationery = s15;
+            product3m1d1.Department = d3;
+            product3m1d1.Qty = 200;
+            product3m1d1.A_Date = new DateTime(2020, 01, 25);
+
+            product3m1d1.Disbursement = dbur1;
+            product3m1d1.Month = 1;
+            product3m1d1.Year = 2020;
+
+            dbContext.Add(product1m1d1);
+            dbContext.Add(product2m1d1);
+            dbContext.Add(product3m1d1);
+
+
+            //Departmemt 3 , 1 Disbursement (2nd), 3 stationery, Feb 
+
+            DisbursementDetail product1m2d1 = new DisbursementDetail();
+            product1m2d1.Stationery = s13;
+            product1m2d1.Department = d3;
+            product1m2d1.Qty = 150;
+            product1m2d1.A_Date = new DateTime(2020, 02, 25);
+
+            product1m2d1.Disbursement = dbur2;
+            product1m2d1.Month = 2;
+            product1m2d1.Year = 2020;
+
+            DisbursementDetail product2m2d1 = new DisbursementDetail();
+            product2m2d1.Stationery = s14;
+            product2m2d1.Department = d3;
+            product2m2d1.Qty = 100;
+            product2m2d1.A_Date = new DateTime(2020, 02, 25);
+
+            product2m2d1.Disbursement = dbur2;
+            product2m2d1.Month = 2;
+            product2m2d1.Year = 2020;
+
+            DisbursementDetail product3m2d1 = new DisbursementDetail();
+            product3m2d1.Stationery = s15;
+            product3m2d1.Department = d3;
+            product3m2d1.Qty = 80;
+            product3m2d1.A_Date = new DateTime(2020, 02, 25);
+
+            product3m2d1.Disbursement = dbur2;
+            product3m2d1.Month = 2;
+            product3m2d1.Year = 2020;
+
+            dbContext.Add(product1m2d1);
+            dbContext.Add(product2m2d1);
+            dbContext.Add(product3m2d1);
+
+
+            //Departmemt 3 , 1 Disbursement, 3 stationery, March
+
+            DisbursementDetail product1m3d1 = new DisbursementDetail();
+            product1m3d1.Stationery = s13;
+            product1m3d1.Department = d3;
+            product1m3d1.Qty = 300;
+            product1m3d1.A_Date = new DateTime(2020, 03, 25);
+
+            product1m3d1.Disbursement = dbur3;
+            product1m3d1.Month = 3;
+            product1m3d1.Year = 2020;
+
+            DisbursementDetail product2m3d1 = new DisbursementDetail();
+            product2m3d1.Stationery = s14;
+            product2m3d1.Department = d3;
+            product2m3d1.Qty = 250;
+            product2m3d1.A_Date = new DateTime(2020, 03, 25);
+
+            product2m3d1.Disbursement = dbur3;
+            product2m3d1.Month = 3;
+            product2m3d1.Year = 2020;
+
+            DisbursementDetail product3m3d1 = new DisbursementDetail();
+            product3m3d1.Stationery = s15;
+            product3m3d1.Department = d3;
+            product3m3d1.Qty = 180;
+            product3m3d1.A_Date = new DateTime(2020, 03, 25);
+
+            product3m3d1.Disbursement = dbur3;
+            product3m3d1.Month = 3;
+            product3m3d1.Year = 2020;
+
+            dbContext.Add(product1m3d1);
+            dbContext.Add(product2m3d1);
+            dbContext.Add(product3m3d1);
+
+            //Departmemt 3 , 1 Disbursement, 3 stationery, April
+
+            DisbursementDetail product1m4d1 = new DisbursementDetail();
+            product1m4d1.Stationery = s13;
+            product1m4d1.Department = d3;
+            product1m4d1.Qty = 300;
+            product1m4d1.A_Date = new DateTime(2020, 04, 25);
+
+            product1m4d1.Disbursement = dbur4;
+            product1m4d1.Month = 4;
+            product1m4d1.Year = 2020;
+
+            DisbursementDetail product2m4d1 = new DisbursementDetail();
+            product2m4d1.Stationery = s14;
+            product2m4d1.Department = d3;
+            product2m4d1.Qty = 250;
+            product2m4d1.A_Date = new DateTime(2020, 04, 25);
+
+            product2m4d1.Disbursement = dbur4;
+            product2m4d1.Month = 4;
+            product2m4d1.Year = 2020;
+
+            DisbursementDetail product3m4d1 = new DisbursementDetail();
+            product3m4d1.Stationery = s15;
+            product3m4d1.Department = d3;
+            product3m4d1.Qty = 180;
+            product3m4d1.A_Date = new DateTime(2020, 04, 25);
+
+            product3m4d1.Disbursement = dbur4;
+            product3m4d1.Month = 4;
+            product3m4d1.Year = 2020;
+
+            dbContext.Add(product1m4d1);
+            dbContext.Add(product2m4d1);
+            dbContext.Add(product3m4d1);
+
+
+            //Departmemt 3 , 1 Disbursement, 3 stationery, May
+
+            DisbursementDetail product1m5d1 = new DisbursementDetail();
+            product1m5d1.Stationery = s13;
+            product1m5d1.Department = d3;
+            product1m5d1.Qty = 230;
+            product1m5d1.A_Date = new DateTime(2020, 05, 25);
+
+            product1m5d1.Disbursement = dbur5;
+            product1m5d1.Month = 5;
+            product1m5d1.Year = 2020;
+
+            DisbursementDetail product2m5d1 = new DisbursementDetail();
+            product2m5d1.Stationery = s14;
+            product2m5d1.Department = d3;
+            product2m5d1.Qty = 150;
+            product2m5d1.A_Date = new DateTime(2020, 05, 25);
+
+            product2m5d1.Disbursement = dbur5;
+            product2m5d1.Month = 5;
+            product2m5d1.Year = 2020;
+
+            DisbursementDetail product3m5d1 = new DisbursementDetail();
+            product3m5d1.Stationery = s15;
+            product3m5d1.Department = d3;
+            product3m5d1.Qty = 80;
+            product3m5d1.A_Date = new DateTime(2020, 05, 25);
+
+            product3m5d1.Disbursement = dbur5;
+            product3m5d1.Month = 5;
+            product3m5d1.Year = 2020;
+
+            dbContext.Add(product1m5d1);
+            dbContext.Add(product2m5d1);
+            dbContext.Add(product3m5d1);
+
+            //Departmemt 3 , 1 Disbursement, 2 , June
+
+            DisbursementDetail product1m6d1 = new DisbursementDetail();
+            product1m6d1.Stationery = s13;
+            product1m6d1.Department = d3;
+            product1m6d1.Qty = 200;
+            product1m6d1.A_Date = new DateTime(2020, 06, 25);
+
+            product1m6d1.Disbursement = dbur6;
+            product1m6d1.Month = 6;
+            product1m6d1.Year = 2020;
+
+            DisbursementDetail product2m6d1 = new DisbursementDetail();
+            product2m6d1.Stationery = s14;
+            product2m6d1.Department = d3;
+            product2m6d1.Qty = 150;
+            product2m6d1.A_Date = new DateTime(2020, 06, 25);
+
+            product2m6d1.Disbursement = dbur6;
+            product2m6d1.Month = 6;
+            product2m6d1.Year = 2020;
+
+            dbContext.Add(product1m6d1);
+            dbContext.Add(product2m6d1);
+
+            //Departmemt 3 , 1 Disbursement, 2, July
+
+            DisbursementDetail product1m7d1 = new DisbursementDetail();
+            product1m7d1.Stationery = s13;
+            product1m7d1.Department = d3;
+            product1m7d1.Qty = 260;
+            product1m7d1.A_Date = new DateTime(2020, 07, 25);
+
+            product1m7d1.Disbursement = dbur7;
+            product1m7d1.Month = 7;
+            product1m7d1.Year = 2020;
+
+            DisbursementDetail product2m7d1 = new DisbursementDetail();
+            product2m7d1.Stationery = s14;
+            product2m7d1.Department = d3;
+            product2m7d1.Qty = 140;
+            product2m7d1.A_Date = new DateTime(2020, 07, 25);
+
+            product2m7d1.Disbursement = dbur7;
+            product2m7d1.Month = 7;
+            product2m7d1.Year = 2020;
+
+            dbContext.Add(product1m7d1);
+            dbContext.Add(product2m7d1);
+
+            //to use later
+
+            //DisbursementDetail usage53m1 = new DisbursementDetail();
+            //usage53m1.Stationery = s3;
+            //usage53m1.Department = d2;
+            //usage53m1.Qty = 280;
+            //usage53m1.A_Date = new DateTime(2020, 01, 25);
+            ////usage53m1.Description = "Envelope Brown (3\"x6\")";
+
+            //DisbursementDetail usage53m2 = new DisbursementDetail();
+            //usage53m2.Stationery = s3;
+            //usage53m2.Department = d2;
+            //usage53m2.Qty = 200;
+            //usage53m2.A_Date = new DateTime(2020, 02, 25);
+            ////usage53m2.Description = "Envelope Brown (3\"x6\")";
+
+            //DisbursementDetail usage53m3 = new DisbursementDetail();
+            //usage53m3.Stationery = s3;
+            //usage53m3.Department = d2;
+            //usage53m3.Qty = 400;
+            //usage53m3.A_Date = new DateTime(2020, 03, 25);
+            ////usage53m3.Description = "Envelope Brown (3\"x6\")";
+
+            //DisbursementDetail usage63m1 = new DisbursementDetail();
+            //usage63m1.Stationery = s3;
+            //usage63m1.Department = d1;
+            //usage63m1.Qty = 280;
+            //usage63m1.A_Date = new DateTime(2020, 01, 25);
+            ////usage63m1.Description = "Envelope Brown (3\"x6\")";
+
+            //DisbursementDetail usage63m2 = new DisbursementDetail();
+            //usage63m2.Stationery = s3;
+            //usage63m2.Department = d1;
+            //usage63m2.Qty = 200;
+            //usage63m2.A_Date = new DateTime(2020, 02, 25);
+            ////usage63m2.Description = "Envelope Brown (3\"x6\")";
+
+            //DisbursementDetail usage63m3 = new DisbursementDetail();
+            //usage63m3.Stationery = s3;
+            //usage63m3.Department = d1;
+            //usage63m3.Qty = 400;
+            //usage63m3.A_Date = new DateTime(2020, 03, 25);
+            ////usage63m3.Description = "Envelope Brown (3\"x6\")";
+
+            //dbContext.Add(usage43m1);
+            //dbContext.Add(usage53m1);
+            //dbContext.Add(usage63m1);
+
+            //dbContext.Add(usage43m2);
+            //dbContext.Add(usage53m2);
+            //dbContext.Add(usage63m2);
+
+            //dbContext.Add(usage43m3);
+            //dbContext.Add(usage53m3);
+            //dbContext.Add(usage63m3);
+
+            ////2nd product
+            //DisbursementDetail p2usage43m1 = new DisbursementDetail();
+            //p2usage43m1.Stationery = s1;
+            //p2usage43m1.Department = d3;
+            //p2usage43m1.Qty = 280;
+            //p2usage43m1.A_Date = new DateTime(2020, 01, 25);
+            ////p2usage43m1.Description = "Clips Double 1";
+
+
+            //DisbursementDetail p2usage43m2 = new DisbursementDetail();
+            //p2usage43m2.Stationery = s1;
+            //p2usage43m2.Department = d3;
+            //p2usage43m2.Qty = 200;
+            //p2usage43m2.A_Date = new DateTime(2020, 02, 25);
+            ////p2usage43m2.Description = "Clips Double 1";
+
+            //DisbursementDetail p2usage43m3 = new DisbursementDetail();
+            //p2usage43m3.Stationery = s1;
+            //p2usage43m3.Department = d3;
+            //p2usage43m3.Qty = 200;
+            //p2usage43m3.A_Date = new DateTime(2020, 03, 25);
+            ////p2usage43m3.Description = "Clips Double 1";
+
+
+            //DisbursementDetail p2usage53m1 = new DisbursementDetail();
+            //p2usage53m1.Stationery = s1;
+            //p2usage53m1.Department = d2;
+            //p2usage53m1.Qty = 280;
+            //p2usage53m1.A_Date = new DateTime(2020, 01, 25);
+            ////p2usage53m1.Description = "Clips Double 1";
+
+            //DisbursementDetail p2usage53m2 = new DisbursementDetail();
+            //p2usage53m2.Stationery = s1;
+            //p2usage53m2.Department = d2;
+            //p2usage53m2.Qty = 200;
+            //p2usage53m2.A_Date = new DateTime(2020, 02, 25);
+            ////p2usage53m2.Description = "Clips Double 1";
+
+
+            //DisbursementDetail p2usage53m3 = new DisbursementDetail();
+            //p2usage53m3.Stationery = s1;
+            //p2usage53m3.Department = d2;
+            //p2usage53m3.Qty = 400;
+            //p2usage53m3.A_Date = new DateTime(2020, 03, 25);
+            ////p2usage53m3.Description = "Clips Double 1";
+
+            //DisbursementDetail p2usage63m1 = new DisbursementDetail();
+            //p2usage63m1.Stationery = s1;
+            //p2usage63m1.Department = d1;
+            //p2usage63m1.Qty = 280;
+            //p2usage63m1.A_Date = new DateTime(2020, 01, 25);
+            ////p2usage63m1.Description = "Clips Double 1";
+
+            //DisbursementDetail p2usage63m2 = new DisbursementDetail();
+            //p2usage63m2.Stationery = s1;
+            //p2usage63m2.Department = d1;
+            //p2usage63m2.Qty = 200;
+            //p2usage63m2.A_Date = new DateTime(2020, 02, 25);
+            ////p2usage63m2.Description = "Clips Double 1";
+
+            //DisbursementDetail p2usage63m3 = new DisbursementDetail();
+            //p2usage63m3.Stationery = s1;
+            //p2usage63m3.Department = d1;
+            //p2usage63m3.Qty = 400;
+            //p2usage63m3.A_Date = new DateTime(2020, 03, 25);
+            ////p2usage63m3.Description = "Clips Double 1";
+
+            //dbContext.Add(p2usage43m1);
+            //dbContext.Add(p2usage53m1);
+            //dbContext.Add(p2usage63m1);
+
+            //dbContext.Add(p2usage43m2);
+            //dbContext.Add(p2usage53m2);
+            //dbContext.Add(p2usage63m2);
+
+            //dbContext.Add(p2usage43m3);
+            //dbContext.Add(p2usage53m3);
+            //dbContext.Add(p2usage63m3);
+
+
+
 
             DelegatedEmployee de = new DelegatedEmployee();
             de.EndDate = new DateTime(2020, 1, 1);

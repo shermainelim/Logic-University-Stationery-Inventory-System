@@ -1,137 +1,139 @@
-﻿@{ var history = (List<UsageHistory>)ViewData["histories"];
+﻿@{ var history = (List<DisbursementDetail>)ViewData["histories"];
     var history2 = (List<Stationery>)ViewData["histories2"];
-    var history3 = (List<Stationery>)ViewData["histories3"];
-
-    var count = history.Count; }
-
+}
 
 <html>
-    <head>
-        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-        <title>bootstrap-select: Initialize with JS</title>
-        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-        <meta name="robots" content="noindex, nofollow">
-        <meta name="googlebot" content="noindex, nofollow">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>bootstrap-select: Initialize with JS</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="googlebot" content="noindex, nofollow">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
-        <script type="text/javascript"
-                src="//code.jquery.com/jquery-2.2.4.js"></script>
+    <script type="text/javascript"
+            src="//code.jquery.com/jquery-2.2.4.js"></script>
 
-        <link rel="stylesheet" type="text/css" href="/css/result-light.css">
+    <link rel="stylesheet" type="text/css" href="/css/result-light.css">
 
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/js/bootstrap-select.min.js"></script>
-        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/css/bootstrap-select.min.css">
-        <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-        <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/js/bootstrap-select.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/css/bootstrap-select.min.css">
+    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 
-        <style id="compiled-css" type="text/css">
-            .bootstrap-select .dropdown-menu > li > a small.muted {
-                display: none;
+    <style id="compiled-css" type="text/css">
+        .bootstrap-select .dropdown-menu > li > a small.muted {
+            display: none;
+        }
+
+        .bootstrap-select .dropdown-toggle .filter-option {
+            position: relative;
+            padding-left: 38px;
+        }
+
+            .bootstrap-select .dropdown-toggle .filter-option:before {
+                content: "Item:";
+                font-size: 14px;
+                font-weight: 700;
+                position: absolute;
+                left: 0;
+                top: 0;
             }
 
-            .bootstrap-select .dropdown-toggle .filter-option {
-                position: relative;
-                padding-left: 38px;
-            }
+        /* EOS */
+    </style>
 
-                .bootstrap-select .dropdown-toggle .filter-option:before {
-                    content: "Item:";
-                    font-size: 14px;
-                    font-weight: 700;
-                    position: absolute;
-                    left: 0;
-                    top: 0;
-                }
-
-            /* EOS */
-        </style>
-
-        <script id="insert"></script>
+    <script id="insert"></script>
 
 
-    </head>
-    <body>
-        <form asp-controller="Store" asp-action="BarChartFilter" method="post">
-            <div class="form-group">
-                <label for="exampleFormControlSelect1">Stationery select</label>
-                <select class="selectpicker show-tick"
-                        name="IsHoliday2"
-                        data_show_subtext="false" ,
-                        data_live_search="true">
-                    <option data-hidden="true">Select</option>
-                    @for (var i = 0; i < history2.Count; i++)
-                    {
-        <text>
-            <option value='@history2[@i].Description' name='Stationery' id="Stationery">@history2[@i].Description</option>
+</head>
+<body>
+    <form asp-controller="Store" asp-action="BarChartFilter" method="post">
+        <div class="form-group">
+            <label for="exampleFormControlSelect1">Stationery select</label>
+            <select class="selectpicker show-tick"
+                    name="IsHoliday2"
+                    data_show_subtext="false" ,
+                    data_live_search="true">
+                <option data-hidden="true">Select</option>
+                @for (var i = 0; i < history2.Count; i++)
+                {
+                    <text>
+                        <option value='@history2[@i].Description' name='Stationery' id="Stationery">@history2[@i].Description</option>
 
-        </text>};
-                </select>
-            </div>
+                    </text>};
+            </select>
+        </div>
+
+        <table align="center">
+            <tr>
+                <td>Start Month: </td>
+                <td>
+                    <input id="startMonth" name="startMonth" value="@ViewData["startMonth"]" />
+
+                </td>
+            </tr>
+
+            <tr>
+                <td>Ending Month: </td>
+                <td>
+                    <input id="endMonth" name="endMonth" value="@ViewData["endMonth"]" />
+
+                </td>
+            </tr>
+
+            <tr>
+                <td>Year: </td>
+                <td>
+                    <input id="Year" name="Year" value="@ViewData["Year"]" />
+
+                </td>
+            </tr>
+
+        </table>
+
             <input type="submit" name="assign" id="assign" value="assign" class="btn btn-default">
             <input type="hidden" name="my_data" value="">
-        </form>
+    </form>
 
-        <script type="text/javascript">
-            //<![CDATA[
+    <script type="text/javascript">
+        //<![CDATA[
 
-            $(document).ready(function () {
+        $(document).ready(function () {
 
 
-                $("select").prop('class', 'selectpicker show-tick form-control');
-                $("select").attr('data-live-search', true);
-                $('#assign').click(function () {
-                    var ag = $('#selectpicker').val();
-                    $('[name="my_data"]').val(ag);
-                });
-
+            $("select").prop('class', 'selectpicker show-tick form-control');
+            $("select").attr('data-live-search', true);
+            $('#assign').click(function () {
+                var ag = $('#selectpicker').val();
+                $('[name="my_data"]').val(ag);
             });
 
-            //]]></script>
+        });
 
-        <script>
-            // tell the embed parent frame the height of the content
-            if (window.parent && window.parent.parent) {
-                window.parent.parent.postMessage(["resultsFrame", {
-                    height: document.body.getBoundingClientRect().height,
-                    slug: "a5r2vyu2"
-                }], "*")
-            }
+        //]]></script>
 
-            // always overwrite window.name, in case users try to set it manually
-            window.name = "result"
-        </script>
-    </body>
+    <script>
+        // tell the embed parent frame the height of the content
+        if (window.parent && window.parent.parent) {
+            window.parent.parent.postMessage(["resultsFrame", {
+                height: document.body.getBoundingClientRect().height,
+                slug: "a5r2vyu2"
+            }], "*")
+        }
 
-
-    </html>
-
-@*<form asp-controller="Store" asp-action="BarChartFilter" method="post">
-    <table align="center">
-
-        <tr>
-            <td>Clips Double 1 or Envelope Brown (3"x6")</td>
-            <td>
-                <input id="IsHoliday2" name="IsHoliday2" type="radio" value="'Envelope Brown (3" x6")'" />
-                "Envelope Brown (3"x6")   &nbsp;&nbsp;"
-                <input id="IsHoliday2" name="IsHoliday2" type="radio" value="'Clips Double 1'" />
-                "Clips Double 1"
-            </td>
-        </tr>
-
-        <tr>
-            <td colspan="2" align="right">
-                <input id="PredictBtn" type="submit" value="BarChartFilter" />
-            </td>
-        </tr>
-    </table>
-</form>*@
+        // always overwrite window.name, in case users try to set it manually
+        window.name = "result"
+    </script>
+</body>
+</html>
 
 
 <html>
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <title>CategoryFilter as column selector</title>
+    <title>Category Filter as column selector</title>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta name="robots" content="noindex, nofollow">
     <meta name="googlebot" content="noindex, nofollow">
@@ -164,57 +166,22 @@
     <script type="text/javascript">
     //<![CDATA[
 
-
         google.load('visualization', '1', { packages: ['controls'] });
         google.setOnLoadCallback(drawChart);
 
         function drawChart() {
             var data = new google.visualization.DataTable();
             data.addColumn('string', 'Year/Month');
-            data.addColumn('number', '@history[0].Department.DeptName');
-            data.addColumn('number', '@history[3].Department.DeptName');
-            data.addColumn('number', '@history[6].Department.DeptName');
-            data.addRows([
-                ['@history[0].A_Date.ToString("yyyyMMMM") @history[0].Stationery.Description',@history[0].Qty, @history[3].Qty, @history[6].Qty],
-                ['@history[1].A_Date.ToString("yyyyMMMM") @history[1].Stationery.Description', @history[1].Qty, @history[4].Qty, @history[7].Qty],
-                ['@history[2].A_Date.ToString("yyyyMMMM") @history[2].Stationery.Description', @history[2].Qty, @history[5].Qty, @history[8].Qty],
-                ['@history[9].A_Date.ToString("yyyyMMMM") @history[9].Stationery.Description', @history[9].Qty, @history[12].Qty, @history[15].Qty],
-                ['@history[10].A_Date.ToString("yyyyMMMM") @history[10].Stationery.Description',@history[10].Qty, @history[13].Qty, @history[16].Qty],
-                ['@history[11].A_Date.ToString("yyyyMMMM") @history[11].Stationery.Description',@history[11].Qty, @history[14].Qty, @history[17].Qty]
-            ]);
-
-             @*@for(var i = 0; i < history.Count; i++)
+          @for(var i = 0; i < 1; i++)
                 {
-                    <text> data.addColumn('number', '@history[@i].Department.DeptName');</text>
+                    <text> data.addColumn('number', '@history[@i].Stationery.Description');</text>
             };
-            @for (var i = 0; i < history.Count-1 ; i++)
-                     {
-                        <text>data.addRows([['@history[@i].A_Date.ToString("yyyyMMMM")', @history[@i].Qty, @history[@i].Qty, @history[@i].Qty, @history[@i].Qty, @history[@i].Qty, @history[@i].Qty, @history[@i].Qty, @history[@i].Qty],</text>
-                         }
-                ['@history[history.Count-1].A_Date.ToString("yyyyMMMM")', @history[history.Count-1].Qty, @history[history.Count-1].Qty, @history[history.Count-1].Qty, @history[history.Count-1].Qty, @history[history.Count-1].Qty, @history[history.Count-1].Qty, @history[history.Count-1].Qty, @history[history.Count-1].Qty]
-                    ]);*@
-
-
-            @*@for (var i = 0; i < history.Count-1 ; i++)
-                     {
-                        <text>data.addRows([['@history[@i].A_Date.ToString("yyyyMMMM")', @history[@i].Qty, @history[@i].Qty, @history[@i].Qty ],</text>
-                         }
-                ['@history[history.Count-1].A_Date.ToString("yyyyMMMM")', @history[history.Count-1].Qty, @history[history.Count-1].Qty, @history[history.Count-1].Qty]
-                    ]);*@
-            //data.addColumn('number', 'Foo');
-            //data.addColumn('number', 'Bar');
-            //data.addColumn('number', 'Baz');
-            //data.addColumn('number', 'Cad');
-            //data.addRows([
-            //    ['2005', 45, 60, 89, 100],
-            //    ['2006', 155, 50, 79, 24],
-            //    ['2007', 35, 31, 140, 53],
-            //    ['2008', 105, 23, 43, 82],
-            //    ['2009', 120, 56, 21, 67],
-            //    ['2010', 65, 19, 34, 134],
-            //    ['2011', 80, 23, 130, 40],
-            //    ['2012', 70, 140, 83, 90]
-            //]);
+            data.addRows([
+            @for (var i = 0; i < history.Count - 1; i++) {
+                <text>['@history[@i].Month @history[@i].Year @history[@i].Department.DeptName @history[@i].Stationery.Description',@history[@i].Qty],</text>
+            }
+            ['@history[history.Count-1].Month @history[history.Count-1].Year @history[history.Count-1].Department.DeptName @history[history.Count-1].Stationery.Description',@history[history.Count - 1].Qty]
+                    ]);
 
             var columnsTable = new google.visualization.DataTable();
             columnsTable.addColumn('number', 'colIndex');
@@ -234,9 +201,9 @@
                 containerId: 'chart_div',
                 dataTable: data,
                 options: {
-                    title: 'Dept',
-                    width: 1000,
-                    height: 1000
+                    title: 'Qty',
+                    width: 1700,
+                    height: 1200
                 }
             });
 
@@ -295,80 +262,3 @@
     </script>
 </body>
 </html>
-
-
-
-
-@*<html>
-    <head>
-        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-        <script type="text/javascript">
-
-                    // Load the Visualization API and the controls package.
-                    google.charts.load('current', { 'packages': ['corechart', 'controls'] });
-
-                    // Set a callback to run when the Google Visualization API is loaded.
-                    google.charts.setOnLoadCallback(drawDashboard);
-
-                    // Callback that creates and populates a data table,
-                    // instantiates a dashboard, a range slider and a pie chart,
-                    // passes in the data and draws it.
-                function drawDashboard() {
-
-                        // Create our data table.
-                    var data = google.visualization.arrayToDataTable([
-                        ['DeptName', 'Qty'],
-                        @for (var i = 0; i < history.Count-1 ; i++)
-                         {
-                            <text>['@history[@i].Department.DeptName @history[@i].A_Date.ToString("yyyyMMMM")',@history[@i].Qty ],</text>
-                             }
-                        ['@history[history.Count-1].Department.DeptName @history[history.Count-1].A_Date.ToString("yyyyMMMM")',@history[history.Count-1].Qty]
-                        ]);
-
-                        // Create a dashboard.
-                        var dashboard = new google.visualization.Dashboard(
-                            document.getElementById('dashboard_div'));
-
-                        // Create a range slider, passing some options
-                        var donutRangeSlider = new google.visualization.ControlWrapper({
-                            'controlType': 'NumberRangeFilter',
-                            'containerId': 'filter_div',
-                            'options': {
-                                'filterColumnLabel': 'Qty'
-                            }
-                        });
-
-                        // Create a pie chart, passing some options
-                        var pieChart = new google.visualization.ChartWrapper({
-                            'chartType': 'BarChart',
-                            'containerId': 'chart_div',
-                            'options': {
-                                'width': 3000,
-                                'height': 1000,
-                                'pieSliceText': 'value',
-                                'legend': 'right'
-                            }
-                        });
-
-                        // Establish dependencies, declaring that 'filter' drives 'pieChart',
-                        // so that the pie chart will only display entries that are let through
-                        // given the chosen slider range.
-                    dashboard.bind(donutRangeSlider,pieChart);
-
-                        // Draw the dashboard.
-                        dashboard.draw(data);
-                    }
-
-        </script>
-    </head>
-
-    <body>
-
-        <div id="dashboard_div">
-
-            <div id="filter_div"></div>
-            <div id="chart_div"></div>
-        </div>
-    </body>
-    </html>*@
-
