@@ -13,5 +13,7 @@ namespace Ben_Project.Models
         public int Qty { get; set; }
         public double Amount => Qty * SupplierDetail.UnitPrice;
 
+        public double prdictedAmount { get; set; }
+
     }
 }
