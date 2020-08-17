@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
@@ -129,7 +130,7 @@ namespace Ben_Project.Controllers
 
             var requisition = _dbContext.DeptRequisitions.FirstOrDefault(dr => dr.Id == id);
             ViewData["requisition"] = requisition;
-            
+
             var disbursement = new Disbursement();
             disbursement.DisbursementDetails = new List<DisbursementDetail>();
             foreach (var requisitionDetail in requisition.RequisitionDetails)
@@ -147,7 +148,7 @@ namespace Ben_Project.Controllers
             var adjustmentVoucher = new AdjustmentVoucher();
             adjustmentVoucher.Status = AdjustmentVoucherStatus.Draft;
             adjustmentVoucher.AdjustmentDetails = new List<AdjustmentDetail>();
-            
+
 
             // Generate adjustment voucher number
             var avNo = "AV" + adjustmentVoucher.Id;
@@ -192,9 +193,12 @@ namespace Ben_Project.Controllers
                 // updating collected qty
                 requisitionDetail.CollectedQty += disbursementDetail.Qty;
 
-                // Add disbursementDetail to disbursement
+                // updating disbursementDetail attributes
                 disbursementDetail.Stationery = _dbContext.Stationeries.FirstOrDefault(s => s.Id == stationeryId);
                 disbursementDetail.Disbursement = result;
+                disbursementDetail.Department = _dbContext.Departments.Find(deptRequisition.Employee.Dept.id);
+
+                // Add disbursementDetail to disbursement
                 result.DisbursementDetails.Add(disbursementDetail);
 
                 // If collected qty of item is not equal to requested qty, set fulfillment status to partial
@@ -256,7 +260,7 @@ namespace Ben_Project.Controllers
             // Changing fulfillment status of requisition
             deptRequisition.RequisitionFulfillmentStatus = fulfillmentStatus;
 
-            
+
 
             // Adding adjustment voucher to database
             _dbContext.Add(adjustmentVoucher);
@@ -419,7 +423,7 @@ namespace Ben_Project.Controllers
                 result.AdjustmentDetails[i].AdjustedCost = result.AdjustmentDetails[i].AdjustedQty * stock.UnitPrice;
 
                 // if adjustedCost is more than $250, assign StoreManager to "authorizedBy"
-               
+
                 if (result.AdjustmentDetails[i].AdjustedCost <= -250.0)
                     authorizedBy = DeptRole.StoreManager;
             }
@@ -434,7 +438,7 @@ namespace Ben_Project.Controllers
             result.AuthorizedBy = authorizedBy;
 
             _dbContext.SaveChanges();
-            
+
             return RedirectToAction("StoreClerkAdjustmentVoucherList", "Store");
         }
 
@@ -469,7 +473,7 @@ namespace Ben_Project.Controllers
                 var stock = _dbContext.Stocks.FirstOrDefault(s => s.Stationery.Id == stationeryId);
                 stock.Qty += adjustmentDetail.AdjustedQty;
             }
-            
+
             // update status of adjustment voucher to issued
             result.Status = AdjustmentVoucherStatus.Issued;
 
@@ -499,7 +503,7 @@ namespace Ben_Project.Controllers
 
         public IActionResult BarChart()
         {
-           
+
             var uh = _dbContext.UsageHistories.FromSqlRaw("SELECT [UsageHistories].[Id], [StationeryId], [Departmentid], [Qty],[A_Date], [Description], [DisbursementDetailId] FROM [BenProject].[dbo].[UsageHistories] INNER JOIN [Stationeries] ON [UsageHistories].[StationeryId] = [Stationeries].[Id] ORDER BY [StationeryId],[Departmentid], [A_Date]").ToList();
 
             //var blogs = _dbContext.UsageHistories.ToList();
@@ -511,7 +515,7 @@ namespace Ben_Project.Controllers
 
             return View();
         }
-        
+
         public ActionResult BarChartFilter(string IsHoliday2)
         {
             //var user = new SqlParameter("user", IsHoliday2);
