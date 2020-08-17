@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
@@ -39,17 +40,17 @@ namespace Ben_Project.Controllers
 
         public IActionResult Prediction(string item_category, string item_ID, string date, string IsHoliday)
         {
-            
+
             int number;
             var result5 = int.TryParse(item_category, out number);
             var result6 = int.TryParse(item_ID, out number);
 
-             if (item_category == null || item_ID== null || date == null|| IsHoliday == null)
+            if (item_category == null || item_ID == null || date == null || IsHoliday == null)
             {
-                TempData["Error"]= "Enter the empty fields";
+                TempData["Error"] = "Enter the empty fields";
                 return RedirectToAction("Index");
             }
-             else if(result5==false || result6 == false)
+            else if (result5 == false || result6 == false)
             {
                 TempData["Error"] = "Enter only int fields";
                 return RedirectToAction("Index");
@@ -62,7 +63,7 @@ namespace Ben_Project.Controllers
             //}
 
             int itemid = Int32.Parse(item_ID);
-            
+
             Stock stock = _dbContext.Stocks.SingleOrDefault(x => x.Stationery.Id == itemid);
             int safetyStock = stock.Stationery.ReorderLevel;
             int currentStock = stock.Qty;
@@ -81,14 +82,13 @@ namespace Ben_Project.Controllers
                 .Replace("]", "")
                 .Replace('"', 'o')
                 .Replace("o", "");
-           
+
             TempData["Message"] = result2;
-            
+
             double final = Math.Round(Double.Parse(result2));
             if (((final + safetyStock) > currentStock))
             {
                 TempData["result"] = "You should order : " + ((final + safetyStock) - currentStock);
-
             }
             else if ((final + safetyStock) < currentStock)
             {
@@ -130,7 +130,7 @@ namespace Ben_Project.Controllers
 
             var requisition = _dbContext.DeptRequisitions.FirstOrDefault(dr => dr.Id == id);
             ViewData["requisition"] = requisition;
-            
+
             var disbursement = new Disbursement();
             disbursement.DisbursementDetails = new List<DisbursementDetail>();
             foreach (var requisitionDetail in requisition.RequisitionDetails)
@@ -148,7 +148,7 @@ namespace Ben_Project.Controllers
             var adjustmentVoucher = new AdjustmentVoucher();
             adjustmentVoucher.Status = AdjustmentVoucherStatus.Draft;
             adjustmentVoucher.AdjustmentDetails = new List<AdjustmentDetail>();
-            
+
 
             // Generate adjustment voucher number
             var avNo = "AV" + adjustmentVoucher.Id;
@@ -193,9 +193,12 @@ namespace Ben_Project.Controllers
                 // updating collected qty
                 requisitionDetail.CollectedQty += disbursementDetail.Qty;
 
-                // Add disbursementDetail to disbursement
+                // updating disbursementDetail attributes
                 disbursementDetail.Stationery = _dbContext.Stationeries.FirstOrDefault(s => s.Id == stationeryId);
                 disbursementDetail.Disbursement = result;
+                disbursementDetail.Department = _dbContext.Departments.Find(deptRequisition.Employee.Dept.id);
+
+                // Add disbursementDetail to disbursement
                 result.DisbursementDetails.Add(disbursementDetail);
 
                 // If collected qty of item is not equal to requested qty, set fulfillment status to partial
@@ -257,7 +260,7 @@ namespace Ben_Project.Controllers
             // Changing fulfillment status of requisition
             deptRequisition.RequisitionFulfillmentStatus = fulfillmentStatus;
 
-            
+
 
             // Adding adjustment voucher to database
             _dbContext.Add(adjustmentVoucher);
@@ -420,7 +423,7 @@ namespace Ben_Project.Controllers
                 result.AdjustmentDetails[i].AdjustedCost = result.AdjustmentDetails[i].AdjustedQty * stock.UnitPrice;
 
                 // if adjustedCost is more than $250, assign StoreManager to "authorizedBy"
-               
+
                 if (result.AdjustmentDetails[i].AdjustedCost <= -250.0)
                     authorizedBy = DeptRole.StoreManager;
             }
@@ -435,7 +438,7 @@ namespace Ben_Project.Controllers
             result.AuthorizedBy = authorizedBy;
 
             _dbContext.SaveChanges();
-            
+
             return RedirectToAction("StoreClerkAdjustmentVoucherList", "Store");
         }
 
@@ -470,7 +473,7 @@ namespace Ben_Project.Controllers
                 var stock = _dbContext.Stocks.FirstOrDefault(s => s.Stationery.Id == stationeryId);
                 stock.Qty += adjustmentDetail.AdjustedQty;
             }
-            
+
             // update status of adjustment voucher to issued
             result.Status = AdjustmentVoucherStatus.Issued;
 
@@ -500,7 +503,7 @@ namespace Ben_Project.Controllers
 
         public IActionResult BarChart()
         {
-           
+
             var uh = _dbContext.UsageHistories.FromSqlRaw("SELECT [UsageHistories].[Id], [StationeryId], [Departmentid], [Qty],[A_Date], [Description], [DisbursementDetailId] FROM [BenProject].[dbo].[UsageHistories] INNER JOIN [Stationeries] ON [UsageHistories].[StationeryId] = [Stationeries].[Id] ORDER BY [StationeryId],[Departmentid], [A_Date]").ToList();
 
             //var blogs = _dbContext.UsageHistories.ToList();
@@ -512,7 +515,7 @@ namespace Ben_Project.Controllers
 
             return View();
         }
-        
+
         public ActionResult BarChartFilter(string IsHoliday2)
         {
             //var user = new SqlParameter("user", IsHoliday2);
