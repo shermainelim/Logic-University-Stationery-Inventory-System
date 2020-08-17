@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
@@ -193,9 +194,12 @@ namespace Ben_Project.Controllers
                 // updating collected qty
                 requisitionDetail.CollectedQty += disbursementDetail.Qty;
 
-                // Add disbursementDetail to disbursement
+                // updating disbursementDetail attributes
                 disbursementDetail.Stationery = _dbContext.Stationeries.FirstOrDefault(s => s.Id == stationeryId);
                 disbursementDetail.Disbursement = result;
+                disbursementDetail.Department = _dbContext.Departments.Find(deptRequisition.Employee.Dept.id);
+
+                // Add disbursementDetail to disbursement
                 result.DisbursementDetails.Add(disbursementDetail);
 
                 // If collected qty of item is not equal to requested qty, set fulfillment status to partial
@@ -306,6 +310,33 @@ namespace Ben_Project.Controllers
             var disbursement = _dbContext.Disbursements.FirstOrDefault(d => d.Id == input.Id);
             disbursement.DisbursementDate = input.DisbursementDate;
             disbursement.DisbursementStatus = DisbursementStatus.PendingDisbursement;
+
+            var collectionDate = input.DisbursementDate;
+            
+            // check that date is in the future
+            if (!(collectionDate > DateTime.Now))
+                return RedirectToAction("StoreClerkDisbursementDetail", "Store", new {id = input.Id});
+
+            // add date to all disbursementdetails
+            foreach (var disbursementDetail in disbursement.DisbursementDetails)
+            {
+                disbursementDetail.A_Date = input.DisbursementDate;
+                disbursementDetail.Month = ((DateTime)input.DisbursementDate).Month;
+                disbursementDetail.Year = ((DateTime)input.DisbursementDate).Year;
+            }
+            //
+            //
+            //
+            //
+            //
+            //
+            //
+            //
+            //
+            //
+            //
+            //
+
 
             _dbContext.SaveChanges();
             return RedirectToAction("StoreClerkDisbursementList", "Store");

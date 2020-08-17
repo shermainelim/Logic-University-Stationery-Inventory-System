@@ -14,6 +14,9 @@ namespace Ben_Project.Models
         public virtual Disbursement Disbursement { get; set; }
 
            [DataType(DataType.Date)]
-        public DateTime A_Date { get; set; }
+        public DateTime? A_Date { get; set; }
+        public virtual Department Department { get; set; }
+        public int Month { get; set; }
+        public int Year { get; set; }
     }
 }
