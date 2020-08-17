@@ -13,7 +13,7 @@ namespace Ben_Project.Models
         public int Qty { get; set; }
         public virtual Disbursement Disbursement { get; set; }
 
-           [DataType(DataType.Date)]
+        [DataType(DataType.Date)]
         public DateTime A_Date { get; set; }
     }
 }

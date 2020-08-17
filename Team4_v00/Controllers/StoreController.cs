@@ -32,24 +32,24 @@ namespace Ben_Project.Controllers
         {
             //ViewData["Message"] = new QtyPredictionService().QtyPredict().Result;
             //System.Diagnostics.Debug.Write("Here index");
-            TempData["result"] = "";
+            //TempData["result"] = "";
 
             return View();
         }
 
         public IActionResult Prediction(string item_category, string item_ID, string date, string IsHoliday)
         {
-            
+
             int number;
             var result5 = int.TryParse(item_category, out number);
             var result6 = int.TryParse(item_ID, out number);
 
-             if (item_category == null || item_ID== null || date == null|| IsHoliday == null)
+            if (item_category == null || item_ID == null || date == null || IsHoliday == null)
             {
-                TempData["Error"]= "Enter the empty fields";
+                TempData["Error"] = "Enter the empty fields";
                 return RedirectToAction("Index");
             }
-             else if(result5==false || result6 == false)
+            else if (result5 == false || result6 == false)
             {
                 TempData["Error"] = "Enter only int fields";
                 return RedirectToAction("Index");
@@ -62,7 +62,7 @@ namespace Ben_Project.Controllers
             //}
 
             int itemid = Int32.Parse(item_ID);
-            
+
             Stock stock = _dbContext.Stocks.SingleOrDefault(x => x.Stationery.Id == itemid);
             int safetyStock = stock.Stationery.ReorderLevel;
             int currentStock = stock.Qty;
@@ -81,14 +81,13 @@ namespace Ben_Project.Controllers
                 .Replace("]", "")
                 .Replace('"', 'o')
                 .Replace("o", "");
-           
+
             TempData["Message"] = result2;
-            
+
             double final = Math.Round(Double.Parse(result2));
             if (((final + safetyStock) > currentStock))
             {
                 TempData["result"] = "You should order : " + ((final + safetyStock) - currentStock);
-
             }
             else if ((final + safetyStock) < currentStock)
             {
