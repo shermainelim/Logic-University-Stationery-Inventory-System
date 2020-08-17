@@ -12,27 +12,31 @@
 
 <form asp-controller="Store" asp-action="IssueAdjustmentVoucher" method="post">
 
-    <table align="center" border="1">
-        <tr>
-            <th>Item Code</th>
-            <th>Quantity adjusted</th>
-            <th>Reason</th>
-        </tr>
-
-        @for (int i = 0; i < Model.AdjustmentDetails.Count; i++)
-        {
+    <table id="SupMgrAdjVoucherDetail" align="center" border="1">
+        <thead style="background-color: lightskyblue">
             <tr>
-                <td>
-                    <input asp-for="@Model.AdjustmentDetails[i].Stationery.Id" type="hidden" value="@Model.AdjustmentDetails[i].Stationery.Id" />
-                    @Model.AdjustmentDetails[i].Stationery.ItemNumber
-                </td>
-                <td>
-                    <input asp-for="@Model.AdjustmentDetails[i].AdjustedQty" type="hidden" value="@Model.AdjustmentDetails[i].AdjustedQty" />
-                    @Model.AdjustmentDetails[i].AdjustedQty
-                </td>
-                <td>@Model.AdjustmentDetails[i].Reason</td>
+                <th>Item Code</th>
+                <th>Quantity adjusted</th>
+                <th>Reason</th>
             </tr>
-        }
+        </thead>
+        
+        <tbody>
+            @for (int i = 0; i < Model.AdjustmentDetails.Count; i++)
+            {
+                <tr>
+                    <td>
+                        <input asp-for="@Model.AdjustmentDetails[i].Stationery.Id" type="hidden" value="@Model.AdjustmentDetails[i].Stationery.Id"/>
+                        @Model.AdjustmentDetails[i].Stationery.ItemNumber
+                    </td>
+                    <td>
+                        <input asp-for="@Model.AdjustmentDetails[i].AdjustedQty" type="hidden" value="@Model.AdjustmentDetails[i].AdjustedQty"/>
+                        @Model.AdjustmentDetails[i].AdjustedQty
+                    </td>
+                    <td>@Model.AdjustmentDetails[i].Reason</td>
+                </tr>
+            }
+        </tbody>
     </table>
 
     <input asp-for="@Model.Id" type="hidden" value="@Model.Id" />

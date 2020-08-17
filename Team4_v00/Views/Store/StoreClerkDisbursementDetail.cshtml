@@ -11,8 +11,8 @@
 @if (Model.DisbursementStatus == DisbursementStatus.PendingPacking)
 {
 <form asp-controller="Store" asp-action="StoreClerkSaveDisbursementDetail" method="post">
-    <table align="center" border="1">
-        <thead>
+    <table id="DisburseDetail" align="center" border="1">
+        <thead style="background-color: lightskyblue">
             <tr>
                 <th>Item Code</th>
                 <th>Item Name</th>
@@ -37,8 +37,8 @@
 }
 else
 {
-    <table align="center" border="1">
-        <thead>
+    <table id="DisburseDetail" align="center" border="1">
+        <thead style="background-color: lightskyblue">
         <tr>
             <th>Item Code</th>
             <th>Item Name</th>

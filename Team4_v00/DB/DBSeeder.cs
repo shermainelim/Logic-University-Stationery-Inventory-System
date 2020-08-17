@@ -881,6 +881,32 @@ namespace Ben_Project.DB
             dbContext.Add(poD3);
             dbContext.Add(poD4);
 
+            Disbursement disbursement1 = new Disbursement();
+            disbursement1.DeptRequisition = dr1;
+            Disbursement disbursement2 = new Disbursement();
+            disbursement2.DeptRequisition = dr2;
+            Disbursement disbursement3 = new Disbursement();
+            disbursement3.DeptRequisition = dr3;
+
+            DisbursementDetail dd1 = new DisbursementDetail();
+            dd1.Disbursement = disbursement1;
+            dd1.Stationery = s1;
+
+            DisbursementDetail dd2 = new DisbursementDetail();
+            dd2.Disbursement = disbursement2;
+            dd2.Stationery = s2;
+
+            DisbursementDetail dd3 = new DisbursementDetail();
+            dd3.Disbursement = disbursement3;
+            dd3.Stationery = s3;
+
+            dbContext.Add(disbursement1);
+            dbContext.Add(disbursement2);
+            dbContext.Add(disbursement3);
+            dbContext.Add(dd1);
+            dbContext.Add(dd2);
+            dbContext.Add(dd3);
+
             //UsageHistory usage11m1 = new UsageHistory();
             //usage11m1.Stationery = s1;
             //usage11m1.Department = d1;
@@ -1626,7 +1652,7 @@ namespace Ben_Project.DB
             //Saw/Shermaine
 
 
-            //Departmemt 3 , 1 Disbursement, 3 stationery, Jan 
+            //Departmemt 3 , 1 Disbursement, 3 stationery, Jan
             DisbursementDetail product1m1d1 = new DisbursementDetail();
             product1m1d1.Stationery = s13;
             product1m1d1.Department = d3;
@@ -1662,7 +1688,7 @@ namespace Ben_Project.DB
             dbContext.Add(product3m1d1);
 
 
-            //Departmemt 3 , 1 Disbursement (2nd), 3 stationery, Feb 
+            //Departmemt 3 , 1 Disbursement (2nd), 3 stationery, Feb
 
             DisbursementDetail product1m2d1 = new DisbursementDetail();
             product1m2d1.Stationery = s13;

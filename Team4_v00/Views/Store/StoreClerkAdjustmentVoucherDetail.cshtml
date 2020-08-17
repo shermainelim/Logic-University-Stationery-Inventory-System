@@ -31,32 +31,33 @@
 @if (Model.Status == AdjustmentVoucherStatus.Draft)
 {
     <form asp-controller="Store" asp-action="SaveAdjustmentVoucher" method="post">
-        <table align="center" border="1">
-            <thead>
-                <tr>
-                    <th>Item Code</th>
-                    <th>Quantity adjusted</th>
-                    <th>Reason</th>
-                </tr>
+        <table id="AdjVoucherDetail" align="center" border="1">
+            <thead style="background-color: lightskyblue">
+            <tr>
+                <th>Item Code</th>
+                <th>Quantity adjusted</th>
+                <th>Reason</th>
+            </tr>
             </thead>
             <tbody>
-                @for (int i = 0; i < Model.AdjustmentDetails.Count; i++)
-                {
-                    <tr>
-                        <td>
-                            <input asp-for="@Model.AdjustmentDetails[i].Stationery.Id" type="hidden" value="@Model.AdjustmentDetails[i].Stationery.Id"/>
-                            @Model.AdjustmentDetails[i].Stationery.ItemNumber
-                        </td>
-                        <td>
-                            <input asp-for="@Model.AdjustmentDetails[i].AdjustedQty" type="number"/>
-                        </td>
-                        <td>
-                            <input asp-for="@Model.AdjustmentDetails[i].Reason"/>
-                        </td>
-                    </tr>
-                }
+            @for (int i = 0; i < Model.AdjustmentDetails.Count; i++)
+            {
+                <tr>
+                    <td>
+                        <input asp-for="@Model.AdjustmentDetails[i].Stationery.Id" type="hidden" value="@Model.AdjustmentDetails[i].Stationery.Id"/>
+                        @Model.AdjustmentDetails[i].Stationery.ItemNumber
+                    </td>
+                    <td>
+                        <input asp-for="@Model.AdjustmentDetails[i].AdjustedQty" type="number"/>
+                    </td>
+                    <td>
+                        <input asp-for="@Model.AdjustmentDetails[i].Reason"/>
+                    </td>
+                </tr>
+            }
             </tbody>
         </table>
+
         <input asp-for="@Model.Id" type="hidden" value="@Model.Id" />
         <input id="saveBtn" type="submit" value="Save" />
         @Html.ActionLink("Delete", "DeleteAdjustmentVoucher", "Store", new { id = Model.Id}, null)
@@ -64,12 +65,15 @@
 }
 else
 {
-    <table align="center" border="1">
-        <tr>
-            <th>Item Code</th>
-            <th>Quantity adjusted</th>
-            <th>Reason</th>
-        </tr>
+    <table id="AdjVoucherDetail" align="center" border="1">
+        <thead style="background-color: lightskyblue">
+            <tr>
+                <th>Item Code</th>
+                <th>Quantity adjusted</th>
+                <th>Reason</th>
+            </tr>
+        </thead>
+        <tbody>
         @for (int i = 0; i < Model.AdjustmentDetails.Count; i++)
         {
             <tr>
@@ -78,6 +82,6 @@ else
                 <td>@Model.AdjustmentDetails[i].Reason</td>
             </tr>
         }
-
+        </tbody>
     </table>
 }
