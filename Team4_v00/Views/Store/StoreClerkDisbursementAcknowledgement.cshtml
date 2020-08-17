@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "StoreClerkDisbursementAcknowledgement";
+    var acknowledgementCode = (string) ViewData["acknowledgementCode"];
 }
 
 <div class="text-center">
@@ -28,26 +29,34 @@
     </tr>
     <tr>
         <th>ACKNOWLEDGEMENT CODE:</th>
-        <th>@Model.AcknowledgementCode</th>
+        <th>FOR DEBUGGING ONLY (TO BE REMOVED):</th>
+        <th>@acknowledgementCode</th>
     </tr>
 </table>
 
-
-<table align="center" border="1">
-    <tr>
-        <th>Item Name</th>
-        <th>Quantity</th>
-    </tr>
-
-    @foreach (var disbursementDetail in @Model.DisbursementDetails)
-    {
-        var itemName = @disbursementDetail.Stationery.Description;
-        var qty = @disbursementDetail.Qty;
-
+<form asp-controller="Store" asp-action="StoreClerkDisbursementAcknowledgementValidation" method="post">
+    <table align="center" border="1">
+        <thead>
         <tr>
-            <td>@itemName</td>
-            <td>@qty</td>
+            <th>Item Name</th>
+            <th>Quantity</th>
         </tr>
-    }
-</table>
+        </thead>
+        <tbody>
+        @for (int i = 0; i < Model.DisbursementDetails.Count; i++)
+        {
+            var itemName = @Model.DisbursementDetails[i].Stationery.Description;
+            var qty = @Model.DisbursementDetails[i].Qty;
 
+            <tr>
+                <td>@itemName</td>
+                <td>@qty</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+
+    <input asp-for="@Model.AcknowledgementCode" />
+    <input asp-for="@Model.Id" type="hidden" value="@Model.Id" />
+    <input id="saveBtn" type="submit" value="Acknowledge" />
+</form>
