@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Ben_Project.DB;
 using Ben_Project.Models;
+using Ben_Project.Services.QtyServices;
 
 namespace Ben_Project.Controllers
 {
@@ -188,19 +189,75 @@ namespace Ben_Project.Controllers
 
             var sd = _context.SupplierDetails.ToList();
 
+
             foreach (SupplierDetail s in sd) {
                 if (s.Supplier.Id == po.Supplier.Id) {
                     var poDetails = new PODetail();
                     poDetails.SupplierDetail = s;
+                    
+                    //prediction
+                    int id = poDetails.SupplierDetail.Stationery.Id;
+                    int cat = (int)poDetails.SupplierDetail.Stationery.Category;
+                    String b = "False";
+                    double predictResult = prediction(id, cat, b, pO.OrderDate);
+
+                    double final = 0.0;
+
+                    Double safetyStock = poDetails.SupplierDetail.Stationery.ReorderLevel;
+                    Stock stock = _context.Stocks.SingleOrDefault(s => s.Stationery.Id == id);
+                    Double currentStock = stock.Qty;
+                    if (((predictResult + safetyStock) > currentStock))
+                    {
+                        final = (predictResult + safetyStock) - currentStock;
+
+                    }
+                    else if ((predictResult + safetyStock) < currentStock)
+                    {
+                        final = 0;
+                    }
+
+                    poDetails.prdictedAmount = final;
+
                     po.PODetails.Add(poDetails);
 
                 }
             }
+            
             Console.WriteLine(po);
 
             
             return View(po);
         }
+
+        public double prediction(int id, int Cat,String IsHoliday,DateTime d) {
+
+            String item_category = Cat.ToString();
+            String item_ID = id.ToString();
+            String date = d.ToString();
+
+            var result = new QtyPredictionService().QtyPredict(item_category, item_ID, date, IsHoliday).Result;
+            //string jsonString;
+            //jsonString = JsonSerializer.Serialize(result);
+
+            //int res = Int32.Parse(result);
+            var result2 = result.Replace("Results", "")
+                .Replace("output1", "")
+                .Replace("Scored Label Mean", "")
+                .Replace("{", "")
+                .Replace("}", "")
+                .Replace(":", "")
+                .Replace("[", "")
+                .Replace("]", "")
+                .Replace('"', 'o')
+                .Replace("o", "");
+
+            TempData["Message"] = result2;
+
+            double final = Math.Round(Double.Parse(result2));
+
+            return final;
+        }
+
 
         public IActionResult Save(PO po)
         {
