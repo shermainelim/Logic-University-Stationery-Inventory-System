@@ -187,7 +187,7 @@ namespace Ben_Project.Controllers
 
                 if (disbursementDetail.Qty > (requisitionDetail.Qty - requisitionDetail.CollectedQty))
                 {
-                    return RedirectToAction("StoreClerkRequisitionFulfillment", new {id = deptRequisition.Id});
+                    return RedirectToAction("StoreClerkRequisitionFulfillment", new { id = deptRequisition.Id });
                 }
 
                 // updating collected qty
@@ -309,6 +309,33 @@ namespace Ben_Project.Controllers
             var disbursement = _dbContext.Disbursements.FirstOrDefault(d => d.Id == input.Id);
             disbursement.DisbursementDate = input.DisbursementDate;
             disbursement.DisbursementStatus = DisbursementStatus.PendingDisbursement;
+
+            var collectionDate = input.DisbursementDate;
+
+            // check that date is in the future
+            if (!(collectionDate > DateTime.Now))
+                return RedirectToAction("StoreClerkDisbursementDetail", "Store", new { id = input.Id });
+
+            // add date to all disbursementdetails
+            foreach (var disbursementDetail in disbursement.DisbursementDetails)
+            {
+                disbursementDetail.A_Date = input.DisbursementDate;
+                disbursementDetail.Month = ((DateTime)input.DisbursementDate).Month;
+                disbursementDetail.Year = ((DateTime)input.DisbursementDate).Year;
+            }
+            //
+            //
+            //
+            //
+            //
+            //
+            //
+            //
+            //
+            //
+            //
+            //
+
 
             _dbContext.SaveChanges();
             return RedirectToAction("StoreClerkDisbursementList", "Store");

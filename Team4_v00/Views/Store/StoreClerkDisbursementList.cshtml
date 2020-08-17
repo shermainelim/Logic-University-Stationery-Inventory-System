@@ -14,6 +14,7 @@
             <th>Disbursement Id</th>
             <th>Status</th>
             <th>Collection Date</th>
+            <th>Collection Point</th>
             <th>Action</th>
         </tr>
     </thead>
@@ -25,15 +26,20 @@
                 <td>@disbursement.Id.ToString()</td>
                 <td>@disbursement.DisbursementStatus</td>
                 <td>
-                    @disbursement.DisbursementDate
-                    @(disbursement.DisbursementDate != null ? disbursement.DisbursementDate.ToString() : "N/A")
+                    @(disbursement.DisbursementDate != null ? ((DateTime)disbursement.DisbursementDate).ToString("MM/dd/yyyy") : "N/A")
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "StoreClerkDisbursementDetail", "Store", new { id = @disbursement.Id }, null)
-                    |
-                    @Html.ActionLink("Acknowledge", "StoreClerkDisbursementAcknowledgement", "Store", new { id = @disbursement.Id }, null)
+                    @if (disbursement.DisbursementStatus == DisbursementStatus.PendingPacking)
+                    {
+                        @Html.ActionLink("Edit", "StoreClerkDisbursementDetail", "Store", new { id = @disbursement.Id }, null)
+                    }
+                    else if (disbursement.DisbursementStatus == DisbursementStatus.PendingDisbursement)
+                    {
+                        @Html.ActionLink("Acknowledge", "StoreClerkDisbursementAcknowledgement", "Store", new { id = @disbursement.Id }, null)
+                    }
                 </td>
             </tr>
         }
     </tbody>
 </table>
+
