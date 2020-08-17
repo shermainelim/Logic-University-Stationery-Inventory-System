@@ -32,7 +32,7 @@ namespace Ben_Project.Controllers
         {
             //ViewData["Message"] = new QtyPredictionService().QtyPredict().Result;
             //System.Diagnostics.Debug.Write("Here index");
-            TempData["result"] = "";
+            //TempData["result"] = "";
 
             return View();
         }

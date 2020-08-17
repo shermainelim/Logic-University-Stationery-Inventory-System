@@ -6,15 +6,7 @@
 
 <p style="color:red">@TempData["Error"]</p>
 
-@{
-    if (!TempData["result"].Equals("You have enough stock"))
-    {
-        <form asp-controller="Store" asp-action="PO_Form" method="get">
-            <input id="btnAddPO" type="submit" value="Add to PO" />
-            <input type="hidden" value="@TempData["Message"]" />
-        </form>
-    }
-}
+
 <h2>@TempData["Message"]</h2>
 <h2>@TempData["result"]</h2>
 
