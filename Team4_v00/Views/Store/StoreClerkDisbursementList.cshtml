@@ -9,15 +9,32 @@
 </div>
 
 <table align="center" border="1">
-    <tr>
-        <th>Disbursement Id</th>
-    </tr>
-
-    @foreach (var disbursement in @Model)
-    {
+    <thead>
         <tr>
-            <td>@Html.ActionLink(@disbursement.Id.ToString(), "StoreClerkDisbursementAcknowledgement", "Store", new { id = @disbursement.Id }, null)</td>
+            <th>Disbursement Id</th>
+            <th>Status</th>
+            <th>Collection Date</th>
+            <th>Action</th>
         </tr>
-    }
+    </thead>
+    
+    <tbody>
+        @foreach (var disbursement in @Model)
+        {
+            <tr>
+                <td>@disbursement.Id.ToString()</td>
+                <td>@disbursement.DisbursementStatus</td>
+                <td>
+                    @disbursement.DisbursementDate
+                    @(disbursement.DisbursementDate != null ? disbursement.DisbursementDate.ToString() : "N/A")
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "StoreClerkDisbursementDetail", "Store", new { id = @disbursement.Id }, null)
+                    |
+                    @Html.ActionLink("Acknowledge", "StoreClerkDisbursementAcknowledgement", "Store", new { id = @disbursement.Id }, null)
+                </td>
+            </tr>
+        }
+    </tbody>
 </table>
 
