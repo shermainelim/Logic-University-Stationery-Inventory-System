@@ -1,0 +1,59 @@
+﻿@model Ben_Project.Models.Disbursement
+
+@{
+    ViewData["Title"] = "StoreClerkDisbursementDetail";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Store Clerk Disbursement Detail</h1>
+</div>
+
+@if (Model.DisbursementStatus == DisbursementStatus.PendingPacking)
+{
+<form asp-controller="Store" asp-action="StoreClerkSaveDisbursementDetail" method="post">
+    <table align="center" border="1">
+        <thead>
+            <tr>
+                <th>Item Code</th>
+                <th>Item Name</th>
+                <th>Qty</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.DisbursementDetails.Count; i++)
+            {
+                <tr>
+                    <td>@Model.DisbursementDetails[i].Stationery.ItemNumber</td>
+                    <td>@Model.DisbursementDetails[i].Stationery.Description</td>
+                    <td>@Model.DisbursementDetails[i].Qty</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <input asp-for="@Model.DisbursementDate" type="date" />
+    <input asp-for="@Model.Id" type="hidden" value="@Model.Id" />
+    <input id="saveBtn" type="submit" value="Submit" />
+</form>
+}
+else
+{
+    <table align="center" border="1">
+        <thead>
+        <tr>
+            <th>Item Code</th>
+            <th>Item Name</th>
+            <th>Qty</th>
+        </tr>
+        </thead>
+        <tbody>
+        @for (int i = 0; i < Model.DisbursementDetails.Count; i++)
+        {
+            <tr>
+                <td>@Model.DisbursementDetails[i].Stationery.ItemNumber</td>
+                <td>@Model.DisbursementDetails[i].Stationery.Description</td>
+                <td>@Model.DisbursementDetails[i].Qty</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}

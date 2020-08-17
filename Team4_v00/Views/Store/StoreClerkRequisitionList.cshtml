@@ -8,17 +8,20 @@
     <h1 class="display-4">Store Clerk Requisition List</h1>
 </div>
 
-<table align="center" border="1">
-    <tr>
-        <th>Requisition Id</th>
-        <th>Dept</th>
-        <th>Fulfillment Status</th>
-    </tr>
+<table id="StoreClerkRequisitionList" align="center" border="1">
+    <thead style="background-color: lightskyblue">
+        <tr>
+            <th>Requisition Id</th>
+            <th>Dept</th>
+            <th>Fulfillment Status</th>
+        </tr>
+    </thead>
+    
 
     @foreach (var requisition in @Model)
     {
         <tr>
-            <td>@Html.ActionLink(@requisition.Id.ToString(), "StoreClerkRequisitionFulfillment", "Store", new { id = @requisition.Id }, null)</td>
+            <td>@Html.ActionLink(@requisition.Id.ToString(), "StoreClerkRequisitionFulfillment", "Store", new {id = @requisition.Id}, null)</td>
             <td>@requisition.Employee.Dept.DeptName</td>
             <td>@requisition.RequisitionFulfillmentStatus</td>
         </tr>

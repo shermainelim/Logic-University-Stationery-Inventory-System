@@ -168,26 +168,6 @@ namespace Ben_Project.Controllers
                 // redirect to StoreClerkRequisitionFulfillment with deptrequisition id if disbursement is MORE than stock
                 if (disbursementDetail.Qty > stock.Qty)
                     return RedirectToAction("StoreClerkRequisitionFulfillment", new { id = disbursement.DeptRequisition.Id });
-                //
-                //
-                //
-                //
-                //
-                //
-                //
-                //
-                //
-                //
-                //
-                //
-                //
-                //
-                //
-                //
-                //
-                //
-                //
-
 
                 stock.Qty -= disbursementDetail.Qty;
 
@@ -223,9 +203,18 @@ namespace Ben_Project.Controllers
                     fulfillmentStatus = RequisitionFulfillmentStatus.Partial;
             }
 
+            // Adding disbursement to database
+            // Needs to be before email so we can retrieve id of disbursement to send in email
+            _dbContext.Add(result);
+
             // generating acknowledgement code for disbursement
             var acknowledgementCode = Guid.NewGuid().ToString();
             result.AcknowledgementCode = acknowledgementCode;
+
+            // adding disbursement id, date of collection and collection point variables
+            int disbursementId = result.Id;
+            DateTime dateOfCollection = DateTime.Now;
+            CollectionPoint collectionPoint = CollectionPoint.ScienceSchool;
 
             // sending email to dept rep
             SmtpClient client = new SmtpClient()
@@ -237,13 +226,17 @@ namespace Ben_Project.Controllers
                 UseDefaultCredentials = false,
                 Credentials = new NetworkCredential()
                 {
-                    UserName = "storeclerk@email.com",
-                    Password = "storeclerkpassword"
+                    UserName = "sa50team4@gmail.com",
+                    Password = "sa50team4adproject"
                 }
             };
-            MailAddress FromEmail = new MailAddress("sa50team4@gmail.com", "Store Clerk");
-            MailAddress ToEmail = new MailAddress("DeptRep@email.com", "Dept Rep");
-            string MessageBody = "The disbursement is ready for collection. The acknowledge code is " + acknowledgementCode;
+            MailAddress FromEmail = new MailAddress("sa50team4@gmail.com", "Store");
+            MailAddress ToEmail = new MailAddress("e0533276@u.nus.edu", "Dept Rep");
+            string MessageBody = "The disbursement is ready for collection. The details of the collection are:\n\n"
+                                 + "Disbursement ID: " + disbursementId + "\n"
+                                 + "Date of Collection: " + dateOfCollection + "\n"
+                                 + "Collection Point: " + collectionPoint + "\n"
+                                 + "Acknowledgement Code: " + acknowledgementCode + "\n";
             MailMessage Message = new MailMessage()
             {
                 From = FromEmail,
@@ -264,8 +257,7 @@ namespace Ben_Project.Controllers
             // Changing fulfillment status of requisition
             deptRequisition.RequisitionFulfillmentStatus = fulfillmentStatus;
 
-            // Adding disbursement to database
-            _dbContext.Add(result);
+            
 
             // Adding adjustment voucher to database
             _dbContext.Add(adjustmentVoucher);
@@ -278,16 +270,79 @@ namespace Ben_Project.Controllers
 
         public IActionResult StoreClerkDisbursementList()
         {
-            var disbursements = _dbContext.Disbursements.ToList();
+            var disbursements = _dbContext.Disbursements
+                .Where(d => d.DisbursementStatus != DisbursementStatus.Acknowledged)
+                .ToList();
 
             return View(disbursements);
         }
 
+        public IActionResult StoreClerkDisbursementDetail(int id)
+        {
+            var disbursement = _dbContext.Disbursements.Find(id);
+
+            return View(disbursement);
+        }
+
+        // logic for saving disbursement
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        public IActionResult StoreClerkSaveDisbursementDetail(Disbursement input)
+        {
+            var disbursement = _dbContext.Disbursements.FirstOrDefault(d => d.Id == input.Id);
+            disbursement.DisbursementDate = input.DisbursementDate;
+            disbursement.DisbursementStatus = DisbursementStatus.PendingDisbursement;
+
+            _dbContext.SaveChanges();
+            return RedirectToAction("StoreClerkDisbursementList", "Store");
+        }
+
+        // Disbursement Acknowledgement
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
         public IActionResult StoreClerkDisbursementAcknowledgement(int id)
         {
             var disbursement = _dbContext.Disbursements.FirstOrDefault(d => d.Id == id);
+            ViewData["acknowledgementCode"] = disbursement.AcknowledgementCode;
+            disbursement.AcknowledgementCode = null;
 
             return View(disbursement);
+        }
+
+        // method to check if disbursement acknowledgement code is correct
+        public IActionResult StoreClerkDisbursementAcknowledgementValidation(Disbursement input)
+        {
+            var disbursement = _dbContext.Disbursements.Find(input.Id);
+
+            if (disbursement.AcknowledgementCode != input.AcknowledgementCode)
+                return RedirectToAction("StoreClerkDisbursementAcknowledgement", "Store", new {id = disbursement.Id});
+
+            // change status of disbursement to acknowledged
+            disbursement.DisbursementStatus = DisbursementStatus.Acknowledged;
+            return RedirectToAction("StoreClerkDisbursementList", "Store");
         }
 
         public IActionResult StoreClerkAdjustmentVoucherList()
@@ -439,6 +494,9 @@ namespace Ben_Project.Controllers
                 stocks = _dbContext.Stocks.ToList()
             });
         }
+
+        // api endpoint to receive json data
+
 
         public IActionResult BarChart()
         {
