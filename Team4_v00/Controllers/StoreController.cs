@@ -196,7 +196,7 @@ namespace Ben_Project.Controllers
                 // updating disbursementDetail attributes
                 disbursementDetail.Stationery = _dbContext.Stationeries.FirstOrDefault(s => s.Id == stationeryId);
                 disbursementDetail.Disbursement = result;
-                disbursementDetail.Department = _dbContext.Departments.Find(deptRequisition.Employee.Dept.id);
+                //disbursementDetail.Department = _dbContext.Departments.Find(deptRequisition.Employee.Dept.id);
 
                 // Add disbursementDetail to disbursement
                 result.DisbursementDetails.Add(disbursementDetail);

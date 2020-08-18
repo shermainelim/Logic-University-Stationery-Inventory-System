@@ -235,6 +235,7 @@ namespace Ben_Project.Controllers
             String item_ID = id.ToString();
             String date = d.ToString();
 
+            
             var result = new QtyPredictionService().QtyPredict(item_category, item_ID, date, IsHoliday).Result;
             //string jsonString;
             //jsonString = JsonSerializer.Serialize(result);
