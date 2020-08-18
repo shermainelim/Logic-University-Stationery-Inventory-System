@@ -839,12 +839,12 @@ namespace Ben_Project.DB
             //Add PO
             PO po1 = new PO();
             po1.OrderDate = new DateTime(2020, 10, 10);
-            po1.POStatus = POStatus.Submitted;
+            po1.POStatus = POStatus.Processing;
             po1.Supplier = su1;
 
             PO po2 = new PO();
             po2.OrderDate = new DateTime(2020, 8, 20);
-            po2.POStatus = POStatus.Submitted;
+            po2.POStatus = POStatus.Processing;
             po2.Supplier = su2;
 
             dbContext.Add(po1);
