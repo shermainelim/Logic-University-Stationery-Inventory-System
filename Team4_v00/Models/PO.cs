@@ -16,7 +16,11 @@ namespace Ben_Project.Models
 
         public POStatus POStatus { get; set; }
 
-        
+        public DateTime ReceiveDate { get; set; }
+
+
+
+
 
 
 

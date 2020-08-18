@@ -10,7 +10,8 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form action="/PO/EditSave">
+        <form asp-action="Edit">
+
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group row">
@@ -19,15 +20,21 @@
                 <span asp-validation-for="OrderDate" class="text-danger"></span>
             </div>
             <div class="form-group row">
-                <label asp-for="POStatus" class="control-label"></label>
-                <select asp-for=@Model.POStatus
-                        class="form-control">
-                    <option selected="selected" value="@Model.POStatus"></option>
-                    <option value="0">Edited</option>
-                    <option value="1">Submitted</option>
-                </select>
-                <span asp-validation-for="POStatus" class="text-danger"></span>
+                <label asp-for="ReceiveDate" class="control-label"></label>
+                <input asp-for="ReceiveDate" class="form-control" />
+                <span asp-validation-for="ReceiveDate" class="text-danger"></span>
             </div>
+            @*<div class="form-group row">
+                    <label asp-for="POStatus" class="control-label"></label>
+                    <select asp-for=@Model.POStatus
+                            class="form-control">
+                        <option selected="selected" value="@Model.POStatus"></option>
+                        <option value="0">Processing</option>
+                        <option value="1">Completed</option>
+                        <option value="2">Cancelled</option>
+                    </select>
+                    <span asp-validation-for="POStatus" class="text-danger"></span>
+                </div>*@
             <div class="form-group row">
 
                 <table>

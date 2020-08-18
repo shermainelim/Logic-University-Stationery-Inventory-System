@@ -23,7 +23,17 @@ namespace Ben_Project.Controllers
         // GET: PO
         public async Task<IActionResult> Index()
         {
-            return View(await _context.POs.ToListAsync());
+            var pos = await _context.POs.ToListAsync();
+            var poList = new List<PO>();
+            foreach (var po in pos)
+            {
+                if (po.POStatus == POStatus.Processing || po.POStatus == POStatus.Completed)
+                {
+                    poList.Add(po);
+                }
+            }
+
+            return View(poList);
         }
 
         // GET: PO/Details/5
@@ -49,9 +59,9 @@ namespace Ben_Project.Controllers
         {
             var po = new PO();
             var suppliers = _context.Suppliers.ToList();
-            
+
             ViewData["suppliers"] = suppliers;
-            
+
 
             return View();
         }
@@ -105,7 +115,7 @@ namespace Ben_Project.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,OrderDate,POStatus")] PO pO)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,OrderDate,POStatus,ReceiveDate")] PO pO)
         {
             if (id != pO.Id)
             {
@@ -116,9 +126,25 @@ namespace Ben_Project.Controllers
             {
                 try
                 {
-                    var poDetail = pO.PODetails;
+                    pO.POStatus = POStatus.Completed;
+
                     _context.Update(pO);
-                    _context.Update(poDetail);
+                    List<PODetail> pODetails = new List<PODetail>();
+                    foreach (var poD in _context.PODetails.ToList())
+                    {
+                        if (poD.PO.Id == pO.Id)
+                        {
+                            pODetails.Add(poD);
+                        }
+                    }
+
+                    foreach (var pODetail in pODetails)
+                    {
+                        var stock = _context.Stocks.FirstOrDefault(s => s.Stationery.Id == pODetail.SupplierDetail.Stationery.Id);
+                        stock.Qty += pODetail.Qty;
+                        _context.Update(stock);
+                    }
+
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -161,11 +187,13 @@ namespace Ben_Project.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var toDelete = await _context.POs.FindAsync(id);
-            foreach (var poDetail in toDelete.PODetails)
+            /*foreach (var poDetail in toDelete.PODetails)
             {
                 _context.Remove(poDetail);
             }
-            _context.Remove(toDelete);
+            _context.Remove(toDelete);*/
+            toDelete.POStatus = POStatus.Cancelled;
+            _context.Update(toDelete);
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
@@ -181,20 +209,22 @@ namespace Ben_Project.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult CreateNext([Bind("OrderDate,Supplier")] PO pO)
         {
-                var po = new PO();
-                po.OrderDate = pO.OrderDate;
-                po.POStatus = po.POStatus;
-                po.Supplier = _context.Suppliers.FirstOrDefault(s => s.Id == pO.Supplier.Id);
+            var po = new PO();
+            po.OrderDate = pO.OrderDate;
+            po.POStatus = po.POStatus;
+            po.Supplier = _context.Suppliers.FirstOrDefault(s => s.Id == pO.Supplier.Id);
             po.PODetails = new List<PODetail>();
 
             var sd = _context.SupplierDetails.ToList();
 
 
-            foreach (SupplierDetail s in sd) {
-                if (s.Supplier.Id == po.Supplier.Id) {
+            foreach (SupplierDetail s in sd)
+            {
+                if (s.Supplier.Id == po.Supplier.Id)
+                {
                     var poDetails = new PODetail();
                     poDetails.SupplierDetail = s;
-                    
+
                     //prediction
                     int id = poDetails.SupplierDetail.Stationery.Id;
                     int cat = (int)poDetails.SupplierDetail.Stationery.Category;
@@ -222,14 +252,15 @@ namespace Ben_Project.Controllers
 
                 }
             }
-            
+
             Console.WriteLine(po);
 
-            
+
             return View(po);
         }
 
-        public double prediction(int id, int Cat,String IsHoliday,DateTime d) {
+        public double prediction(int id, int Cat, String IsHoliday, DateTime d)
+        {
 
             String item_category = Cat.ToString();
             String item_ID = id.ToString();
@@ -267,22 +298,36 @@ namespace Ben_Project.Controllers
             var supplier = _context.Suppliers.FirstOrDefault(s => s.Id == po.Supplier.Id);
             newPo.Supplier = supplier;
             _context.Add(newPo);
-            foreach (PODetail pd in po.PODetails) {
+            foreach (PODetail pd in po.PODetails)
+            {
                 pd.SupplierDetail = _context.SupplierDetails.FirstOrDefault(s => s.Id == pd.SupplierDetail.Id);
                 pd.PO = newPo;
                 _context.Add(pd);
             }
             _context.SaveChanges();
-            
-            
+
+
 
             return RedirectToAction("Index");
         }
 
         public IActionResult EditSave(PO po)
         {
+
+
             _context.Update(po);
             _context.SaveChanges();
+
+            foreach (var poDetail in po.PODetails)
+            {
+                int id = poDetail.SupplierDetail.Stationery.Id;
+                Stock stock = _context.Stocks.FirstOrDefault(s => s.Stationery.Id == id);
+                //stock.Qty += poDetail.Qty;
+                // _context.Stocks.Update(stock);
+            }
+
+
+
 
             return RedirectToAction("Index");
         }
