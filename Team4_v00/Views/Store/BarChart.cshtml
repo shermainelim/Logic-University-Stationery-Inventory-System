@@ -21,65 +21,6 @@
 
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
 
-    <style id="compiled-css" type="text/css">
-        table {
-            position: relative;
-            width: 700px;
-            background-color: #aaa;
-            overflow: hidden;
-            border-collapse: collapse;
-        }
-
-
-        /*thead*/
-        thead {
-            position: relative;
-            display: block; /*seperates the header from the body allowing it to be positioned*/
-            width: 700px;
-            overflow: visible;
-        }
-
-            thead th {
-                background-color: #99a;
-                min-width: 120px;
-                height: 32px;
-                border: 1px solid #222;
-            }
-
-                thead th:nth-child(1) { /*first cell in the header*/
-                    position: relative;
-                    display: block; /*seperates the first cell in the header from the header*/
-                    background-color: #88b;
-                }
-
-
-        /*tbody*/
-
-        tbody {
-            position: relative;
-            display: block; /*seperates the tbody from the header*/
-            width: 700px;
-            height: 239px;
-            overflow: scroll;
-        }
-
-            tbody td {
-                background-color: #bbc;
-                min-width: 120px;
-                border: 1px solid #222;
-            }
-
-            tbody tr td:nth-child(1) { /*the first cell in each tr*/
-                position: relative;
-                display: block; /*seperates the first column from the tbody*/
-                height: 80px;
-                background-color: #99a;
-            }
-
-
-        /* EOS */
-    </style>
-
     <script id="insert"></script>
 
 
@@ -87,8 +28,8 @@
 <body>
     <p style="color:red">@TempData["Error"]</p>
     <body>
-        <table id="presentforjoe">
-            <thead>
+        <table id="barChart_tbl">
+            <thead style="background-color: lightskyblue">
                 <tr>
                     <th>Stationery</th>
                     <th>Qty</th>
@@ -205,36 +146,67 @@
 </head>
 
 <form asp-controller="Store" asp-action="BarChartFilter" method="post">
-    <div class="form-group">
-        <label for="exampleFormControlSelect1">Stationery select</label>
-        <select class="selectpicker show-tick"
-                name="IsHoliday2"
-                data_show_subtext="false" ,
-                data_live_search="true">
-            <option data-hidden="true">Select</option>
-            @for (var i = 0; i < history2.Count; i++)
-            {
-                <text>
-                    <option value='@history2[@i].Description' name='Stationery' id="Stationery">@history2[@i].Description</option>
+    <div class="form-group row" style="padding-top:10px"></div>
+    <div class="form-group row">
+        <div class="col-sm-6">
+            <div class="form-group row">
+                <div class="col-sm-4">
+                    <label for="exampleFormControlSelect1">Stationery select</label>
+                </div>
+                
+                <div class="col-sm-8">
+                    <select class="selectpicker show-tick"
+                            name="IsHoliday2"
+                            data_show_subtext="false" ,
+                            data_live_search="true">
+                        <option data-hidden="true">Select</option>
+                        @for (var i = 0; i < history2.Count; i++)
+                        {
+                            <text>
+                                <option value='@history2[@i].Description' name='Stationery' id="Stationery">@history2[@i].Description</option>
 
-                </text>};
-        </select>
+                            </text>};
+                    </select>
+                </div>
+                
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-4">
+                    <label>Start Date</label>
+                </div>
+                <div class="col-sm-8">
+                    <input name="startDate" type="date" />
+                </div>
+               
+                
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-4">
+                    <label>End Date</label>
+                </div>
+                <div class="col-sm-8">
+                    <input name="endDate" type="date" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-10">
+                    <div id="colFilter_div"></div>
+                </div>
+                
+            </div>
+        </div>
+        <div class="col-sm-6">
+            
+        </div>
+        
     </div>
-
-    <table>
-        <tr>
-            <td>Start Date:</td>
-            <td>
-                <input name="startDate" type="date" />
-            </td>
-            <td>End Date:</td>
-            <td>
-                <input name="endDate" type="date" />
-            </td>
-        </tr>
-    </table>
-
-
+    <div class="form-group row">
+        <div class="col-sm-8">
+            <div class="col-sm-8" id="chart_div"></div>
+        </div>
+        
+    </div>
+   
 
     @*<table id="Filter1" align="center">
             <h2>DepartmentId Code No: 1 (Store Clerk) , 2 (Registrar Dept) , 3 (Commerce Dept)</h2>
@@ -347,7 +319,9 @@
 
 
 </head>
-
+<div class="form-group row">
+    <div class="col-sm-4" id="colFilter_div"></div>
+</div>
 <div id="colFilter_div"></div>
 <div id="chart_div"></div>
 <div id="creativeCommons" style="text-align: center; width: 400px;">
