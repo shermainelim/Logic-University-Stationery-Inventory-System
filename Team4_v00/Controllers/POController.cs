@@ -8,13 +8,16 @@ using Microsoft.EntityFrameworkCore;
 using Ben_Project.DB;
 using Ben_Project.Models;
 using Ben_Project.Services.QtyServices;
+using Ben_Project.Services.MessageService;
+using System.Net.Mail;
+using Ben_Project.Services;
 
 namespace Ben_Project.Controllers
 {
     public class POController : Controller
     {
         private readonly LogicContext _context;
-
+       
         public POController(LogicContext context)
         {
             _context = context;
@@ -293,11 +296,18 @@ namespace Ben_Project.Controllers
 
         public IActionResult Save(PO po)
         {
+            String items = "";
             var newPo = new PO();
             newPo.OrderDate = po.OrderDate;
             newPo.POStatus = po.POStatus;
             var supplier = _context.Suppliers.FirstOrDefault(s => s.Id == po.Supplier.Id);
             newPo.Supplier = supplier;
+
+            foreach(PODetail p in po.PODetails)
+            {
+                items += p.SupplierDetail.Stationery.Description.ToString() + ": "
+                        + p.Qty + " \n";
+            }
             _context.Add(newPo);
             foreach (PODetail pd in po.PODetails)
             {
@@ -307,7 +317,14 @@ namespace Ben_Project.Controllers
             }
             _context.SaveChanges();
 
+            MailAddress FromEmail = new MailAddress("sa50team4@gmail.com", "Store");
+            MailAddress ToEmail = new MailAddress("e0533276@u.nus.edu", "Supplier");
+            string Subject = "Purchase Order";
+            string MessageBody = "You have orders from Store. The items list are:\n\n"
+                                 + items;
 
+            EmailService.SendEmail(FromEmail, ToEmail, Subject, MessageBody);
+            //(Mail fromMail, Mail toMail, String acknowledgementCode, String flag) 
 
             return RedirectToAction("Index");
         }
