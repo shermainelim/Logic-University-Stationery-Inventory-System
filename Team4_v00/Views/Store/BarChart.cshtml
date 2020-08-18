@@ -1,9 +1,11 @@
 ﻿@{ var history = (List<DisbursementDetail>)ViewData["histories"];
     var history2 = (List<Stationery>)ViewData["histories2"];
+    var departments = (List<Department>)ViewData["depts"];
 }
 
 <html>
 <head>
+
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <title>Table with Fixed Header and First Column</title>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
@@ -52,6 +54,7 @@
 
 
         /*tbody*/
+
         tbody {
             position: relative;
             display: block; /*seperates the tbody from the header*/
@@ -73,6 +76,7 @@
                 background-color: #99a;
             }
 
+
         /* EOS */
     </style>
 
@@ -81,8 +85,9 @@
 
 </head>
 <body>
+    <p style="color:red">@TempData["Error"]</p>
     <body>
-        <table>
+        <table id="presentforjoe">
             <thead>
                 <tr>
                     <th>Stationery</th>
@@ -198,25 +203,40 @@
 
 
 </head>
-<body>
-    <form asp-controller="Store" asp-action="BarChartFilter" method="post">
-        <div class="form-group">
-            <label for="exampleFormControlSelect1">Stationery select</label>
-            <select class="selectpicker show-tick"
-                    name="IsHoliday2"
-                    data_show_subtext="false" ,
-                    data_live_search="true">
-                <option data-hidden="true">Select</option>
-                @for (var i = 0; i < history2.Count; i++)
-                {
-                    <text>
-                        <option value='@history2[@i].Description' name='Stationery' id="Stationery">@history2[@i].Description</option>
 
-                    </text>};
-            </select>
-        </div>
+<form asp-controller="Store" asp-action="BarChartFilter" method="post">
+    <div class="form-group">
+        <label for="exampleFormControlSelect1">Stationery select</label>
+        <select class="selectpicker show-tick"
+                name="IsHoliday2"
+                data_show_subtext="false" ,
+                data_live_search="true">
+            <option data-hidden="true">Select</option>
+            @for (var i = 0; i < history2.Count; i++)
+            {
+                <text>
+                    <option value='@history2[@i].Description' name='Stationery' id="Stationery">@history2[@i].Description</option>
 
-        <table id="Filter" align="center">
+                </text>};
+        </select>
+    </div>
+
+    <table>
+        <tr>
+            <td>Start Date:</td>
+            <td>
+                <input name="startDate" type="date" />
+            </td>
+            <td>End Date:</td>
+            <td>
+                <input name="endDate" type="date" />
+            </td>
+        </tr>
+    </table>
+
+
+
+    @*<table id="Filter1" align="center">
             <h2>DepartmentId Code No: 1 (Store Clerk) , 2 (Registrar Dept) , 3 (Commerce Dept)</h2>
             <tr>
                 <td>-Enter Number only- Start Department: </td>
@@ -258,29 +278,32 @@
                 </td>
             </tr>
 
-        </table>
+        </table>*@
 
-        <input type="submit" name="assign" id="assign" value="assign" class="btn btn-default">
-        <input type="hidden" name="my_data" value="">
-    </form>
+    <input type="submit" name="assign" id="assign" value="assign" class="btn btn-default">
+    <input type="hidden" name="my_data" value="">
+</form>
 
-    <script type="text/javascript">
-        //<![CDATA[
+<script type="text/javascript">
+    //<![CDATA[
 
-        $(document).ready(function () {
+    $(document).ready(function () {
 
 
-            $("select").prop('class', 'selectpicker show-tick form-control');
-            $("select").attr('data-live-search', true);
-            $('#assign').click(function () {
-                var ag = $('#selectpicker').val();
-                $('[name="my_data"]').val(ag);
-            });
-
+        $("select").prop('class', 'selectpicker show-tick form-control');
+        $("select").attr('data-live-search', true);
+        $('#assign').click(function () {
+            var ag = $('#selectpicker').val();
+            $('[name="my_data"]').val(ag);
         });
 
-        //]]></script>
+    });
 
+
+    //]]></script>
+
+
+@*
     <script>
         // tell the embed parent frame the height of the content
         if (window.parent && window.parent.parent) {
@@ -293,7 +316,8 @@
         // always overwrite window.name, in case users try to set it manually
         window.name = "result"
     </script>
-</body>
+*@
+
 </html>
 
 
@@ -323,14 +347,14 @@
 
 
 </head>
-<body>
-    <div id="colFilter_div"></div>
-    <div id="chart_div"></div>
-    <div id="creativeCommons" style="text-align: center; width: 400px;">
-        <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/InteractiveResource" property="dct:title" rel="dct:type">Code to use a CategoryFilter as a column selector</span> by <span xmlns:cc="http://creativecommons.org/ns#" property="cc:attributionName">Andrew Gallant</span> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US">Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License</a>.
-    </div>
 
-    <script type="text/javascript">
+<div id="colFilter_div"></div>
+<div id="chart_div"></div>
+<div id="creativeCommons" style="text-align: center; width: 400px;">
+    <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/InteractiveResource" property="dct:title" rel="dct:type">Code to use a CategoryFilter as a column selector</span> by <span xmlns:cc="http://creativecommons.org/ns#" property="cc:attributionName">Andrew Gallant</span> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US">Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License</a>.
+</div>
+
+<script type="text/javascript">
     //<![CDATA[
 
         google.load('visualization', '1', { packages: ['controls'] });
@@ -339,16 +363,29 @@
         function drawChart() {
             var data = new google.visualization.DataTable();
             data.addColumn('string', 'Year/Month');
-          @for(var i = 0; i < 1; i++)
+          @for(var i = 0; i < departments.Count ; i++)
                 {
-                    <text> data.addColumn('number', '@history[@i].Stationery.Description');</text>
+                    <text> data.addColumn('number', '@departments[@i].DeptName');</text>
             };
             data.addRows([
-            @for (var i = 0; i < history.Count - 1; i++) {
-                <text>['@history[@i].Month @history[@i].Year @history[@i].Department.DeptName @history[@i].Stationery.Description',@history[@i].Qty],</text>
+            @for (var i = 0; i < history.Count/departments.Count - 1; i++) {
+                <text>['@history[@i].Month @history[@i].Year @history[@i].Stationery.Description',@history[@i*3].Qty,@history[(@i*3)+1].Qty,@history[(@i*3)+2].Qty],</text>
             }
-            ['@history[history.Count-1].Month @history[history.Count-1].Year @history[history.Count-1].Department.DeptName @history[history.Count-1].Stationery.Description',@history[history.Count - 1].Qty]
-                    ]);
+                @if(history.Count%departments.Count==2 && history[history.Count-2].Department.id == departments[0].id)
+                {
+                    <text> ['@history[history.Count-1].Month @history[history.Count-1].Year @history[history.Count-1].Department.DeptName @history[history.Count-2].Stationery.Description',@history[history.Count - 2].Qty, 0, 0], </text>
+                     <text> ['@history[history.Count-1].Month @history[history.Count-1].Year @history[history.Count-1].Department.DeptName @history[history.Count-1].Stationery.Description',@history[history.Count - 1].Qty, 0, 0]]); </text>
+
+                }
+                else if(history.Count%departments.Count==1 && history[history.Count-1].Department.id == departments[0].id)
+                {
+                    <text> ['@history[history.Count-1].Month @history[history.Count-1].Year @history[history.Count-1].Department.DeptName @history[history.Count-1].Stationery.Description',@history[history.Count - 1].Qty, 0, 0]]); </text>
+                        }
+                        else {
+               <text> ['@history[history.Count-1].Month @history[history.Count-1].Year @history[history.Count-1].Department.DeptName @history[history.Count-1].Stationery.Description', @history[history.Count - 3].Qty, @history[history.Count - 2].Qty, @history[history.Count - 1].Qty]
+                    ]);</text>
+                }
+
 
             var columnsTable = new google.visualization.DataTable();
             columnsTable.addColumn('number', 'colIndex');
@@ -415,17 +452,17 @@
         }
         //]]></script>
 
-    <script>
-        // tell the embed parent frame the height of the content
-        if (window.parent && window.parent.parent) {
-            window.parent.parent.postMessage(["resultsFrame", {
-                height: document.body.getBoundingClientRect().height,
-                slug: "WaUu2"
-            }], "*")
-        }
+<script>
+    // tell the embed parent frame the height of the content
+    if (window.parent && window.parent.parent) {
+        window.parent.parent.postMessage(["resultsFrame", {
+            height: document.body.getBoundingClientRect().height,
+            slug: "WaUu2"
+        }], "*")
+    }
 
-        // always overwrite window.name, in case users try to set it manually
-        window.name = "result"
-    </script>
-</body>
+    // always overwrite window.name, in case users try to set it manually
+    window.name = "result"
+</script>
+
 </html>

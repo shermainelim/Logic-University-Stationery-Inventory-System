@@ -299,7 +299,7 @@ namespace Ben_Project.Controllers
             var disbursement = _dbContext.Disbursements.Find(input.Id);
 
             if (disbursement.AcknowledgementCode != input.AcknowledgementCode)
-                return RedirectToAction("StoreClerkDisbursementAcknowledgement", "Store", new {id = disbursement.Id});
+                return RedirectToAction("StoreClerkDisbursementAcknowledgement", "Store", new { id = disbursement.Id });
 
             // change status of disbursement to acknowledged
             disbursement.DisbursementStatus = DisbursementStatus.Acknowledged;
@@ -465,17 +465,51 @@ namespace Ben_Project.Controllers
         public IActionResult BarChart()
         {
 
-            var uh = _dbContext.DisbursementDetails.FromSqlRaw("SELECT [DisbursementDetail].[Id], [StationeryId],[Description],[Qty],[DisbursementId],[A_Date],[Departmentid],[Month],[Year] FROM[BenProject].[dbo].[DisbursementDetail] INNER JOIN[Stationeries] ON[DisbursementDetail].[StationeryId] = [Stationeries].[Id] WHERE[Description] = 'Pencil 2B' AND([Month] BETWEEN '5' AND '7') ORDER BY[A_Date], [Departmentid], [DisbursementId],[StationeryId] ").ToList();
+            //var uh = _dbContext.DisbursementDetails.FromSqlRaw("SELECT [DisbursementDetail].[Id], [StationeryId],[Description],[Qty],[DisbursementId],[A_Date],[Departmentid],[Month],[Year] FROM[BenProject].[dbo].[DisbursementDetail] INNER JOIN[Stationeries] ON[DisbursementDetail].[StationeryId] = [Stationeries].[Id] WHERE[Description] = 'Pencil 2B' AND([Month] BETWEEN '5' AND '7') ORDER BY[A_Date], [Departmentid], [DisbursementId],[StationeryId] ").ToList();
 
-            //var blogs = _dbContext.UsageHistories.ToList();
+            var uh = _dbContext.DisbursementDetails.ToList();
             ViewData["histories"] = uh;
 
-            //var uh2 = _dbContext.Stationeries.ToList();
-            //ViewData["histories2"] = uh2;
+            var dd = _dbContext.DisbursementDetails.ToList();
+            HashSet<Stationery> stationeries = new HashSet<Stationery>();
+            foreach (var cc in dd)
+            {
+                stationeries.Add(cc.Stationery);
+            }
+            List<Stationery> st = new List<Stationery>();
+            foreach (Stationery ss in stationeries)
+            {
+                st.Add(ss);
+            }
+            ViewData["histories2"] = st;
+            HashSet<Department> departments = new HashSet<Department>();
 
-            //return View();
+            foreach (var dept in dd)
+            {
+                departments.Add(dept.Department);
+            }
 
-            //new
+            List<Department> depts = new List<Department>();
+            foreach (var d in departments)
+            {
+                depts.Add(d);
+            }
+            ViewData["depts"] = depts;
+
+            return View();
+        }
+
+        public ActionResult BarChartFilter(string IsHoliday2, DateTime startDate, DateTime endDate)
+        {
+            //var uh = _dbContext.DisbursementDetails.FromSqlRaw("SELECT [DisbursementDetail].[Id],[StationeryId],[Description],[Qty],[DisbursementId],[A_Date],[Departmentid],[Month],[Year] FROM[BenProject].[dbo].[DisbursementDetail] INNER JOIN[Stationeries] ON[DisbursementDetail].[StationeryId] = [Stationeries].[Id] WHERE[Description] = '" + IsHoliday2 + "' AND([Month] BETWEEN '" + startMonth + "' AND '" + endMonth + "' AND[Year] = '" + Year + "' ) AND ([Departmentid] BETWEEN '" + startDepartment + "' AND '" + endDepartment + "') ORDER BY[A_Date], [Departmentid], [DisbursementId],[StationeryId] ").ToList();
+            if (endDate < startDate)
+            {
+                TempData["Error"] = "Please select date in correct order";
+                return RedirectToAction("BarChart");
+            }
+            var uh = _dbContext.DisbursementDetails.Where(x => x.Stationery.Description.Equals(IsHoliday2) && x.A_Date > startDate && x.A_Date < endDate).ToList();
+            ViewData["histories"] = uh;
+
             var dd = _dbContext.DisbursementDetails.ToList();
             HashSet<Stationery> stationeries = new HashSet<Stationery>();
             foreach (var cc in dd)
@@ -489,26 +523,20 @@ namespace Ben_Project.Controllers
             }
             ViewData["histories2"] = st;
 
-            return View();
-        }
+            HashSet<Department> departments = new HashSet<Department>();
 
-        public ActionResult BarChartFilter(string IsHoliday2, string startMonth, string endMonth, string Year, string startDepartment, string endDepartment)
-        {
-            //var user = new SqlParameter("user", IsHoliday2);
-            //int startMonthInt = Int32.Parse(startMonth);
-            //int endMonthInt = Int32.Parse(endMonth);
-            //int YearInt = Int32.Parse(Year);
+            foreach (var dept in dd)
+            {
+                departments.Add(dept.Department);
+            }
 
-            //var uhold3 = _dbContext.UsageHistories.FromSqlRaw(("SELECT[Id],[StationeryId],[Description],[Departmentid],[Qty],[A_Date],[DisbursementDetailId] FROM[BenProject].[dbo].[UsageHistories] WHERE[Description]= @user", user)+("ORDER BY[StationeryId],[Departmentid], [A_Date]")).ToList();
-            var uh = _dbContext.DisbursementDetails.FromSqlRaw("SELECT [DisbursementDetail].[Id],[StationeryId],[Description],[Qty],[DisbursementId],[A_Date],[Departmentid],[Month],[Year] FROM[BenProject].[dbo].[DisbursementDetail] INNER JOIN[Stationeries] ON[DisbursementDetail].[StationeryId] = [Stationeries].[Id] WHERE[Description] = '" + IsHoliday2 + "' AND([Month] BETWEEN '" + startMonth + "' AND '" + endMonth + "' AND[Year] = '" + Year + "' ) AND ([Departmentid] BETWEEN '" + startDepartment + "' AND '" + endDepartment + "') ORDER BY[A_Date], [Departmentid], [DisbursementId],[StationeryId] ").ToList();
-            //var blogs = _dbContext.UsageHistories.ToList();
-            ViewData["histories"] = uh;
-
-            //var uh2 = _dbContext.Stationeries.ToList();
-            //ViewData["histories2"] = uh2;
-
-
-            return View("BarChart2");
+            List<Department> depts = new List<Department>();
+            foreach (var d in departments)
+            {
+                depts.Add(d);
+            }
+            ViewData["depts"] = depts;
+            return View("BarChart");
         }
     }
 }

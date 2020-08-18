@@ -7,6 +7,8 @@ namespace Ben_Project.Models
 {
     public enum POStatus
     {
+        Edited,
+        Submitted,
         Processing,
         Completed,
         Cancelled

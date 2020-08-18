@@ -24,9 +24,9 @@
         {
             <tr>
                 <td>@disbursement.Id.ToString()</td>
-                <td>@disbursement.DeptRequisition.Employee.Dept.DeptName</td>
+                @*<td>@disbursement.DeptRequisition.Employee.Dept.DeptName</td>*@
                 <td>@disbursement.DisbursementStatus</td>
-                <td>@disbursement.DeptRequisition.Employee.Dept.CollectionPoint</td>
+                @*<td>@disbursement.DeptRequisition.Employee.Dept.CollectionPoint</td>*@
                 <td>
                     @(disbursement.DisbursementDate != null ? ((DateTime)disbursement.DisbursementDate).ToString("MM/dd/yyyy") : "N/A")
                 </td>
