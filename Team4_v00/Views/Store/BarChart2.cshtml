@@ -1,14 +1,163 @@
-﻿
-@{
-    var history = (List<UsageHistory>)ViewData["histories"];
-    var history2 = history;
+﻿@{ var history = (List<DisbursementDetail>)ViewData["histories"];
+    var history2 = (List<Stationery>)ViewData["histories2"];
 }
-<h1>write something</h1>
+
 
 <html>
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <title>CategoryFilter as column selector</title>
+    <title>Table with Fixed Header and First Column</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="googlebot" content="noindex, nofollow">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <script type="text/javascript"
+            src="/js/lib/dummy.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="/css/result-light.css">
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+
+    <style id="compiled-css" type="text/css">
+        table {
+            position: relative;
+            width: 700px;
+            background-color: #aaa;
+            overflow: hidden;
+            border-collapse: collapse;
+        }
+
+
+        /*thead*/
+        thead {
+            position: relative;
+            display: block; /*seperates the header from the body allowing it to be positioned*/
+            width: 700px;
+            overflow: visible;
+        }
+
+            thead th {
+                background-color: #99a;
+                min-width: 120px;
+                height: 32px;
+                border: 1px solid #222;
+            }
+
+                thead th:nth-child(1) { /*first cell in the header*/
+                    position: relative;
+                    display: block; /*seperates the first cell in the header from the header*/
+                    background-color: #88b;
+                }
+
+
+        /*tbody*/
+        tbody {
+            position: relative;
+            display: block; /*seperates the tbody from the header*/
+            width: 700px;
+            height: 239px;
+            overflow: scroll;
+        }
+
+            tbody td {
+                background-color: #bbc;
+                min-width: 120px;
+                border: 1px solid #222;
+            }
+
+            tbody tr td:nth-child(1) { /*the first cell in each tr*/
+                position: relative;
+                display: block; /*seperates the first column from the tbody*/
+                height: 80px;
+                background-color: #99a;
+            }
+
+        /* EOS */
+    </style>
+
+    <script id="insert"></script>
+
+
+</head>
+<body>
+    <body>
+        <table>
+            <thead>
+                <tr>
+                    <th>Stationery</th>
+                    <th>Qty</th>
+                    <th>A_Date</th>
+                    <th>Department Name</th>
+                    <th>Month</th>
+                    <th>Year</th>
+                </tr>
+            </thead>
+            <tbody>
+
+
+                @for (var i = 0; i < history.Count; i++)
+                {
+                    <text>
+                        <tr>
+                            <td>@history[@i].Stationery.Description</td>
+                            <td>@history[@i].Qty</td>
+                            <td>@history[@i].A_Date</td>
+                            <td>@history[@i].Department.DeptName</td>
+                            <td>@history[@i].Month</td>
+                            <td>@history[@i].Year</td>
+                        </tr>
+                    </text>};
+
+            </tbody>
+        </table>
+    </body>
+
+
+    <script type="text/javascript">
+        //<![CDATA[
+
+
+        $(document).ready(function () {
+            $('tbody').scroll(function (e) { //detect a scroll event on the tbody
+                /*
+            Setting the thead left value to the negative valule of tbody.scrollLeft will make it track the movement
+            of the tbody element. Setting an elements left value to that of the tbody.scrollLeft left makes it maintain 			it's relative position at the left of the table.
+            */
+                $('thead').css("left", -$("tbody").scrollLeft()); //fix the thead relative to the body scrolling
+                $('thead th:nth-child(1)').css("left", $("tbody").scrollLeft()); //fix the first cell of the header
+                $('tbody td:nth-child(1)').css("left", $("tbody").scrollLeft()); //fix the first column of tdbody
+            });
+        });
+
+
+
+        //]]></script>
+
+    <script>
+        // tell the embed parent frame the height of the content
+        if (window.parent && window.parent.parent) {
+            window.parent.parent.postMessage(["resultsFrame", {
+                height: document.body.getBoundingClientRect().height,
+                slug: "bzuasLcz"
+            }], "*")
+        }
+
+        // always overwrite window.name, in case users try to set it manually
+        window.name = "result"
+    </script>
+
+
+</body>
+</html>
+
+
+
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>Category Filter as column selector</title>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta name="robots" content="noindex, nofollow">
     <meta name="googlebot" content="noindex, nofollow">
@@ -39,89 +188,89 @@
     </div>
 
     <script type="text/javascript">
-        //<![CDATA[
+    //<![CDATA[
 
+        google.load('visualization', '1', { packages: ['controls'] });
+        google.setOnLoadCallback(drawChart);
 
-            google.load('visualization', '1', { packages: ['controls'] });
-            google.setOnLoadCallback(drawChart);
-
-           function drawChart() {
+        function drawChart() {
             var data = new google.visualization.DataTable();
             data.addColumn('string', 'Year/Month');
-            data.addColumn('number', '@history[0].Department.DeptName');
-            data.addColumn('number', '@history[3].Department.DeptName');
-            data.addColumn('number', '@history[6].Department.DeptName');
+          @for(var i = 0; i < 1; i++)
+                {
+                    <text> data.addColumn('number', '@history[@i].Stationery.Description');</text>
+            };
             data.addRows([
-                ['@history[0].A_Date.ToString("yyyyMMMM") @history[0].Stationery.Description',@history[0].Qty, @history[3].Qty, @history[6].Qty],
-                ['@history[1].A_Date.ToString("yyyyMMMM") @history[1].Stationery.Description', @history[1].Qty, @history[4].Qty, @history[7].Qty],
-                ['@history[2].A_Date.ToString("yyyyMMMM") @history[2].Stationery.Description', @history[2].Qty, @history[5].Qty, @history[8].Qty]
-            ]);
-
-
-                var columnsTable = new google.visualization.DataTable();
-                columnsTable.addColumn('number', 'colIndex');
-                columnsTable.addColumn('string', 'colLabel');
-                var initState = { selectedValues: [] };
-                // put the columns into this data table (skip column 0)
-                for (var i = 1; i < data.getNumberOfColumns(); i++) {
-                    columnsTable.addRow([i, data.getColumnLabel(i)]);
-                    // you can comment out this next line if you want to have a default selection other than the whole list
-                    initState.selectedValues.push(data.getColumnLabel(i));
-                }
-                // you can set individual columns to be the default columns (instead of populating via the loop above) like this:
-                // initState.selectedValues.push(data.getColumnLabel(4));
-
-                var chart = new google.visualization.ChartWrapper({
-                    chartType: 'BarChart',
-                    containerId: 'chart_div',
-                    dataTable: data,
-                    options: {
-                        title: 'Dept',
-                        width: 1000,
-                        height: 1000
-                    }
-                });
-
-                var columnFilter = new google.visualization.ControlWrapper({
-                    controlType: 'CategoryFilter',
-                    containerId: 'colFilter_div',
-                    dataTable: columnsTable,
-                    options: {
-                        filterColumnLabel: 'colLabel',
-                        ui: {
-                            label: 'Columns',
-                            allowTyping: false,
-                            allowMultiple: true,
-                            allowNone: false,
-                            selectedValuesLayout: 'belowStacked'
-                        }
-                    },
-                    state: initState
-                });
-
-                function setChartView() {
-                    var state = columnFilter.getState();
-                    var row;
-                    var view = {
-                        columns: [0]
-                    };
-                    for (var i = 0; i < state.selectedValues.length; i++) {
-                        row = columnsTable.getFilteredRows([{ column: 1, value: state.selectedValues[i] }])[0];
-                        view.columns.push(columnsTable.getValue(row, 0));
-                    }
-                    // sort the indices into their original order
-                    view.columns.sort(function (a, b) {
-                        return (a - b);
-                    });
-                    chart.setView(view);
-                    chart.draw();
-                }
-                google.visualization.events.addListener(columnFilter, 'statechange', setChartView);
-
-                setChartView();
-                columnFilter.draw();
+            @for (var i = 0; i < history.Count - 1; i++) {
+                <text>['@history[@i].Month @history[@i].Year @history[@i].Department.DeptName @history[@i].Stationery.Description',@history[@i].Qty],</text>
             }
-            //]]></script>
+            ['@history[history.Count-1].Month @history[history.Count-1].Year @history[history.Count-1].Department.DeptName @history[history.Count-1].Stationery.Description',@history[history.Count - 1].Qty]
+                    ]);
+
+            var columnsTable = new google.visualization.DataTable();
+            columnsTable.addColumn('number', 'colIndex');
+            columnsTable.addColumn('string', 'colLabel');
+            var initState = { selectedValues: [] };
+            // put the columns into this data table (skip column 0)
+            for (var i = 1; i < data.getNumberOfColumns(); i++) {
+                columnsTable.addRow([i, data.getColumnLabel(i)]);
+                // you can comment out this next line if you want to have a default selection other than the whole list
+                initState.selectedValues.push(data.getColumnLabel(i));
+            }
+            // you can set individual columns to be the default columns (instead of populating via the loop above) like this:
+            // initState.selectedValues.push(data.getColumnLabel(4));
+
+            var chart = new google.visualization.ChartWrapper({
+                chartType: 'BarChart',
+                containerId: 'chart_div',
+                dataTable: data,
+                options: {
+                    title: 'Qty',
+                    width: 1700,
+                    height: 1700
+                }
+            });
+
+            var columnFilter = new google.visualization.ControlWrapper({
+                controlType: 'CategoryFilter',
+                containerId: 'colFilter_div',
+                dataTable: columnsTable,
+                options: {
+                    filterColumnLabel: 'colLabel',
+                    ui: {
+                        label: 'Columns',
+                        allowTyping: false,
+                        allowMultiple: true,
+                        allowNone: false,
+                        selectedValuesLayout: 'belowStacked'
+                    }
+                },
+                state: initState
+            });
+
+            function setChartView() {
+                var state = columnFilter.getState();
+                var row;
+                var view = {
+                    columns: [0]
+                };
+                for (var i = 0; i < state.selectedValues.length; i++) {
+                    row = columnsTable.getFilteredRows([{ column: 1, value: state.selectedValues[i] }])[0];
+                    view.columns.push(columnsTable.getValue(row, 0));
+                }
+                // sort the indices into their original order
+                view.columns.sort(function (a, b) {
+                    return (a - b);
+                });
+                chart.setView(view);
+                chart.draw();
+            }
+            google.visualization.events.addListener(columnFilter, 'statechange', setChartView);
+
+            setChartView();
+            columnFilter.draw();
+        }
+        //]]></script>
 
     <script>
         // tell the embed parent frame the height of the content
@@ -137,4 +286,3 @@
     </script>
 </body>
 </html>
-

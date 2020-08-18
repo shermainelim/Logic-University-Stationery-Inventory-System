@@ -10,6 +10,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Ben_Project.DB;
 using Ben_Project.Models;
+using Ben_Project.Services;
 using Ben_Project.Services.QtyServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -187,7 +188,7 @@ namespace Ben_Project.Controllers
 
                 if (disbursementDetail.Qty > (requisitionDetail.Qty - requisitionDetail.CollectedQty))
                 {
-                    return RedirectToAction("StoreClerkRequisitionFulfillment", new {id = deptRequisition.Id});
+                    return RedirectToAction("StoreClerkRequisitionFulfillment", new { id = deptRequisition.Id });
                 }
 
                 // updating collected qty
@@ -213,49 +214,6 @@ namespace Ben_Project.Controllers
             // generating acknowledgement code for disbursement
             var acknowledgementCode = Guid.NewGuid().ToString();
             result.AcknowledgementCode = acknowledgementCode;
-
-            // adding disbursement id, date of collection and collection point variables
-            int disbursementId = result.Id;
-            DateTime dateOfCollection = DateTime.Now;
-            CollectionPoint collectionPoint = CollectionPoint.ScienceSchool;
-
-            // sending email to dept rep
-            SmtpClient client = new SmtpClient()
-            {
-                Host = "smtp.gmail.com",
-                Port = 587,
-                EnableSsl = true,
-                DeliveryMethod = SmtpDeliveryMethod.Network,
-                UseDefaultCredentials = false,
-                Credentials = new NetworkCredential()
-                {
-                    UserName = "sa50team4@gmail.com",
-                    Password = "sa50team4adproject"
-                }
-            };
-            MailAddress FromEmail = new MailAddress("sa50team4@gmail.com", "Store");
-            MailAddress ToEmail = new MailAddress("e0533276@u.nus.edu", "Dept Rep");
-            string MessageBody = "The disbursement is ready for collection. The details of the collection are:\n\n"
-                                 + "Disbursement ID: " + disbursementId + "\n"
-                                 + "Date of Collection: " + dateOfCollection + "\n"
-                                 + "Collection Point: " + collectionPoint + "\n"
-                                 + "Acknowledgement Code: " + acknowledgementCode + "\n";
-            MailMessage Message = new MailMessage()
-            {
-                From = FromEmail,
-                Subject = "Disbursement Details",
-                Body = MessageBody
-            };
-            Message.To.Add(ToEmail);
-
-            try
-            {
-                //client.Send(Message);
-            }
-            catch (Exception e)
-            {
-                Debug.Print(e.Message);
-            }
 
             // Changing fulfillment status of requisition
             deptRequisition.RequisitionFulfillmentStatus = fulfillmentStatus;
@@ -288,44 +246,44 @@ namespace Ben_Project.Controllers
         }
 
         // logic for saving disbursement
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
         public IActionResult StoreClerkSaveDisbursementDetail(Disbursement input)
         {
             var disbursement = _dbContext.Disbursements.FirstOrDefault(d => d.Id == input.Id);
             disbursement.DisbursementDate = input.DisbursementDate;
             disbursement.DisbursementStatus = DisbursementStatus.PendingDisbursement;
 
+            var collectionDate = input.DisbursementDate;
+
+            // check that date is in the future
+            if (!(collectionDate > DateTime.Now))
+                return RedirectToAction("StoreClerkDisbursementDetail", "Store", new { id = input.Id });
+
+            // add date to all disbursementdetails
+            foreach (var disbursementDetail in disbursement.DisbursementDetails)
+            {
+                disbursementDetail.A_Date = input.DisbursementDate;
+                disbursementDetail.Month = ((DateTime)input.DisbursementDate).Month;
+                disbursementDetail.Year = ((DateTime)input.DisbursementDate).Year;
+            }
+
+            // sending email to dept rep
+            MailAddress FromEmail = new MailAddress("sa50team4@gmail.com", "Store");
+            MailAddress ToEmail = new MailAddress("e0533276@u.nus.edu", "Dept Rep");
+            string Subject = "Disbursement Details";
+            string MessageBody = "The disbursement is ready for collection. The details of the collection are:\n\n"
+                                 + "Disbursement ID: " + disbursement.Id + "\n"
+                                 + "Date of Collection: " + disbursement.DisbursementDate + "\n"
+                                 + "Collection Point: " + disbursement.DeptRequisition.Employee.Dept.CollectionPoint + "\n"
+                                 + "Acknowledgement Code: " + disbursement.AcknowledgementCode + "\n";
+
+            EmailService.SendEmail(FromEmail, ToEmail, Subject, MessageBody);
+
             _dbContext.SaveChanges();
+
             return RedirectToAction("StoreClerkDisbursementList", "Store");
         }
 
         // Disbursement Acknowledgement
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
         public IActionResult StoreClerkDisbursementAcknowledgement(int id)
         {
             var disbursement = _dbContext.Disbursements.FirstOrDefault(d => d.Id == id);
@@ -345,6 +303,9 @@ namespace Ben_Project.Controllers
 
             // change status of disbursement to acknowledged
             disbursement.DisbursementStatus = DisbursementStatus.Acknowledged;
+
+            _dbContext.SaveChanges();
+
             return RedirectToAction("StoreClerkDisbursementList", "Store");
         }
 
@@ -504,24 +465,42 @@ namespace Ben_Project.Controllers
         public IActionResult BarChart()
         {
 
-            var uh = _dbContext.UsageHistories.FromSqlRaw("SELECT [UsageHistories].[Id], [StationeryId], [Departmentid], [Qty],[A_Date], [Description], [DisbursementDetailId] FROM [BenProject].[dbo].[UsageHistories] INNER JOIN [Stationeries] ON [UsageHistories].[StationeryId] = [Stationeries].[Id] ORDER BY [StationeryId],[Departmentid], [A_Date]").ToList();
+            var uh = _dbContext.DisbursementDetails.FromSqlRaw("SELECT [DisbursementDetail].[Id], [StationeryId],[Description],[Qty],[DisbursementId],[A_Date],[Departmentid],[Month],[Year] FROM[BenProject].[dbo].[DisbursementDetail] INNER JOIN[Stationeries] ON[DisbursementDetail].[StationeryId] = [Stationeries].[Id] WHERE[Description] = 'Pencil 2B' AND([Month] BETWEEN '5' AND '7') ORDER BY[A_Date], [Departmentid], [DisbursementId],[StationeryId] ").ToList();
 
             //var blogs = _dbContext.UsageHistories.ToList();
             ViewData["histories"] = uh;
 
-            var uh2 = _dbContext.Stationeries.ToList();
-            ViewData["histories2"] = uh2;
+            //var uh2 = _dbContext.Stationeries.ToList();
+            //ViewData["histories2"] = uh2;
 
+            //return View();
+
+            //new
+            var dd = _dbContext.DisbursementDetails.ToList();
+            HashSet<Stationery> stationeries = new HashSet<Stationery>();
+            foreach (var cc in dd)
+            {
+                stationeries.Add(cc.Stationery);
+            }
+            List<Stationery> st = new List<Stationery>();
+            foreach (Stationery ss in stationeries)
+            {
+                st.Add(ss);
+            }
+            ViewData["histories2"] = st;
 
             return View();
         }
 
-        public ActionResult BarChartFilter(string IsHoliday2)
+        public ActionResult BarChartFilter(string IsHoliday2, string startMonth, string endMonth, string Year, string startDepartment, string endDepartment)
         {
             //var user = new SqlParameter("user", IsHoliday2);
+            //int startMonthInt = Int32.Parse(startMonth);
+            //int endMonthInt = Int32.Parse(endMonth);
+            //int YearInt = Int32.Parse(Year);
 
             //var uhold3 = _dbContext.UsageHistories.FromSqlRaw(("SELECT[Id],[StationeryId],[Description],[Departmentid],[Qty],[A_Date],[DisbursementDetailId] FROM[BenProject].[dbo].[UsageHistories] WHERE[Description]= @user", user)+("ORDER BY[StationeryId],[Departmentid], [A_Date]")).ToList();
-            var uh = _dbContext.UsageHistories.FromSqlRaw("SELECT [UsageHistories].[Id], [StationeryId], [Departmentid], [Qty], [A_Date], [Description], [DisbursementDetailId] FROM [BenProject].[dbo].[UsageHistories] INNER JOIN [Stationeries] ON [UsageHistories].[StationeryId] = [Stationeries].[Id] WHERE[Description] = '" + IsHoliday2 + "' ORDER BY [StationeryId],[Departmentid], [A_Date]").ToList();
+            var uh = _dbContext.DisbursementDetails.FromSqlRaw("SELECT [DisbursementDetail].[Id],[StationeryId],[Description],[Qty],[DisbursementId],[A_Date],[Departmentid],[Month],[Year] FROM[BenProject].[dbo].[DisbursementDetail] INNER JOIN[Stationeries] ON[DisbursementDetail].[StationeryId] = [Stationeries].[Id] WHERE[Description] = '" + IsHoliday2 + "' AND([Month] BETWEEN '" + startMonth + "' AND '" + endMonth + "' AND[Year] = '" + Year + "' ) AND ([Departmentid] BETWEEN '" + startDepartment + "' AND '" + endDepartment + "') ORDER BY[A_Date], [Departmentid], [DisbursementId],[StationeryId] ").ToList();
             //var blogs = _dbContext.UsageHistories.ToList();
             ViewData["histories"] = uh;
 

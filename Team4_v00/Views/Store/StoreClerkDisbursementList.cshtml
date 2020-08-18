@@ -8,32 +8,40 @@
     <h1 class="display-4">Store Clerk Disbursement List</h1>
 </div>
 
-<table align="center" border="1">
-    <thead>
+<table id="DisburseList" align="center" border="1">
+    <thead style="background-color: lightskyblue">
         <tr>
             <th>Disbursement Id</th>
+            <th>Department</th>
             <th>Status</th>
+            <th>Collection Point</th>
             <th>Collection Date</th>
             <th>Action</th>
         </tr>
     </thead>
-
     <tbody>
         @foreach (var disbursement in @Model)
         {
             <tr>
                 <td>@disbursement.Id.ToString()</td>
+                <td>@disbursement.DeptRequisition.Employee.Dept.DeptName</td>
                 <td>@disbursement.DisbursementStatus</td>
+                <td>@disbursement.DeptRequisition.Employee.Dept.CollectionPoint</td>
                 <td>
-                    @disbursement.DisbursementDate
-                    @(disbursement.DisbursementDate != null ? disbursement.DisbursementDate.ToString() : "N/A")
+                    @(disbursement.DisbursementDate != null ? ((DateTime)disbursement.DisbursementDate).ToString("MM/dd/yyyy") : "N/A")
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "StoreClerkDisbursementDetail", "Store", new { id = @disbursement.Id }, null)
-                    |
-                    @Html.ActionLink("Acknowledge", "StoreClerkDisbursementAcknowledgement", "Store", new { id = @disbursement.Id }, null)
+                    @if (disbursement.DisbursementStatus == DisbursementStatus.PendingPacking)
+                    {
+                        @Html.ActionLink("Edit", "StoreClerkDisbursementDetail", "Store", new { id = @disbursement.Id }, null)
+                    }
+                    else if (disbursement.DisbursementStatus == DisbursementStatus.PendingDisbursement)
+                    {
+                        @Html.ActionLink("Acknowledge", "StoreClerkDisbursementAcknowledgement", "Store", new { id = @disbursement.Id }, null)
+                    }
                 </td>
             </tr>
         }
     </tbody>
 </table>
+
