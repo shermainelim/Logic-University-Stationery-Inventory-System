@@ -217,8 +217,25 @@
         </div>
 
         <table id="Filter" align="center">
+            <h2>DepartmentId Code No: 1 (Store Clerk) , 2 (Registrar Dept) , 3 (Commerce Dept)</h2>
             <tr>
-                <td>Start Month: </td>
+                <td>-Enter Number only- Start Department: </td>
+                <td>
+                    <input id="startDepartment" name="startDepartment" value="@ViewData["startDepartment"]" />
+
+                </td>
+            </tr>
+
+            <tr>
+                <td>-Enter Number only- End Department: </td>
+                <td>
+                    <input id="endDepartment" name="endDepartment" value="@ViewData["endDepartment"]" />
+
+                </td>
+            </tr>
+
+            <tr>
+                <td>-Enter Number only- Start Month: </td>
                 <td>
                     <input id="startMonth" name="startMonth" value="@ViewData["startMonth"]" />
 
@@ -226,7 +243,7 @@
             </tr>
 
             <tr>
-                <td>Ending Month: </td>
+                <td>-Enter Number only- Ending Month: </td>
                 <td>
                     <input id="endMonth" name="endMonth" value="@ViewData["endMonth"]" />
 
@@ -234,7 +251,7 @@
             </tr>
 
             <tr>
-                <td>Year: </td>
+                <td>-Enter Number only- Year: </td>
                 <td>
                     <input id="Year" name="Year" value="@ViewData["Year"]" />
 
