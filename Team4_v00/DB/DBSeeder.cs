@@ -223,7 +223,7 @@ namespace Ben_Project.DB
             Stock st1 = new Stock();
             st1.Stationery = s1;
             st1.ReorderLevel = 20;
-            st1.ReorderQty =30;
+            st1.ReorderQty = 30;
             st1.Qty = 1000;
             st1.UnitPrice = 50.0;
 
@@ -462,7 +462,7 @@ namespace Ben_Project.DB
             e1.Name = "Jenny Wong Mei Lin";
             e1.Username = "employee1";
             e1.Password = Crypto.Sha256("employee1");
-            e1.Dept = d1;
+            e1.Dept = d3;
             e1.JobTitle = DeptRole.Employee;
             e1.Role = DeptRole.DeptRep;
 
@@ -839,16 +839,17 @@ namespace Ben_Project.DB
             //Add PO
             PO po1 = new PO();
             po1.OrderDate = new DateTime(2020, 10, 10);
+            po1.POStatus = POStatus.Submitted;
             po1.POStatus = POStatus.Processing;
             po1.Supplier = su1;
 
             PO po2 = new PO();
             po2.OrderDate = new DateTime(2020, 8, 20);
+            po2.POStatus = POStatus.Submitted;
             po2.POStatus = POStatus.Processing;
             po2.Supplier = su2;
 
             dbContext.Add(po1);
-            dbContext.Add(po2);
 
 
             //Add PODetail
@@ -881,31 +882,31 @@ namespace Ben_Project.DB
             dbContext.Add(poD3);
             dbContext.Add(poD4);
 
-            Disbursement disbursement1 = new Disbursement();
-            disbursement1.DeptRequisition = dr1;
-            Disbursement disbursement2 = new Disbursement();
-            disbursement2.DeptRequisition = dr2;
-            Disbursement disbursement3 = new Disbursement();
-            disbursement3.DeptRequisition = dr3;
+            //Disbursement disbursement1 = new Disbursement();
+            //disbursement1.DeptRequisition = dr1;
+            //Disbursement disbursement2 = new Disbursement();
+            //disbursement2.DeptRequisition = dr2;
+            //Disbursement disbursement3 = new Disbursement();
+            //disbursement3.DeptRequisition = dr3;
 
-            DisbursementDetail dd1 = new DisbursementDetail();
-            dd1.Disbursement = disbursement1;
-            dd1.Stationery = s1;
+            //DisbursementDetail dd1 = new DisbursementDetail();
+            //dd1.Disbursement = disbursement1;
+            //dd1.Stationery = s1;
 
-            DisbursementDetail dd2 = new DisbursementDetail();
-            dd2.Disbursement = disbursement2;
-            dd2.Stationery = s2;
+            //DisbursementDetail dd2 = new DisbursementDetail();
+            //dd2.Disbursement = disbursement2;
+            //dd2.Stationery = s2;
 
-            DisbursementDetail dd3 = new DisbursementDetail();
-            dd3.Disbursement = disbursement3;
-            dd3.Stationery = s3;
+            //DisbursementDetail dd3 = new DisbursementDetail();
+            //dd3.Disbursement = disbursement3;
+            //dd3.Stationery = s3;
 
-            dbContext.Add(disbursement1);
-            dbContext.Add(disbursement2);
-            dbContext.Add(disbursement3);
-            dbContext.Add(dd1);
-            dbContext.Add(dd2);
-            dbContext.Add(dd3);
+            //dbContext.Add(disbursement1);
+            //dbContext.Add(disbursement2);
+            //dbContext.Add(disbursement3);
+            //dbContext.Add(dd1);
+            //dbContext.Add(dd2);
+            //dbContext.Add(dd3);
 
             //UsageHistory usage11m1 = new UsageHistory();
             //usage11m1.Stationery = s1;
@@ -1856,8 +1857,19 @@ namespace Ben_Project.DB
             product2m6d1.Month = 6;
             product2m6d1.Year = 2020;
 
+            DisbursementDetail product3m6d1 = new DisbursementDetail();
+            product3m6d1.Stationery = s15;
+            product3m6d1.Department = d3;
+            product3m6d1.Qty = 0;
+            product3m6d1.A_Date = new DateTime(2020, 06, 25);
+
+            product3m6d1.Disbursement = dbur6;
+            product3m6d1.Month = 6;
+            product3m6d1.Year = 2020;
+
             dbContext.Add(product1m6d1);
             dbContext.Add(product2m6d1);
+            dbContext.Add(product3m6d1);
 
             //Departmemt 3 , 1 Disbursement, 2, July
 
@@ -1881,8 +1893,19 @@ namespace Ben_Project.DB
             product2m7d1.Month = 7;
             product2m7d1.Year = 2020;
 
+            DisbursementDetail product3m7d1 = new DisbursementDetail();
+            product3m7d1.Stationery = s15;
+            product3m7d1.Department = d3;
+            product3m7d1.Qty = 0;
+            product3m7d1.A_Date = new DateTime(2020, 07, 25);
+
+            product3m7d1.Disbursement = dbur7;
+            product3m7d1.Month = 7;
+            product3m7d1.Year = 2020;
+
             dbContext.Add(product1m7d1);
             dbContext.Add(product2m7d1);
+            dbContext.Add(product3m7d1);
 
             //to use later
 
