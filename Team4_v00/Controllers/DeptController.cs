@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Ben_Project.DB;
 using Ben_Project.Models;
@@ -33,6 +34,32 @@ namespace Ben_Project.Controllers
 
             return View(requisitions);
         }
+
+        /////////////////////////////// API /////////////////////////////////////////////
+
+        public string DeptHeadRequisitionListApi()
+        {
+            var dTOs = new List<DeptRequisitionDTO>();
+
+            var requisitions = _dbContext.DeptRequisitions
+                .Where(dr => dr.RequisitionApprovalStatus == RequisitionApprovalStatus.Pending).ToList();
+
+            foreach (var requisition in requisitions)
+            {
+                var dTO = new DeptRequisitionDTO();
+                dTO.Id = requisition.Id;
+                dTO.RequisitionApprovalStatus = requisition.RequisitionApprovalStatus;
+                dTO.RequisitionFulfillmentStatus = requisition.RequisitionFulfillmentStatus;
+                dTOs.Add(dTO);
+            }
+
+
+            return JsonSerializer.Serialize(new
+            {
+                requisitions = dTOs
+            });
+        }
+
 
         public IActionResult DeptHeadChangeRequisitionStatus(int id, string status)
         {
