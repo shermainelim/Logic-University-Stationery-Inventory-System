@@ -13,7 +13,6 @@
         <th>Requisition Id</th>
         <th>Requestor</th>
         <th>Approval Status</th>
-        <th>Action</th>
     </tr>
 
     @foreach (var requisition in @Model)
@@ -22,16 +21,11 @@
         var requestor = @requisition.Employee.Name;
         var approvalStatus = @requisition.RequisitionApprovalStatus;
 
-        <tr>
-            <td>@requisitionId</td>
-            <td>@requestor</td>
-            <td>@approvalStatus</td>
-            <td>
-                @Html.ActionLink("Approve", "DeptHeadChangeRequisitionStatus", "Dept", new {id = requisition.Id, status = "Approved"}, null)
-                |
-                @Html.ActionLink("Reject", "DeptHeadChangeRequisitionStatus", "Dept", new {id = requisition.Id, status = "Rejected"}, null)
-            </td>
-        </tr>
+    <tr>
+        <td>@Html.ActionLink(@requisition.Id.ToString(), "DeptHeadRequisitionDetail", "Dept", new { id = @requisition.Id }, null)</td>
+        <td>@requestor</td>
+        <td>@approvalStatus</td>
+    </tr>
     }
 </table>
 

@@ -5,6 +5,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Ben_Project.DB;
 using Ben_Project.Models;
+using Ben_Project.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.ProjectModel;
 
@@ -60,20 +61,20 @@ namespace Ben_Project.Controllers
             });
         }
 
-
-        public IActionResult DeptHeadChangeRequisitionStatus(int id, string status)
+        public IActionResult DeptHeadRequisitionDetail(int id)
         {
-            var requisition = _dbContext.DeptRequisitions.FirstOrDefault(dr => dr.Id == id);
+            var viewModel = new RequisitionViewModel();
 
-            if (status == "Approved")
-            {
-                requisition.RequisitionApprovalStatus = RequisitionApprovalStatus.Approved;
-                requisition.RequisitionFulfillmentStatus = RequisitionFulfillmentStatus.ToBeProcessed;
-            }
-            else if (status == "Rejected")
-            {
-                requisition.RequisitionApprovalStatus = RequisitionApprovalStatus.Rejected;
-            }
+            viewModel.DeptRequisition = _dbContext.DeptRequisitions.Find(id);
+            return View(viewModel);
+        }
+
+        public IActionResult DeptHeadChangeRequisitionStatus(RequisitionViewModel input)
+        {
+            var requisition = _dbContext.DeptRequisitions.FirstOrDefault(dr => dr.Id == input.DeptRequisition.Id);
+
+            requisition.Reason = input.DeptRequisition.Reason;
+            requisition.RequisitionApprovalStatus = input.DeptRequisition.RequisitionApprovalStatus;
 
             _dbContext.SaveChanges();
             return RedirectToAction("DeptHeadRequisitionList", "Dept");
