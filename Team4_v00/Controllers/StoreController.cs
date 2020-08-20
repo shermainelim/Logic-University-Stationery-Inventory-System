@@ -122,7 +122,14 @@ namespace Ben_Project.Controllers
             return View(requisitions);
         }
 
-
+        // API
+        public string StoreClerkRequisitionListApi()
+        {
+            return JsonSerializer.Serialize(new
+            {
+                requisitions = _dbContext.DeptRequisitions.Where(dr => dr.RequisitionApprovalStatus == RequisitionApprovalStatus.Approved).ToList()
+            });
+        }
 
         public IActionResult StoreClerkRequisitionFulfillment(int id)
         {
@@ -140,6 +147,28 @@ namespace Ben_Project.Controllers
             return View(disbursement);
         }
 
+        // API /store/storeclerkrequisitionfulfillmentapi?id=1
+        public string StoreClerkRequisitionFulfillmentApi(int id)
+        {
+            var stocks = _dbContext.Stocks.ToList();
+            ViewData["stocks"] = stocks;
+
+            var requisition = _dbContext.DeptRequisitions.FirstOrDefault(dr => dr.Id == id);
+            ViewData["requisition"] = requisition;
+
+            var disbursement = new Disbursement();
+            disbursement.DisbursementDetails = new List<DisbursementDetail>();
+            foreach (var requisitionDetail in requisition.RequisitionDetails)
+                disbursement.DisbursementDetails.Add(new DisbursementDetail());
+
+            return JsonSerializer.Serialize(new
+            {
+                disbursement
+            });
+        }
+
+        // API to receive JSON disbursement object
+        [HttpPost]
         public IActionResult StoreClerkSaveRequisition(Disbursement disbursement)
         {
             var deptRequisition = _dbContext.DeptRequisitions.FirstOrDefault(dr => dr.Id == disbursement.DeptRequisition.Id);
@@ -276,7 +305,7 @@ namespace Ben_Project.Controllers
                                  + "Collection Point: " + disbursement.DeptRequisition.Employee.Dept.CollectionPoint + "\n"
                                  + "Acknowledgement Code: " + disbursement.AcknowledgementCode + "\n";
 
-            EmailService.SendEmail(FromEmail, ToEmail, Subject, MessageBody);
+            //EmailService.SendEmail(FromEmail, ToEmail, Subject, MessageBody);
 
             _dbContext.SaveChanges();
 

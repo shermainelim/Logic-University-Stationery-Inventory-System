@@ -39,7 +39,7 @@ namespace Ben_Project.Services
 
             try
             {
-                //client.Send(Message);
+                client.Send(Message);
             }
             catch (Exception e)
             {

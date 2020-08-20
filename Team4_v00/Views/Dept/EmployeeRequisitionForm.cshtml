@@ -10,9 +10,9 @@
 </div>
 
 
-<form asp-controller="Dept" asp-action="SaveRequisition" method="post">
+<form asp-controller="Dept" asp-action="SaveExRequisition" method="post">
 
-    <table>
+    <table id="ExEmpReqForm">
         <tr>
             <th>Item Name</th>
             <th>Quantity</th>
@@ -23,12 +23,16 @@
             var itemName = @Model.RequisitionDetails[i].Stationery.Description;
             var itemId = @Model.RequisitionDetails[i].Stationery.Id;
             var qty = @Model.RequisitionDetails[i].Qty;
+            var reqId = @Model.Id;
+            var reqDtId = @Model.RequisitionDetails[i].Id;
 
             <tr>
                 <td>@itemName</td>
                 <td>
                     <input asp-for="@Model.RequisitionDetails[i].Stationery.Id" type="hidden" value="@itemId" />
                     <input asp-for="@Model.RequisitionDetails[i].Qty" type="number" />
+                    <input asp-for="@Model.RequisitionDetails[i].Id" type="hidden" value="@reqDtId" />
+                    <input asp-for="@Model.Id" type="hidden" value="@reqId" />
                 </td>
             </tr>
         }

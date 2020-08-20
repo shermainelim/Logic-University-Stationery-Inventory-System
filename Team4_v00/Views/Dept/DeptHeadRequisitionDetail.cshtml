@@ -1,0 +1,55 @@
+﻿@model Ben_Project.ViewModels.RequisitionViewModel
+
+@{
+    ViewData["Title"] = "DeptHeadRequisitionDetail";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Requisition</h1>
+</div>
+
+
+<form asp-controller="Dept" asp-action="DeptHeadChangeRequisitionStatus" method="post">
+
+    <table id="ReqList" align="center" border="1">
+        <thead style="background-color: lightskyblue">
+            <tr>
+                <th>Item Name</th>
+                <th>Quantity</th>
+            </tr>
+        </thead>
+        
+        <tbody>
+        @for (int i = 0; i < Model.DeptRequisition.RequisitionDetails.Count; i++)
+        {
+            var itemName = @Model.DeptRequisition.RequisitionDetails[i].Stationery.Description;
+            var itemId = @Model.DeptRequisition.RequisitionDetails[i].Stationery.Id;
+            var qty = @Model.DeptRequisition.RequisitionDetails[i].Qty;
+
+            if (qty > 0)
+            {
+            <tr>
+                <td>@itemName</td>
+                <td>@qty</td>
+            </tr>
+            }
+        }
+        </tbody>
+    </table>
+    
+    <br/>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.DeptRequisition.Reason)
+        @Html.TextAreaFor(m => m.DeptRequisition.Reason, new { @class = "form-control"})
+    </div>
+    
+    <div class="form-group">
+        @Html.LabelFor(m => m.DeptRequisition.RequisitionApprovalStatus)
+        @Html.DropDownListFor(model => model.DeptRequisition.RequisitionApprovalStatus, @Model.RequisitionApprovalStatuses)
+    </div>
+    
+    <input asp-for="@Model.DeptRequisition.Id" type="hidden" value="@Model.DeptRequisition.Id" />
+
+    <input id="saveBtn" type="submit" value="Save" />
+</form>

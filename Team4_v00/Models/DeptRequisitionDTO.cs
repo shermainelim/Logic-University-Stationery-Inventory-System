@@ -5,14 +5,10 @@ using System.Threading.Tasks;
 
 namespace Ben_Project.Models
 {
-    public class DeptRequisition
+    public class DeptRequisitionDTO
     {
         public int Id { get; set; }
-        public virtual Employee Employee { get; set; }
         public RequisitionApprovalStatus RequisitionApprovalStatus { get; set; }
         public RequisitionFulfillmentStatus RequisitionFulfillmentStatus { get; set; }
-        public SubmissionStatus SubmissionStatus { get; set; }
-        public string Reason { get; set; }
-        public virtual List<RequisitionDetail> RequisitionDetails { get; set; }
     }
 }

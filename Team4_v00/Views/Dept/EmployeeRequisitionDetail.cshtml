@@ -9,7 +9,7 @@
     <h1 class="display-4">Requisition Details</h1>
 </div>
 
-<table align="center" border="1">
+<table id="EmpReqDet" align="center" border="1">
     <tr>
         <th>Item Name</th>
         <th>Qty</th>
@@ -20,9 +20,13 @@
         var itemName = @requistionDetail.Stationery.Description;
         var qty = @requistionDetail.Qty;
 
-        <tr>
-            <td>@itemName</td>
-            <td>@qty</td>
-        </tr>
+        //added this qty filter so that 0 qtys are not reflected
+        if (qty > 0)
+        {
+            <tr>
+                <td>@itemName</td>
+                <td>@qty</td>
+            </tr>
+        }
     }
 </table>

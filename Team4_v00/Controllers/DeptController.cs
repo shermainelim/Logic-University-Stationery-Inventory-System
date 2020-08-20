@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Ben_Project.DB;
 using Ben_Project.Models;
+using Ben_Project.ViewModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.ProjectModel;
 
@@ -29,24 +32,50 @@ namespace Ben_Project.Controllers
 
         public IActionResult DeptHeadRequisitionList()
         {
-            var requisitions = _dbContext.DeptRequisitions.Where(dr => dr.RequisitionApprovalStatus == RequisitionApprovalStatus.Pending).ToList();
+            var requisitions = _dbContext.DeptRequisitions.Where(dr => dr.RequisitionApprovalStatus == RequisitionApprovalStatus.Pending && dr.SubmissionStatus == SubmissionStatus.Submitted).ToList();
 
             return View(requisitions);
         }
 
-        public IActionResult DeptHeadChangeRequisitionStatus(int id, string status)
-        {
-            var requisition = _dbContext.DeptRequisitions.FirstOrDefault(dr => dr.Id == id);
+        /////////////////////////////// API /////////////////////////////////////////////
 
-            if (status == "Approved")
+        public string DeptHeadRequisitionListApi()
+        {
+            var dTOs = new List<DeptRequisitionDTO>();
+
+            var requisitions = _dbContext.DeptRequisitions
+                .Where(dr => dr.RequisitionApprovalStatus == RequisitionApprovalStatus.Pending).ToList();
+
+            foreach (var requisition in requisitions)
             {
-                requisition.RequisitionApprovalStatus = RequisitionApprovalStatus.Approved;
-                requisition.RequisitionFulfillmentStatus = RequisitionFulfillmentStatus.ToBeProcessed;
+                var dTO = new DeptRequisitionDTO();
+                dTO.Id = requisition.Id;
+                dTO.RequisitionApprovalStatus = requisition.RequisitionApprovalStatus;
+                dTO.RequisitionFulfillmentStatus = requisition.RequisitionFulfillmentStatus;
+                dTOs.Add(dTO);
             }
-            else if (status == "Rejected")
+
+
+            return JsonSerializer.Serialize(new
             {
-                requisition.RequisitionApprovalStatus = RequisitionApprovalStatus.Rejected;
-            }
+                requisitions = dTOs
+            });
+        }
+
+        public IActionResult DeptHeadRequisitionDetail(int id)
+        {
+            var viewModel = new RequisitionViewModel();
+
+            viewModel.DeptRequisition = _dbContext.DeptRequisitions.Find(id);
+            return View(viewModel);
+        }
+
+        public IActionResult DeptHeadChangeRequisitionStatus(RequisitionViewModel input)
+        {
+            var requisition = _dbContext.DeptRequisitions.FirstOrDefault(dr => dr.Id == input.DeptRequisition.Id);
+
+            requisition.Reason = input.DeptRequisition.Reason;
+            requisition.RequisitionApprovalStatus = input.DeptRequisition.RequisitionApprovalStatus;
 
             _dbContext.SaveChanges();
             return RedirectToAction("DeptHeadRequisitionList", "Dept");
@@ -71,6 +100,43 @@ namespace Ben_Project.Controllers
 
         public IActionResult EmployeeRequisitionForm()
         {
+            var requisition = _dbContext.DeptRequisitions.FirstOrDefault(dr => dr.SubmissionStatus == SubmissionStatus.Draft);
+            //looking for existing requisition with Draft status
+            if (requisition != null)
+            {
+                return View(requisition);
+            }
+
+            else
+            {
+                return RedirectToAction("NewEmployeeRequisitionForm");
+            }
+        }
+
+        //Saving existing requisition
+        public IActionResult SaveExRequisition(DeptRequisition requisition)
+        {
+
+            var result = _dbContext.DeptRequisitions.FirstOrDefault(rd => rd.Id == requisition.Id);
+
+            foreach (var requisitionDetail in requisition.RequisitionDetails)
+            {
+                // this is needed to add Stationary to each object.
+                requisitionDetail.Stationery =
+                     _dbContext.Stationeries.FirstOrDefault(s => s.Id == requisitionDetail.Stationery.Id);
+                requisitionDetail.DeptRequisition = result;
+
+
+            }
+            result.RequisitionDetails = requisition.RequisitionDetails;
+
+            _dbContext.SaveChanges();
+
+            return RedirectToAction("EmployeeRequisitionList", "Dept");
+        }
+
+        public IActionResult NewEmployeeRequisitionForm()
+        {
             DeptRequisition deptRequisition = new DeptRequisition();
             deptRequisition.RequisitionDetails = new List<RequisitionDetail>();
 
@@ -86,11 +152,13 @@ namespace Ben_Project.Controllers
             return View(deptRequisition);
         }
 
+        //Saving new requisition
         public IActionResult SaveRequisition(DeptRequisition deptRequisition)
         {
-            // temporary, to get employee id from session data
+            //get employee from session data
             var result = new DeptRequisition();
-            var employee = _dbContext.Employees.FirstOrDefault(e => e.Id == 1);
+            string usernameInSession = HttpContext.Session.GetString("username");
+            var employee = _dbContext.Employees.FirstOrDefault(ep => ep.Username == usernameInSession);
             result.Employee = employee;
 
             _dbContext.Add(result);
@@ -106,6 +174,56 @@ namespace Ben_Project.Controllers
             _dbContext.SaveChanges();
 
             return RedirectToAction("EmployeeRequisitionList", "Dept");
+        }
+
+        public IActionResult DeptRepChangeSubmissionStatus(int id)
+        {
+            var requisition = _dbContext.DeptRequisitions.FirstOrDefault(dr => dr.Id == id);
+
+            requisition.SubmissionStatus = SubmissionStatus.Submitted;
+
+            _dbContext.SaveChanges();
+            return RedirectToAction("EmployeeRequisitionList", "Dept");
+        }
+
+        public IActionResult DeptRepRequisitionDraft()
+        {
+            var requisition = _dbContext.DeptRequisitions.FirstOrDefault(dr => dr.SubmissionStatus == SubmissionStatus.Draft);
+            if (requisition != null)
+            {
+                return View(requisition);
+            }
+            else
+            {
+                return RedirectToAction("EmployeeRequisitionList", "Dept");
+            }
+
+        }
+
+        //Manage Collection Point
+        public IActionResult chooseCollectionPt()
+        {
+
+            string usernameInSession = HttpContext.Session.GetString("username");
+            var employee = _dbContext.Employees.FirstOrDefault(ep => ep.Username == usernameInSession);
+            var empDept = employee.Dept;
+            ViewBag.listCollectionPts = Enum.GetValues(typeof(CollectionPoint)).Cast<CollectionPoint>();
+            return View(empDept);
+
+        }
+
+        public IActionResult setCollectionPt(IFormCollection frmCollect, Department department)
+        {
+            string usernameInSession = HttpContext.Session.GetString("username");
+            var employee = _dbContext.Employees.FirstOrDefault(ep => ep.Username == usernameInSession);
+            var empDept = employee.Dept;
+
+            string collectionPt = frmCollect["collectionpt"];
+            CollectionPoint chosencpt = (CollectionPoint)Enum.Parse(typeof(CollectionPoint), collectionPt, true);
+            empDept.CollectionPoint = chosencpt;
+            _dbContext.SaveChanges();
+
+            return RedirectToAction("chooseCollectionPt", "Dept");
         }
     }
 }
