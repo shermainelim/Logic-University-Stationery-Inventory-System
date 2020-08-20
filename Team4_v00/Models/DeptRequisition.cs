@@ -11,6 +11,7 @@ namespace Ben_Project.Models
         public virtual Employee Employee { get; set; }
         public RequisitionApprovalStatus RequisitionApprovalStatus { get; set; }
         public RequisitionFulfillmentStatus RequisitionFulfillmentStatus { get; set; }
+        public SubmissionStatus SubmissionStatus { get; set; }
         public string Reason { get; set; }
         public virtual List<RequisitionDetail> RequisitionDetails { get; set; }
     }

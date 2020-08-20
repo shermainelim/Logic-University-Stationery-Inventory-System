@@ -1,0 +1,26 @@
+﻿@model Ben_Project.Models.Department
+
+@{ ViewData["Title"] = "ManageCollectionPoint"; }
+
+<div class="text-center">
+    <h1 class="display-4">Manage Collection Point</h1>
+</div>
+
+
+<form asp-controller="Dept" asp-action="setCollectionPt" method="post">
+
+    Department: @Model.DeptName<br />
+    Current Collection Point: @Model.CollectionPoint<br />
+    <br />
+
+    Select New Collection Point:<br />
+    @foreach (var cpt in ViewBag.listCollectionPts)
+    {
+        var cptName = @cpt.ToString();
+        <input type="radio" name="collectionpt" value="@cptName" />@cpt.ToString()<br />
+    }
+    <br />
+
+    <input id="saveBtn" type="submit" value="Save" />
+
+</form>

@@ -9,18 +9,21 @@
     <h1 class="display-4">Employee Requisition List</h1>
 </div>
 
-<table align="center" border="1">
+<table id="EmpReqList" align="center" border="1">
     <tr>
         <th>Requisition Id</th>
         <th>Action</th>
+        <th>Submission Status</th>
     </tr>
 
     @foreach (var requisition in @Model)
     {
         var requisitionId = @requisition.Id;
+        var submissionStatus = @requisition.SubmissionStatus;
 
         <tr>
             <td>@requisitionId</td>
+            <td>@submissionStatus</td>
             <td>@Html.ActionLink("Details", "EmployeeRequisitionDetail", "Dept", new {id = requisitionId}, null)</td>
         </tr>
     }
