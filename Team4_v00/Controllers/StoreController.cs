@@ -305,7 +305,7 @@ namespace Ben_Project.Controllers
                                  + "Collection Point: " + disbursement.DeptRequisition.Employee.Dept.CollectionPoint + "\n"
                                  + "Acknowledgement Code: " + disbursement.AcknowledgementCode + "\n";
 
-            EmailService.SendEmail(FromEmail, ToEmail, Subject, MessageBody);
+            //EmailService.SendEmail(FromEmail, ToEmail, Subject, MessageBody);
 
             _dbContext.SaveChanges();
 
