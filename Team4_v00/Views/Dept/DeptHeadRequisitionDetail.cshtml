@@ -26,10 +26,13 @@
             var itemId = @Model.DeptRequisition.RequisitionDetails[i].Stationery.Id;
             var qty = @Model.DeptRequisition.RequisitionDetails[i].Qty;
 
+            if (qty > 0)
+            {
             <tr>
                 <td>@itemName</td>
                 <td>@qty</td>
             </tr>
+            }
         }
         </tbody>
     </table>

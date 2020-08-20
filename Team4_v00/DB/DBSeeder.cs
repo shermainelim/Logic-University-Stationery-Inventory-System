@@ -612,40 +612,50 @@ namespace Ben_Project.DB
             DeptRequisition dr1 = new DeptRequisition();
             dr1.Employee = e1;
             dr1.RequisitionApprovalStatus = RequisitionApprovalStatus.Pending;
+            dr1.SubmissionStatus = SubmissionStatus.Submitted;
 
             DeptRequisition dr2 = new DeptRequisition();
             dr2.Employee = e1;
             dr2.RequisitionApprovalStatus = RequisitionApprovalStatus.Pending;
+            dr2.SubmissionStatus = SubmissionStatus.Submitted;
 
             DeptRequisition dr3 = new DeptRequisition();
             dr3.Employee = e1;
             dr3.RequisitionApprovalStatus = RequisitionApprovalStatus.Pending;
+            dr3.SubmissionStatus = SubmissionStatus.Submitted;
 
             DeptRequisition dr4 = new DeptRequisition();
             dr4.Employee = e1;
             dr4.RequisitionApprovalStatus = RequisitionApprovalStatus.Approved;
+            dr4.SubmissionStatus = SubmissionStatus.Submitted;
             dr4.RequisitionFulfillmentStatus = RequisitionFulfillmentStatus.ToBeProcessed;
+
 
             DeptRequisition dr5 = new DeptRequisition();
             dr5.Employee = e1;
             dr5.RequisitionApprovalStatus = RequisitionApprovalStatus.Approved;
+            dr5.SubmissionStatus = SubmissionStatus.Submitted;
             dr5.RequisitionFulfillmentStatus = RequisitionFulfillmentStatus.ToBeProcessed;
 
             DeptRequisition dr6 = new DeptRequisition();
             dr6.Employee = e1;
             dr6.RequisitionApprovalStatus = RequisitionApprovalStatus.Approved;
+            dr6.SubmissionStatus = SubmissionStatus.Submitted;
             dr6.RequisitionFulfillmentStatus = RequisitionFulfillmentStatus.ToBeProcessed;
 
             DeptRequisition dr7 = new DeptRequisition();
             dr7.Employee = e1;
+            dr7.SubmissionStatus = SubmissionStatus.Submitted;
             dr7.RequisitionApprovalStatus = RequisitionApprovalStatus.Rejected;
 
             DeptRequisition dr8 = new DeptRequisition();
             dr8.Employee = e1;
+            dr8.SubmissionStatus = SubmissionStatus.Submitted;
             dr8.RequisitionApprovalStatus = RequisitionApprovalStatus.Rejected;
 
             DeptRequisition dr9 = new DeptRequisition();
             dr9.Employee = e1;
+            dr9.SubmissionStatus = SubmissionStatus.Submitted;
             dr9.RequisitionApprovalStatus = RequisitionApprovalStatus.Rejected;
 
             DeptRequisition dr10 = new DeptRequisition();
