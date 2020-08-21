@@ -146,6 +146,37 @@ namespace Ben_Project.Controllers
             });
         }
 
+        // api endpoint
+        public string StoreClerkDisbursementDetailsListApi()
+        {
+            var dTOs = new List<DisbursementDetailDTO>();
+
+            var requisitions = _dbContext.DisbursementDetails.ToList();
+
+            foreach (var requisition in requisitions)
+            {
+                var dTO = new DisbursementDetailDTO();
+                dTO.Id = requisition.Id;
+                dTO.StationeryId = requisition.Stationery.Id;
+                dTO.StationeryName = requisition.Stationery.Description;
+                dTO.StationeryId = requisition.Stationery.Id;
+                dTO.Qty = requisition.Qty;
+                dTO.A_Date = requisition.A_Date;
+                dTO.DisbursementId = requisition.Disbursement.Id;
+                dTO.DeptName = requisition.Department.DeptName;
+                dTOs.Add(dTO);
+            }
+
+            return JsonSerializer.Serialize(new
+            {
+                requisitions = dTOs
+            });
+        }
+
+        // api endpoint to receive json data
+
+
+
         public IActionResult StoreClerkRequisitionFulfillment(int id)
         {
             var stocks = _dbContext.Stocks.ToList();
