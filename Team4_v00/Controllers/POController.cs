@@ -11,13 +11,15 @@ using Ben_Project.Services.QtyServices;
 using Ben_Project.Services.MessageService;
 using System.Net.Mail;
 using Ben_Project.Services;
+using System.Text.Json;
+using Ben_Project.Models.AndroidDTOs;
 
 namespace Ben_Project.Controllers
 {
     public class POController : Controller
     {
         private readonly LogicContext _context;
-       
+
         public POController(LogicContext context)
         {
             _context = context;
@@ -269,7 +271,7 @@ namespace Ben_Project.Controllers
             String item_ID = id.ToString();
             String date = d.ToString();
 
-            
+
             var result = new QtyPredictionService().QtyPredict(item_category, item_ID, date, IsHoliday).Result;
             //string jsonString;
             //jsonString = JsonSerializer.Serialize(result);
@@ -303,7 +305,7 @@ namespace Ben_Project.Controllers
             var supplier = _context.Suppliers.FirstOrDefault(s => s.Id == po.Supplier.Id);
             newPo.Supplier = supplier;
 
-            foreach(PODetail p in po.PODetails)
+            foreach (PODetail p in po.PODetails)
             {
                 items += p.SupplierDetail.Stationery.Description.ToString() + ": "
                         + p.Qty + " \n";
@@ -349,5 +351,34 @@ namespace Ben_Project.Controllers
 
             return RedirectToAction("Index");
         }
+
+        // PO API
+        public string POListApi()
+        {
+
+            var dTOs = new List<PODTO>();
+
+            var pOs = _context.POs
+                .Where(p => p.POStatus == POStatus.Processing || p.POStatus == POStatus.Completed).ToList();
+
+            foreach (var po in pOs)
+            {
+                var dTO = new PODTO();
+                dTO.Id = po.Id;
+                dTO.POStatus = po.POStatus;
+                dTO.SupplierName = po.Supplier.Name;
+                dTO.OrderDate = po.OrderDate;
+                dTO.ReceiveDate = po.ReceiveDate;
+               
+
+                dTOs.Add(dTO);
+            }
+
+            return JsonSerializer.Serialize(new
+            {
+                poS = dTOs
+            });
+        }
+
     }
 }
