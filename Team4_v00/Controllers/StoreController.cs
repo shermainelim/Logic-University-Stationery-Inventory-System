@@ -624,12 +624,18 @@ namespace Ben_Project.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public IActionResult PostTestObject([FromBody] TestDTO input)
+        public string PostTestObject([FromBody] TestDTO input)
         {
             var id = input.Id;
             var name = input.Name;
 
-            return Ok();
+            var response = new ResponseDTO();
+            response.Message = "DTO received";
+
+            return JsonSerializer.Serialize(new
+            {
+                result = response
+            });
         }
     }
 }
