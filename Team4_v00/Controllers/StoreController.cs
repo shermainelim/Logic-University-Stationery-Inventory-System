@@ -13,6 +13,7 @@ using Ben_Project.Models;
 using Ben_Project.Models.AndroidDTOs;
 using Ben_Project.Services;
 using Ben_Project.Services.QtyServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
@@ -619,6 +620,16 @@ namespace Ben_Project.Controllers
             }
             ViewData["depts"] = depts;
             return View("BarChart");
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public IActionResult PostTestObject([FromBody] TestDTO input)
+        {
+            var id = input.Id;
+            var name = input.Name;
+
+            return Ok();
         }
     }
 }
