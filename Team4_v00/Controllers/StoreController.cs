@@ -10,8 +10,10 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Ben_Project.DB;
 using Ben_Project.Models;
+using Ben_Project.Models.AndroidDTOs;
 using Ben_Project.Services;
 using Ben_Project.Services.QtyServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
@@ -125,11 +127,56 @@ namespace Ben_Project.Controllers
         // API
         public string StoreClerkRequisitionListApi()
         {
+
+            var dTOs = new List<DeptRequisitionDTO>();
+
+            var requisitions = _dbContext.DeptRequisitions
+                .Where(dr => dr.RequisitionApprovalStatus == RequisitionApprovalStatus.Approved).ToList();
+
+            foreach (var requisition in requisitions)
+            {
+                var dTO = new DeptRequisitionDTO();
+                dTO.Id = requisition.Id;
+                dTO.RequisitionFulfillmentStatus = requisition.RequisitionFulfillmentStatus;
+                dTOs.Add(dTO);
+            }
+
             return JsonSerializer.Serialize(new
             {
-                requisitions = _dbContext.DeptRequisitions.Where(dr => dr.RequisitionApprovalStatus == RequisitionApprovalStatus.Approved).ToList()
+                requisitions = dTOs
             });
         }
+
+        // api endpoint
+        public string StoreClerkDisbursementDetailsListApi()
+        {
+            var dTOs = new List<DisbursementDetailDTO>();
+
+            var requisitions = _dbContext.DisbursementDetails.ToList();
+
+            foreach (var requisition in requisitions)
+            {
+                var dTO = new DisbursementDetailDTO();
+                dTO.Id = requisition.Id;
+                dTO.StationeryId = requisition.Stationery.Id;
+                dTO.StationeryName = requisition.Stationery.Description;
+                dTO.StationeryId = requisition.Stationery.Id;
+                dTO.Qty = requisition.Qty;
+                dTO.A_Date = requisition.A_Date;
+                dTO.DisbursementId = requisition.Disbursement.Id;
+                dTO.DeptName = requisition.Department.DeptName;
+                dTOs.Add(dTO);
+            }
+
+            return JsonSerializer.Serialize(new
+            {
+                requisitions = dTOs
+            });
+        }
+
+        // api endpoint to receive json data
+
+
 
         public IActionResult StoreClerkRequisitionFulfillment(int id)
         {
@@ -151,19 +198,26 @@ namespace Ben_Project.Controllers
         public string StoreClerkRequisitionFulfillmentApi(int id)
         {
             var stocks = _dbContext.Stocks.ToList();
-            ViewData["stocks"] = stocks;
 
             var requisition = _dbContext.DeptRequisitions.FirstOrDefault(dr => dr.Id == id);
-            ViewData["requisition"] = requisition;
 
-            var disbursement = new Disbursement();
-            disbursement.DisbursementDetails = new List<DisbursementDetail>();
+            var requisitionDetailsDTO = new List<RequisitionDetailDTO>();
+
             foreach (var requisitionDetail in requisition.RequisitionDetails)
-                disbursement.DisbursementDetails.Add(new DisbursementDetail());
+            {
+                var DTO = new RequisitionDetailDTO();
+                DTO.Id = requisitionDetail.Id;
+                DTO.StationeryId = requisitionDetail.Stationery.Id;
+                DTO.StationeryName = requisitionDetail.Stationery.Description;
+                DTO.Qty = requisitionDetail.Qty;
+                requisitionDetailsDTO.Add(DTO);
+            }
+
 
             return JsonSerializer.Serialize(new
             {
-                disbursement
+                requisitionId = requisition.Id,
+                requisitionDetails = requisitionDetailsDTO
             });
         }
 
@@ -305,7 +359,7 @@ namespace Ben_Project.Controllers
                                  + "Collection Point: " + disbursement.DeptRequisition.Employee.Dept.CollectionPoint + "\n"
                                  + "Acknowledgement Code: " + disbursement.AcknowledgementCode + "\n";
 
-            //EmailService.SendEmail(FromEmail, ToEmail, Subject, MessageBody);
+            EmailService.SendEmail(FromEmail, ToEmail, Subject, MessageBody);
 
             _dbContext.SaveChanges();
 
@@ -566,6 +620,22 @@ namespace Ben_Project.Controllers
             }
             ViewData["depts"] = depts;
             return View("BarChart");
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public string PostTestObject([FromBody] TestDTO input)
+        {
+            var id = input.Id;
+            var name = input.Name;
+
+            var response = new ResponseDTO();
+            response.Message = "DTO received";
+
+            return JsonSerializer.Serialize(new
+            {
+                result = response
+            });
         }
     }
 }

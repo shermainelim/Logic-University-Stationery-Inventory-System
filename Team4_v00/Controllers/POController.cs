@@ -12,13 +12,14 @@ using Ben_Project.Services.MessageService;
 using System.Net.Mail;
 using Ben_Project.Services;
 using System.Text.Json;
+using Ben_Project.Models.AndroidDTOs;
 
 namespace Ben_Project.Controllers
 {
     public class POController : Controller
     {
         private readonly LogicContext _context;
-       
+
         public POController(LogicContext context)
         {
             _context = context;
@@ -219,7 +220,6 @@ namespace Ben_Project.Controllers
             po.Supplier = _context.Suppliers.FirstOrDefault(s => s.Id == pO.Supplier.Id);
             po.PODetails = new List<PODetail>();
 
-            
             var sd = _context.SupplierDetails.ToList();
 
 
@@ -254,69 +254,14 @@ namespace Ben_Project.Controllers
                     poDetails.prdictedAmount = final;
 
                     po.PODetails.Add(poDetails);
-                   
 
                 }
             }
 
-            Console.WriteLine( );
-            
+            Console.WriteLine(po);
 
 
             return View(po);
-        }
-        
-        //CreateNextAPI
-        public string CreateNextAPI(int SupplierId,String dateTime)
-        {
-            SupplierId = 1;
-            dateTime = "21 / 8 / 2020 12:00:00 AM";
-            PO po = new PO();
-            po.OrderDate = DateTime.Parse(dateTime);
-            po.Supplier = _context.Suppliers.FirstOrDefault(s => s.Id == SupplierId);
-            po.PODetails = new List<PODetail>();
-
-            var sd = _context.SupplierDetails.ToList();
-
-            foreach (SupplierDetail s in sd)
-            {
-                if (s.Supplier.Id == po.Supplier.Id)
-                {
-                    var poDetails = new PODetail();
-                    poDetails.SupplierDetail = s;
-
-                    //prediction
-                    int id = poDetails.SupplierDetail.Stationery.Id;
-                    int cat = (int)poDetails.SupplierDetail.Stationery.Category;
-                    String b = "False";
-                    double predictResult = prediction(id, cat, b, po.OrderDate);
-
-                    double final = 0.0;
-
-                    Double safetyStock = poDetails.SupplierDetail.Stationery.ReorderLevel;
-                    Stock stock = _context.Stocks.SingleOrDefault(s => s.Stationery.Id == id);
-                    Double currentStock = stock.Qty;
-                    if (((predictResult + safetyStock) > currentStock))
-                    {
-                        final = (predictResult + safetyStock) - currentStock;
-
-                    }
-                    else if ((predictResult + safetyStock) < currentStock)
-                    {
-                        final = 0;
-                    }
-
-                    poDetails.prdictedAmount = final;
-
-                    po.PODetails.Add(poDetails);
-
-
-                }
-            }
-            return JsonSerializer.Serialize(new
-            {
-                requisitions = po
-            });
         }
 
         public double prediction(int id, int Cat, String IsHoliday, DateTime d)
@@ -326,7 +271,7 @@ namespace Ben_Project.Controllers
             String item_ID = id.ToString();
             String date = d.ToString();
 
-            
+
             var result = new QtyPredictionService().QtyPredict(item_category, item_ID, date, IsHoliday).Result;
             //string jsonString;
             //jsonString = JsonSerializer.Serialize(result);
@@ -360,7 +305,7 @@ namespace Ben_Project.Controllers
             var supplier = _context.Suppliers.FirstOrDefault(s => s.Id == po.Supplier.Id);
             newPo.Supplier = supplier;
 
-            foreach(PODetail p in po.PODetails)
+            foreach (PODetail p in po.PODetails)
             {
                 items += p.SupplierDetail.Stationery.Description.ToString() + ": "
                         + p.Qty + " \n";
@@ -406,5 +351,47 @@ namespace Ben_Project.Controllers
 
             return RedirectToAction("Index");
         }
+
+        // PO API
+        public string POListApi()
+        {
+
+            var dTOs = new List<PODTO>();
+            
+
+            var pOs = _context.POs
+                .Where(p => p.POStatus == POStatus.Processing || p.POStatus == POStatus.Completed).ToList();
+
+            foreach (var po in pOs)
+            {
+                var dTO = new PODTO();
+                dTO.Id = po.Id;
+                dTO.POStatus = po.POStatus;
+                dTO.SupplierName = po.Supplier.Name;
+                dTO.OrderDate = po.OrderDate;
+                dTO.ReceiveDate = po.ReceiveDate;
+                dTO.poDetails = new List<PODetailsDTO>();
+
+                foreach (PODetail pdto in po.PODetails) {
+                    PODetailsDTO p = new PODetailsDTO();
+                    p.Id = pdto.Id;
+                    p.poID = pdto.PO.Id;
+                    p.stationery = pdto.SupplierDetail.Stationery;
+                    p.predictionQty = pdto.prdictedAmount;
+                    p.Qty = pdto.Qty;
+                    p.unitPrice = pdto.SupplierDetail.UnitPrice;
+
+                    dTO.poDetails.Add(p);
+                }
+
+                dTOs.Add(dTO);
+            }
+
+            return JsonSerializer.Serialize(new
+            {
+                poS = dTOs
+            });
+        }
+
     }
 }
