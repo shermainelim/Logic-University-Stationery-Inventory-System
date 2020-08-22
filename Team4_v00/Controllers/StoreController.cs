@@ -221,8 +221,25 @@ namespace Ben_Project.Controllers
             });
         }
 
-        // API to receive JSON disbursement object
-        [HttpPost]
+        // API to receive requisition from android
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+
+        
         public IActionResult StoreClerkSaveRequisition(Disbursement disbursement)
         {
             var deptRequisition = _dbContext.DeptRequisitions.FirstOrDefault(dr => dr.Id == disbursement.DeptRequisition.Id);
@@ -630,7 +647,7 @@ namespace Ben_Project.Controllers
             var name = input.Name;
 
             var response = new ResponseDTO();
-            response.Message = "DTO received";
+            response.Message = "Hello Team 4";
 
             return JsonSerializer.Serialize(new
             {
