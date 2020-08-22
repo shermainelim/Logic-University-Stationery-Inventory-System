@@ -301,16 +301,16 @@ namespace Ben_Project.Controllers
             String items = "";
             var newPo = new PO();
             newPo.OrderDate = po.OrderDate;
-            newPo.POStatus = po.POStatus;
+            newPo.POStatus = POStatus.Processing;
             var supplier = _context.Suppliers.FirstOrDefault(s => s.Id == po.Supplier.Id);
             newPo.Supplier = supplier;
-
+            _context.Add(newPo);
             foreach (PODetail p in po.PODetails)
             {
                 items += p.SupplierDetail.Stationery.Description.ToString() + ": "
                         + p.Qty + " \n";
             }
-            _context.Add(newPo);
+            
             foreach (PODetail pd in po.PODetails)
             {
                 pd.SupplierDetail = _context.SupplierDetails.FirstOrDefault(s => s.Id == pd.SupplierDetail.Id);
