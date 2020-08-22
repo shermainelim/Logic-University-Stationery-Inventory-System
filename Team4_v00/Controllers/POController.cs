@@ -353,6 +353,39 @@ namespace Ben_Project.Controllers
         }
 
         // PO API
+        public string POItemApi() {
+            DateTime d = new DateTime();
+            
+
+            PurchaseOrderItemDTO pdto = new PurchaseOrderItemDTO();
+            pdto.supplierID = 1;
+            pdto.POStatus = POStatus.Processing;
+            pdto.OrderDate = d;
+
+            List<PODetailsDTO> poDetailsList = new List<PODetailsDTO>();
+
+            var sd = _context.SupplierDetails.ToList();
+
+            foreach (SupplierDetail s in sd) {
+                if (s.Supplier.Id == pdto.supplierID) {
+                    PODetailsDTO temp = new PODetailsDTO();
+                    temp.stationeryId = s.Stationery.Id;
+                    temp.stationeryDescription = s.Stationery.Description;
+                    temp.supplierDetailId = s.Id;
+                    temp.unitPrice = s.UnitPrice;
+                    temp.predictionQty = 20;
+                    
+
+                    poDetailsList.Add(temp);
+                }
+            }
+            pdto.poDetailsList = poDetailsList;
+
+            return JsonSerializer.Serialize(new
+            {
+                items = pdto
+            });
+        }
         public string POListApi()
         {
 
@@ -380,6 +413,7 @@ namespace Ben_Project.Controllers
                     p.predictionQty = pdto.prdictedAmount;
                     p.Qty = pdto.Qty;
                     p.unitPrice = pdto.SupplierDetail.UnitPrice;
+                    p.supplierDetailId = pdto.SupplierDetail.Id;
 
                     dTO.poDetails.Add(p);
                 }

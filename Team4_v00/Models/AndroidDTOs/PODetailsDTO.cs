@@ -11,6 +11,12 @@ namespace Ben_Project.Models.AndroidDTOs
 
         public int poID { get; set; }
 
+        public int supplierDetailId { get; set; }
+
+        public int stationeryId { get; set; }
+
+        public String stationeryDescription { get; set; }
+
         public Stationery stationery { get; set; }
 
         public double unitPrice { get; set; }
