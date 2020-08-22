@@ -12,6 +12,7 @@ namespace Ben_Project.Models.AndroidDTOs
         public DateTime ReceiveDate { get; set; }
         public POStatus POStatus { get; set; }
         public string SupplierName { get; set; }
-        
+
+        public List<PODetailsDTO> poDetails { get; set; }
     }
 }

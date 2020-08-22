@@ -357,6 +357,7 @@ namespace Ben_Project.Controllers
         {
 
             var dTOs = new List<PODTO>();
+            
 
             var pOs = _context.POs
                 .Where(p => p.POStatus == POStatus.Processing || p.POStatus == POStatus.Completed).ToList();
@@ -369,7 +370,19 @@ namespace Ben_Project.Controllers
                 dTO.SupplierName = po.Supplier.Name;
                 dTO.OrderDate = po.OrderDate;
                 dTO.ReceiveDate = po.ReceiveDate;
-               
+                dTO.poDetails = new List<PODetailsDTO>();
+
+                foreach (PODetail pdto in po.PODetails) {
+                    PODetailsDTO p = new PODetailsDTO();
+                    p.Id = pdto.Id;
+                    p.poID = pdto.PO.Id;
+                    p.stationery = pdto.SupplierDetail.Stationery;
+                    p.predictionQty = pdto.prdictedAmount;
+                    p.Qty = pdto.Qty;
+                    p.unitPrice = pdto.SupplierDetail.UnitPrice;
+
+                    dTO.poDetails.Add(p);
+                }
 
                 dTOs.Add(dTO);
             }
