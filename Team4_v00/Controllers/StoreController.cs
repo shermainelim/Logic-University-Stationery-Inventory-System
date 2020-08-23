@@ -211,6 +211,13 @@ namespace Ben_Project.Controllers
                 DTO.StationeryId = requisitionDetail.Stationery.Id;
                 DTO.StationeryName = requisitionDetail.Stationery.Description;
                 DTO.Qty = requisitionDetail.Qty;
+
+                DTO.StockQty = _dbContext
+                    .Stocks
+                    .FirstOrDefault(s => s.Stationery.Id == requisitionDetail.Stationery.Id)
+                    .Qty;
+
+                DTO.CollectedQty = requisitionDetail.CollectedQty;
                 requisitionDetailsDTO.Add(DTO);
             }
 
