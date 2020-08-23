@@ -18,5 +18,12 @@ namespace Ben_Project.Models
         public virtual Department Department { get; set; }
         public int Month { get; set; }
         public int Year { get; set; }
+
+        public DisbursementDetail()
+        {
+            Stationery = new Stationery();
+            Disbursement = new Disbursement();
+            Department = new Department();
+        }
     }
 }
