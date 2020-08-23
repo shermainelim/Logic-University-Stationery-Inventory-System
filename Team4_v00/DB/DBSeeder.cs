@@ -2210,6 +2210,9 @@ namespace Ben_Project.DB
 
 
             DelegatedEmployee de = new DelegatedEmployee();
+            de.Employee = e1;
+            de.Name = e1.Name;
+            de.delegationStatus = DelegationStatus.mock;
             de.EndDate = new DateTime(2020, 1, 1);
             dbContext.Add(de);
 
