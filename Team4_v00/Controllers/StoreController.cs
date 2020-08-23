@@ -642,7 +642,7 @@ namespace Ben_Project.Controllers
         [HttpPost]
         [AllowAnonymous]
         public string PostTestObject([FromBody] TestDTO input)
-        {
+        { 
             var id = input.Id;
             var name = input.Name;
 
