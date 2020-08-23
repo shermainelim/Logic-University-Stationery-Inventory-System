@@ -13,6 +13,7 @@ using System.Net.Mail;
 using Ben_Project.Services;
 using System.Text.Json;
 using Ben_Project.Models.AndroidDTOs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Ben_Project.Controllers
 {
@@ -304,13 +305,13 @@ namespace Ben_Project.Controllers
             newPo.POStatus = POStatus.Processing;
             var supplier = _context.Suppliers.FirstOrDefault(s => s.Id == po.Supplier.Id);
             newPo.Supplier = supplier;
-
+            _context.Add(newPo);
             foreach (PODetail p in po.PODetails)
             {
                 items += p.SupplierDetail.Stationery.Description.ToString() + ": "
                         + p.Qty + " \n";
             }
-            _context.Add(newPo);
+            
             foreach (PODetail pd in po.PODetails)
             {
                 pd.SupplierDetail = _context.SupplierDetails.FirstOrDefault(s => s.Id == pd.SupplierDetail.Id);
@@ -373,8 +374,28 @@ namespace Ben_Project.Controllers
                     temp.stationeryDescription = s.Stationery.Description;
                     temp.supplierDetailId = s.Id;
                     temp.unitPrice = s.UnitPrice;
-                    temp.predictionQty = 20;
-                    
+
+                    //prediction
+                    int id = s.Stationery.Id;
+                    int cat = (int)s.Stationery.Category;
+                    String b = "False";
+                    double predictResult = prediction(id, cat, b, pdto.OrderDate);
+
+                    double final = 0.0;
+
+                    Double safetyStock = s.Stationery.ReorderLevel;
+                    Stock stock = _context.Stocks.SingleOrDefault(s => s.Stationery.Id == id);
+                    Double currentStock = stock.Qty;
+                    if (((predictResult + safetyStock) > currentStock))
+                    {
+                        final = (predictResult + safetyStock) - currentStock;
+
+                    }
+                    else if ((predictResult + safetyStock) < currentStock)
+                    {
+                        final = 0;
+                    }
+                    temp.predictionQty = final;
 
                     poDetailsList.Add(temp);
                 }
@@ -424,6 +445,35 @@ namespace Ben_Project.Controllers
             return JsonSerializer.Serialize(new
             {
                 poS = dTOs
+            });
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public string POSave([FromBody] PurchaseOrderItemDTO input)
+        {
+            var newPo = new PO();
+            newPo.OrderDate = input.OrderDate;
+            newPo.POStatus = input.POStatus;
+            var supplier = _context.Suppliers.FirstOrDefault(s => s.Id == input.supplierID);
+            newPo.Supplier = supplier;
+            _context.Add(newPo);
+
+            foreach (PODetailsDTO pd in input.poDetailsList)
+            {
+                PODetail poD = new PODetail();
+                poD.SupplierDetail = _context.SupplierDetails.FirstOrDefault(s => s.Id == pd.supplierDetailId);
+                poD.PO = newPo;
+                _context.Add(pd);
+            }
+            _context.SaveChanges();
+
+            var response = new ResponseDTO();
+            response.Message = "Create Successfully";
+
+            return JsonSerializer.Serialize(new
+            {
+                result = response
             });
         }
 
