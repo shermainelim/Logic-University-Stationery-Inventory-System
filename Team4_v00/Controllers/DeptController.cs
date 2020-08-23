@@ -5,6 +5,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Ben_Project.DB;
 using Ben_Project.Models;
+using Ben_Project.Models.AndroidDTOs;
 using Ben_Project.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -41,14 +42,14 @@ namespace Ben_Project.Controllers
 
         public string DeptHeadRequisitionListApi()
         {
-            var dTOs = new List<DeptRequisitionDTO>();
+            var dTOs = new List<DeptRequisitionDTONotInUse>();
 
             var requisitions = _dbContext.DeptRequisitions
                 .Where(dr => dr.RequisitionApprovalStatus == RequisitionApprovalStatus.Pending).ToList();
 
             foreach (var requisition in requisitions)
             {
-                var dTO = new DeptRequisitionDTO();
+                var dTO = new DeptRequisitionDTONotInUse();
                 dTO.Id = requisition.Id;
                 dTO.RequisitionApprovalStatus = requisition.RequisitionApprovalStatus;
                 dTO.RequisitionFulfillmentStatus = requisition.RequisitionFulfillmentStatus;
