@@ -540,10 +540,51 @@ namespace Ben_Project.Controllers
             MailAddress ToEmail = new MailAddress("e0533276@u.nus.edu", "Dept Rep");
             string Subject = "Disbursement Details";
             string MessageBody = "The disbursement is ready for collection. The details of the collection are:\n\n"
-                                 + "Disbursement ID: " + disbursement.Id + "\n"
-                                 + "Date of Collection: " + disbursement.DisbursementDate + "\n"
-                                 + "Collection Point: " + disbursement.DeptRequisition.Employee.Dept.CollectionPoint + "\n"
-                                 + "Acknowledgement Code: " + disbursement.AcknowledgementCode + "\n";
+                                 + "Disbursement ID: " + disbursement.Id + "\n\n"
+                                 + "Date of Collection: " + disbursement.DisbursementDate + "\n\n"
+                                 + "Collection Point: " + disbursement.DeptRequisition.Employee.Dept.CollectionPoint + "\n\n"
+                                 + "Acknowledgement Code: " + disbursement.AcknowledgementCode + "\n\n";
+
+            EmailService.SendEmail(FromEmail, ToEmail, Subject, MessageBody);
+
+            _dbContext.SaveChanges();
+
+            return RedirectToAction("StoreClerkDisbursementList", "Store");
+        }
+
+        // API for saving disbursement
+        [HttpPost]
+        [AllowAnonymous]
+        public IActionResult StoreClerkSaveDisbursementDetailApi([FromBody] DisbursementDTO input)
+        {
+
+            var disbursement = _dbContext.Disbursements.FirstOrDefault(d => d.Id == input.Id);
+            disbursement.DisbursementDate = input.DisbursementDate;
+            disbursement.DisbursementStatus = DisbursementStatus.PendingDisbursement;
+
+            var collectionDate = input.DisbursementDate;
+
+            // check that date is in the future
+            if (!(collectionDate > DateTime.Now))
+                return RedirectToAction("StoreClerkDisbursementDetail", "Store", new { id = input.Id });
+
+            // add date to all disbursementdetails
+            foreach (var disbursementDetail in disbursement.DisbursementDetails)
+            {
+                disbursementDetail.A_Date = collectionDate;
+                disbursementDetail.Month = collectionDate.Month;
+                disbursementDetail.Year = collectionDate.Year;
+            }
+
+            // sending email to dept rep
+            MailAddress FromEmail = new MailAddress("sa50team4@gmail.com", "Store");
+            MailAddress ToEmail = new MailAddress("e0533276@u.nus.edu", "Dept Rep");
+            string Subject = "Disbursement Details";
+            string MessageBody = "The disbursement is ready for collection. The details of the collection are:\n\n"
+                                 + "Disbursement ID: " + disbursement.Id + "\n\n"
+                                 + "Date of Collection: " + disbursement.DisbursementDate + "\n\n"
+                                 + "Collection Point: " + disbursement.DeptRequisition.Employee.Dept.CollectionPoint + "\n\n"
+                                 + "Acknowledgement Code: " + disbursement.AcknowledgementCode + "\n\n";
 
             EmailService.SendEmail(FromEmail, ToEmail, Subject, MessageBody);
 
