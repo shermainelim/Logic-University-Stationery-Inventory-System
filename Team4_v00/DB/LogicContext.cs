@@ -27,6 +27,7 @@ namespace Ben_Project.DB
         public DbSet<DelegatedEmployee> DelegatedEmployees { get; set; }
         public DbSet<DelegateEmployeeDetail> DelegateEmployeeDetails { get; set; }
 
+        public DbSet<TempItems> TempItems { get; set; }
 
         public LogicContext(DbContextOptions<LogicContext> options)
             : base(options)
