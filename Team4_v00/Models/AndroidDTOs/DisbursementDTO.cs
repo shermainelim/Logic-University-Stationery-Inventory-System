@@ -10,5 +10,6 @@ namespace Ben_Project.Models.AndroidDTOs
         public int Id { get; set; }
         public string AcknowledgementCode { get; set; }
         public DisbursementStatus DisbursementStatus { get; set; }
+        public List<DisbursementDetailDTO> DisbursementDetails { get; set; }
     }
 }

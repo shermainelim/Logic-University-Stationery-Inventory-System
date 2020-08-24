@@ -231,32 +231,6 @@ namespace Ben_Project.Controllers
         }
 
         // API to receive requisition from android
-        // create DTO to match deptrequisition DTO sent from android
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
         [HttpPost]
         [AllowAnonymous]
         public IActionResult StoreClerkSaveRequisitionApi([FromBody] DeptRequisitionDTO input)
@@ -500,6 +474,44 @@ namespace Ben_Project.Controllers
             disbursement.DisbursementDetails = _dbContext.DisbursementDetails.Where(dd => dd.Disbursement.Id == id).ToList();
 
             return View(disbursement);
+        }
+
+        // API for getting Disbursement Details
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        public string StoreClerkDisbursementDetailApi(int id)
+        {
+            var disbursement = _dbContext.Disbursements.Find(id);
+            disbursement.DisbursementDetails = _dbContext.DisbursementDetails.Where(dd => dd.Disbursement.Id == id).ToList();
+
+            DisbursementDTO dto = new DisbursementDTO();
+            dto.Id = disbursement.Id;
+            dto.DisbursementDetails = new List<DisbursementDetailDTO>();
+
+            foreach (var disbursementDetail in disbursement.DisbursementDetails)
+            {
+                DisbursementDetailDTO temp = new DisbursementDetailDTO();
+                temp.StationeryCode = disbursementDetail.Stationery.ItemNumber;
+                temp.StationeryName = disbursementDetail.Stationery.Description;
+                temp.Qty = disbursementDetail.Qty;
+                dto.DisbursementDetails.Add(temp);
+            }
+
+            return JsonSerializer.Serialize(new
+            {
+                disbursement = dto
+            });
         }
 
         // logic for saving disbursement
