@@ -132,7 +132,7 @@ namespace Ben_Project.Controllers
             var dTOs = new List<DeptRequisitionDTO>();
 
             var requisitions = _dbContext.DeptRequisitions
-                .Where(dr => dr.RequisitionApprovalStatus == RequisitionApprovalStatus.Approved).ToList();
+                .Where(dr => dr.RequisitionApprovalStatus == RequisitionApprovalStatus.Approved && dr.RequisitionFulfillmentStatus != RequisitionFulfillmentStatus.Fulfilled).ToList();
 
             foreach (var requisition in requisitions)
             {
@@ -263,6 +263,8 @@ namespace Ben_Project.Controllers
 
             // transfer DeptRequisitionDTO data to Disbursement object
             Disbursement disbursement = new Disbursement();
+            disbursement.DeptRequisition = new DeptRequisition();
+            disbursement.DisbursementDetails = new List<DisbursementDetail>();
 
             disbursement.DeptRequisition.Id = input.Id;
 

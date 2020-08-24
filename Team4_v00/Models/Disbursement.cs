@@ -13,11 +13,5 @@ namespace Ben_Project.Models
         public DisbursementStatus DisbursementStatus { get; set; }
         public virtual DeptRequisition DeptRequisition { get; set; }
         public virtual List<DisbursementDetail> DisbursementDetails { get; set; }
-
-        public Disbursement()
-        {
-            DeptRequisition = new DeptRequisition();
-            DisbursementDetails = new List<DisbursementDetail>();
-        }
     }
 }
