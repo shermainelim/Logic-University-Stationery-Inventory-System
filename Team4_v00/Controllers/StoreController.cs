@@ -153,7 +153,8 @@ namespace Ben_Project.Controllers
         {
             var dTOs = new List<DisbursementDetailDTO>();
 
-            var requisitions = _dbContext.DisbursementDetails.ToList();
+            var requisitions = _dbContext.DisbursementDetails.FromSqlRaw("SELECT [DisbursementDetail].[Id], [StationeryId],[Qty],[DisbursementId],[A_Date],[Departmentid],[Month],[Year] FROM[BenProject].[dbo].[DisbursementDetail] WHERE[DepartmentId] = '1' OR [DepartmentId] = '2' OR [DepartmentId] = '3 ' ORDER BY[A_Date], [Departmentid], [DisbursementId],[StationeryId] ").ToList();
+
 
             foreach (var requisition in requisitions)
             {
