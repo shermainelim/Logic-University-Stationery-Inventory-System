@@ -219,14 +219,14 @@ namespace Ben_Project.Controllers
             //The purpose of this step is to remove requisition details that have quantity zero from the database.
             //This will only be done when the dept rep submits the req to the dept head.
             List<RequisitionDetail> toBeRemoved = new List<RequisitionDetail>();
-            foreach(var reqDet in requisition.RequisitionDetails)
+            foreach (var reqDet in requisition.RequisitionDetails)
             {
                 if (reqDet.Qty == 0)
                 {
                     toBeRemoved.Add(reqDet);
                 }
             }
-            foreach(var delObj in toBeRemoved)
+            foreach (var delObj in toBeRemoved)
             {
                 requisition.RequisitionDetails.Remove(delObj);
             }
