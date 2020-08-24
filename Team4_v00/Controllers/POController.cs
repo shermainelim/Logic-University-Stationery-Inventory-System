@@ -295,7 +295,7 @@ namespace Ben_Project.Controllers
 
             return final;
         }
-
+        
 
         public IActionResult Save(PO po)
         {
@@ -323,8 +323,8 @@ namespace Ben_Project.Controllers
             MailAddress FromEmail = new MailAddress("sa50team4@gmail.com", "Store");
             MailAddress ToEmail = new MailAddress("e0533276@u.nus.edu", "Supplier");
             string Subject = "Purchase Order";
-            string MessageBody = "You have orders from Store. The items list are:\n\n"
-                                 + items;
+            string MessageBody = "Title: PO Number " + po.Id + "\n\n" + "You have orders from Store. The items list are:\n\n"
+                                 + items + "\n\n" + "Regards,\n Store Clerk";
 
             EmailService.SendEmail(FromEmail, ToEmail, Subject, MessageBody);
             //(Mail fromMail, Mail toMail, String acknowledgementCode, String flag) 
@@ -469,6 +469,49 @@ namespace Ben_Project.Controllers
             }
             _context.SaveChanges();
 
+            var response = new ResponseDTO();
+            response.Message = "Create Successfully";
+
+            return JsonSerializer.Serialize(new
+            {
+                result = response
+            });
+        }
+        //Summer add POCreate to receive Json fr Android 
+        //then send message (PoId, ItemNames (list), UnitPrices (List))
+        [HttpPost]
+        [AllowAnonymous]
+        public string POCreate([FromBody] PurchaseOrderCreateDTO input)
+        {
+            var newPo = new PO();
+
+            string iString = input.OrderDate;
+            newPo.OrderDate = DateTime.ParseExact(iString, "yyyy-MM-dd", null);
+
+            var supplier = _context.Suppliers.FirstOrDefault(s => s.Name == input.SupplierName);
+            newPo.Supplier = supplier;
+            _context.Add(newPo);
+
+            _context.SaveChanges();
+
+            /*var response = new ResponsePOCreateStep1();
+            List<string> itemNames = new List<string>();
+            List<double> unitPrices = new List<double>();
+            var supplierDetails = newPo.Supplier.SupplierDetails;
+            foreach (var supplierDetail in supplierDetails)
+            {
+                itemNames.Add(supplierDetail.Stationery.Description);
+                unitPrices.Add(supplierDetail.UnitPrice);
+            }
+
+            response.ItemNames = itemNames;
+            response.UnitPrices = unitPrices;
+            response.PoId = newPo.Id;
+
+            return JsonSerializer.Serialize(new
+            {
+                result = response
+            });*/
             var response = new ResponseDTO();
             response.Message = "Create Successfully";
 

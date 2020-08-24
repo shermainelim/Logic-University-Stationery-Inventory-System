@@ -3,15 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Ben_Project.Models
+namespace Ben_Project.Models.AndroidDTOs
 {
-    public class Disbursement
+    public class DisbursementDTO
     {
         public int Id { get; set; }
-        public DateTime? DisbursementDate { get; set; }
         public string AcknowledgementCode { get; set; }
         public DisbursementStatus DisbursementStatus { get; set; }
-        public virtual DeptRequisition DeptRequisition { get; set; }
-        public virtual List<DisbursementDetail> DisbursementDetails { get; set; }
+        public List<DisbursementDetailDTO> DisbursementDetails { get; set; }
     }
 }

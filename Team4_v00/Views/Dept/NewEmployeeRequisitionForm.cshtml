@@ -10,25 +10,31 @@
 
 <form asp-controller="Dept" asp-action="SaveRequisition" method="post">
 
-    <table id="NewEmpReqForm">
-        <tr>
-            <th>Item Name</th>
-            <th>Quantity</th>
-        </tr>
-
+    <table id="NewEmpReqForm" align="center" border="1">
+        <thead style="background-color: lightskyblue">
+            <tr>
+                <th>Item Name</th>
+                <th>Quantity</th>
+            </tr>
+        </thead>
+        
+        <tbody>
         @for (int i = 0; i < Model.RequisitionDetails.Count; i++)
         {
             var itemName = @Model.RequisitionDetails[i].Stationery.Description;
             var itemId = @Model.RequisitionDetails[i].Stationery.Id;
             var qty = @Model.RequisitionDetails[i].Qty;
 
-<tr>
-    <td>@itemName</td>
-    <td>
-        <input asp-for="@Model.RequisitionDetails[i].Stationery.Id" type="hidden" value="@itemId" />
-        <input asp-for="@Model.RequisitionDetails[i].Qty" type="number" />
-    </td>
-</tr>}
+            <tr>
+                <td>@itemName</td>
+                <td>
+                    <input asp-for="@Model.RequisitionDetails[i].Stationery.Id" type="hidden" value="@itemId"/>
+                    <input asp-for="@Model.RequisitionDetails[i].Qty" type="number"/>
+                </td>
+            </tr>
+        }
+        </tbody>
+        
     </table>
 
     <input id="saveBtn" type="submit" value="Save" />

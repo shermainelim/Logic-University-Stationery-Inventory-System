@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using DeptRequisitionDTO = Ben_Project.Models.AndroidDTOs.DeptRequisitionDTO;
 
 namespace Ben_Project.Controllers
 {
@@ -119,7 +120,7 @@ namespace Ben_Project.Controllers
 
         public IActionResult StoreClerkRequisitionList()
         {
-            var requisitions = _dbContext.DeptRequisitions.Where(dr => dr.RequisitionApprovalStatus == RequisitionApprovalStatus.Approved).ToList();
+            var requisitions = _dbContext.DeptRequisitions.Where(dr => dr.RequisitionApprovalStatus == RequisitionApprovalStatus.Approved && dr.RequisitionFulfillmentStatus != RequisitionFulfillmentStatus.Fulfilled).ToList();
 
             return View(requisitions);
         }
@@ -131,7 +132,7 @@ namespace Ben_Project.Controllers
             var dTOs = new List<DeptRequisitionDTO>();
 
             var requisitions = _dbContext.DeptRequisitions
-                .Where(dr => dr.RequisitionApprovalStatus == RequisitionApprovalStatus.Approved).ToList();
+                .Where(dr => dr.RequisitionApprovalStatus == RequisitionApprovalStatus.Approved && dr.RequisitionFulfillmentStatus != RequisitionFulfillmentStatus.Fulfilled).ToList();
 
             foreach (var requisition in requisitions)
             {
@@ -152,7 +153,8 @@ namespace Ben_Project.Controllers
         {
             var dTOs = new List<DisbursementDetailDTO>();
 
-            var requisitions = _dbContext.DisbursementDetails.ToList();
+            var requisitions = _dbContext.DisbursementDetails.FromSqlRaw("SELECT [DisbursementDetail].[Id], [StationeryId],[Qty],[DisbursementId],[A_Date],[Departmentid],[Month],[Year] FROM[BenProject].[dbo].[DisbursementDetail] WHERE[DepartmentId] = '3' OR [DepartmentId] = '4' OR [DepartmentId] = '5' ORDER BY[A_Date], [Departmentid], [DisbursementId],[StationeryId] ").ToList();
+
 
             foreach (var requisition in requisitions)
             {
@@ -210,6 +212,13 @@ namespace Ben_Project.Controllers
                 DTO.StationeryId = requisitionDetail.Stationery.Id;
                 DTO.StationeryName = requisitionDetail.Stationery.Description;
                 DTO.Qty = requisitionDetail.Qty;
+
+                DTO.StockQty = _dbContext
+                    .Stocks
+                    .FirstOrDefault(s => s.Stationery.Id == requisitionDetail.Stationery.Id)
+                    .Qty;
+
+                DTO.CollectedQty = requisitionDetail.CollectedQty;
                 requisitionDetailsDTO.Add(DTO);
             }
 
@@ -222,26 +231,28 @@ namespace Ben_Project.Controllers
         }
 
         // API to receive requisition from android
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-
-        
-        public IActionResult StoreClerkSaveRequisition(Disbursement disbursement)
+        [HttpPost]
+        [AllowAnonymous]
+        public IActionResult StoreClerkSaveRequisitionApi([FromBody] DeptRequisitionDTO input)
         {
+
+            // transfer DeptRequisitionDTO data to Disbursement object
+            Disbursement disbursement = new Disbursement();
+            disbursement.DeptRequisition = new DeptRequisition();
+            disbursement.DisbursementDetails = new List<DisbursementDetail>();
+
+            disbursement.DeptRequisition.Id = input.Id;
+
+            foreach (var requisitionDetail in input.RequisitionDetails)
+            {
+                DisbursementDetail disbursementDetail = new DisbursementDetail();
+                disbursementDetail.Stationery = new Stationery();
+                disbursementDetail.Stationery.Id = requisitionDetail.StationeryId;
+                disbursementDetail.Qty = requisitionDetail.DisbursedQty;
+                disbursement.DisbursementDetails.Add(disbursementDetail);
+            }
+
+            // DeptRequisition Id is needed from form //////////////////////////////////////////////////////////////////////////
             var deptRequisition = _dbContext.DeptRequisitions.FirstOrDefault(dr => dr.Id == disbursement.DeptRequisition.Id);
             var fulfillmentStatus = RequisitionFulfillmentStatus.Fulfilled;
 
@@ -262,10 +273,106 @@ namespace Ben_Project.Controllers
 
             foreach (var disbursementDetail in disbursement.DisbursementDetails)
             {
+                // stationery Id is needed from form ///////////////////////////////////////////////////////////////////////////////////
                 // withdrawing qty from stock
                 var stationeryId = disbursementDetail.Stationery.Id;
                 var stock = _dbContext.Stocks.FirstOrDefault(s => s.Stationery.Id == stationeryId);
 
+                // disbursedQty is needed from form ///////////////////////////////////////////////////////////////////////////////
+                // redirect to StoreClerkRequisitionFulfillment with deptrequisition id if disbursement is MORE than stock
+                if (disbursementDetail.Qty > stock.Qty)
+                    return RedirectToAction("StoreClerkRequisitionFulfillment", new { id = disbursement.DeptRequisition.Id });
+
+                stock.Qty -= disbursementDetail.Qty;
+
+                var requisitionDetail = _dbContext.RequisitionDetails.FirstOrDefault(rd =>
+                    rd.DeptRequisition == deptRequisition && rd.Stationery.Id == stationeryId);
+
+                // adding adjustment detail if needed
+                var outstandingQty = requisitionDetail.Qty - requisitionDetail.CollectedQty;
+                var unaccountedQty = disbursementDetail.Qty - outstandingQty;
+                if (unaccountedQty != 0)
+                {
+                    var adjustmentDetail = new AdjustmentDetail();
+                    adjustmentDetail.Stationery = _dbContext.Stationeries.Find(stationeryId);
+                    adjustmentDetail.AdjustedQty = unaccountedQty;
+                    adjustmentVoucher.AdjustmentDetails.Add(adjustmentDetail);
+                }
+
+                if (disbursementDetail.Qty > (requisitionDetail.Qty - requisitionDetail.CollectedQty))
+                {
+                    return RedirectToAction("StoreClerkRequisitionFulfillment", new { id = deptRequisition.Id });
+                }
+
+                // updating collected qty
+                requisitionDetail.CollectedQty += disbursementDetail.Qty;
+
+                // updating disbursementDetail attributes
+                disbursementDetail.Stationery = _dbContext.Stationeries.FirstOrDefault(s => s.Id == stationeryId);
+                disbursementDetail.Disbursement = result;
+                //disbursementDetail.Department = _dbContext.Departments.Find(deptRequisition.Employee.Dept.id);
+
+                // Add disbursementDetail to disbursement
+                result.DisbursementDetails.Add(disbursementDetail);
+
+                // If collected qty of item is not equal to requested qty, set fulfillment status to partial
+                if (requisitionDetail.Qty != requisitionDetail.CollectedQty)
+                    fulfillmentStatus = RequisitionFulfillmentStatus.Partial;
+            }
+
+            // Adding disbursement to database
+            // Needs to be before email so we can retrieve id of disbursement to send in email
+            _dbContext.Add(result);
+
+            // generating acknowledgement code for disbursement
+            var acknowledgementCode = Guid.NewGuid().ToString();
+            result.AcknowledgementCode = acknowledgementCode;
+
+            // Changing fulfillment status of requisition
+            deptRequisition.RequisitionFulfillmentStatus = fulfillmentStatus;
+
+
+
+            // Adding adjustment voucher to database
+            _dbContext.Add(adjustmentVoucher);
+
+            // Saving changes to database
+            _dbContext.SaveChanges();
+
+            return RedirectToAction("StoreClerkRequisitionList", "Store");
+        }
+
+
+        public IActionResult StoreClerkSaveRequisition(Disbursement disbursement)
+        {
+
+            // DeptRequisition Id is needed from form //////////////////////////////////////////////////////////////////////////
+            var deptRequisition = _dbContext.DeptRequisitions.FirstOrDefault(dr => dr.Id == disbursement.DeptRequisition.Id);
+            var fulfillmentStatus = RequisitionFulfillmentStatus.Fulfilled;
+
+            // Creating an adjustment voucher
+            var adjustmentVoucher = new AdjustmentVoucher();
+            adjustmentVoucher.Status = AdjustmentVoucherStatus.Draft;
+            adjustmentVoucher.AdjustmentDetails = new List<AdjustmentDetail>();
+
+
+            // Generate adjustment voucher number
+            var avNo = "AV" + adjustmentVoucher.Id;
+            adjustmentVoucher.VoucherNo = avNo;
+
+            // Create a disbursement
+            var result = new Disbursement();
+            result.DeptRequisition = deptRequisition;
+            result.DisbursementDetails = new List<DisbursementDetail>();
+
+            foreach (var disbursementDetail in disbursement.DisbursementDetails)
+            {
+                // stationery Id is needed from form ///////////////////////////////////////////////////////////////////////////////////
+                // withdrawing qty from stock
+                var stationeryId = disbursementDetail.Stationery.Id;
+                var stock = _dbContext.Stocks.FirstOrDefault(s => s.Stationery.Id == stationeryId);
+
+                // disbursedQty is needed from form ///////////////////////////////////////////////////////////////////////////////
                 // redirect to StoreClerkRequisitionFulfillment with deptrequisition id if disbursement is MORE than stock
                 if (disbursementDetail.Qty > stock.Qty)
                     return RedirectToAction("StoreClerkRequisitionFulfillment", new { id = disbursement.DeptRequisition.Id });
@@ -338,11 +445,73 @@ namespace Ben_Project.Controllers
             return View(disbursements);
         }
 
+        // API for Store Clerk Disbursement List
+        public string StoreClerkDisbursementListApi()
+        {
+            var disbursements = _dbContext.Disbursements
+                .Where(d => d.DisbursementStatus != DisbursementStatus.Acknowledged)
+                .ToList();
+
+            var dtos = new List<DisbursementDTO>();
+
+            foreach (var disbursement in disbursements)
+            {
+                var temp = new DisbursementDTO();
+                temp.Id = disbursement.Id;
+                temp.DisbursementStatus = disbursement.DisbursementStatus;
+                dtos.Add(temp);
+            }
+
+            return JsonSerializer.Serialize(new
+            {
+                disbursementList = dtos
+            });
+        }
+
         public IActionResult StoreClerkDisbursementDetail(int id)
         {
             var disbursement = _dbContext.Disbursements.Find(id);
+            disbursement.DisbursementDetails = _dbContext.DisbursementDetails.Where(dd => dd.Disbursement.Id == id).ToList();
 
             return View(disbursement);
+        }
+
+        // API for getting Disbursement Details
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        public string StoreClerkDisbursementDetailApi(int id)
+        {
+            var disbursement = _dbContext.Disbursements.Find(id);
+            disbursement.DisbursementDetails = _dbContext.DisbursementDetails.Where(dd => dd.Disbursement.Id == id).ToList();
+
+            DisbursementDTO dto = new DisbursementDTO();
+            dto.Id = disbursement.Id;
+            dto.DisbursementDetails = new List<DisbursementDetailDTO>();
+
+            foreach (var disbursementDetail in disbursement.DisbursementDetails)
+            {
+                DisbursementDetailDTO temp = new DisbursementDetailDTO();
+                temp.StationeryCode = disbursementDetail.Stationery.ItemNumber;
+                temp.StationeryName = disbursementDetail.Stationery.Description;
+                temp.Qty = disbursementDetail.Qty;
+                dto.DisbursementDetails.Add(temp);
+            }
+
+            return JsonSerializer.Serialize(new
+            {
+                disbursement = dto
+            });
         }
 
         // logic for saving disbursement
@@ -567,10 +736,10 @@ namespace Ben_Project.Controllers
 
             //var uh = _dbContext.DisbursementDetails.FromSqlRaw("SELECT [DisbursementDetail].[Id], [StationeryId],[Description],[Qty],[DisbursementId],[A_Date],[Departmentid],[Month],[Year] FROM[BenProject].[dbo].[DisbursementDetail] INNER JOIN[Stationeries] ON[DisbursementDetail].[StationeryId] = [Stationeries].[Id] WHERE[Description] = 'Pencil 2B' AND([Month] BETWEEN '5' AND '7') ORDER BY[A_Date], [Departmentid], [DisbursementId],[StationeryId] ").ToList();
 
-            var uh = _dbContext.DisbursementDetails.ToList();
+            var uh = _dbContext.DisbursementDetails.Where(x => x.Department.id == 3 || x.Department.id == 4 || x.Department.id == 5).ToList();
             ViewData["histories"] = uh;
 
-            var dd = _dbContext.DisbursementDetails.ToList();
+            var dd = _dbContext.DisbursementDetails.Where(x => x.Department.id == 3 || x.Department.id == 4 || x.Department.id == 5).ToList();
             HashSet<Stationery> stationeries = new HashSet<Stationery>();
             foreach (var cc in dd)
             {
@@ -642,7 +811,7 @@ namespace Ben_Project.Controllers
         [HttpPost]
         [AllowAnonymous]
         public string PostTestObject([FromBody] TestDTO input)
-        {
+        { 
             var id = input.Id;
             var name = input.Name;
 
