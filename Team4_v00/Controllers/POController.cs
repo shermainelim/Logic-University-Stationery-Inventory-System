@@ -356,12 +356,12 @@ namespace Ben_Project.Controllers
         // PO API
         public string POItemApi() {
             DateTime d = new DateTime();
-            
 
+            var max = _context.TempItems.OrderByDescending(p => p.id).FirstOrDefault();
             PurchaseOrderItemDTO pdto = new PurchaseOrderItemDTO();
-            pdto.supplierID = 1;
+            pdto.supplierID = max.supplierId;
             pdto.POStatus = POStatus.Processing;
-            pdto.OrderDate = d;
+            pdto.OrderDate = max.orderDate;
 
             List<PODetailsDTO> poDetailsList = new List<PODetailsDTO>();
 
@@ -396,6 +396,7 @@ namespace Ben_Project.Controllers
                         final = 0;
                     }
                     temp.predictionQty = final;
+                    temp.supplierDetailId = s.Id;
 
                     poDetailsList.Add(temp);
                 }
@@ -450,11 +451,11 @@ namespace Ben_Project.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public string POSave([FromBody] PurchaseOrderItemDTO input)
+        public string POSave([FromBody]PurchaseOrderItemDTO input)
         {
             var newPo = new PO();
             newPo.OrderDate = input.OrderDate;
-            newPo.POStatus = input.POStatus;
+            newPo.POStatus = POStatus.Processing;
             var supplier = _context.Suppliers.FirstOrDefault(s => s.Id == input.supplierID);
             newPo.Supplier = supplier;
             _context.Add(newPo);
@@ -464,7 +465,7 @@ namespace Ben_Project.Controllers
                 PODetail poD = new PODetail();
                 poD.SupplierDetail = _context.SupplierDetails.FirstOrDefault(s => s.Id == pd.supplierDetailId);
                 poD.PO = newPo;
-                _context.Add(pd);
+                _context.Add(poD);
             }
             _context.SaveChanges();
 
@@ -476,6 +477,61 @@ namespace Ben_Project.Controllers
                 result = response
             });
         }
+
+        //Summer add POCreate to receive Json fr Android 
+        //then send message (PoId, ItemNames (list), UnitPrices (List))
+        [HttpPost]
+        [AllowAnonymous]
+        public string POCreate([FromBody] PurchaseOrderCreateDTO input)
+        {
+            var newPo = new PO();
+
+            string iString = input.OrderDate;
+            newPo.OrderDate = DateTime.ParseExact(iString, "yyyy-MM-dd", null);
+
+            var supplier = _context.Suppliers.FirstOrDefault(s => s.Name == input.SupplierName);
+            newPo.Supplier = supplier;
+            int supplierId = supplier.Id;
+            DateTime orderDate = DateTime.ParseExact(iString, "yyyy-MM-dd", null);
+
+            var temp = new TempItems();
+            temp.orderDate = orderDate;
+            temp.supplierId = supplierId;
+
+            _context.Add(temp);
+
+            _context.Add(newPo);
+
+            _context.SaveChanges();
+
+            /*var response = new ResponsePOCreateStep1();
+            List<string> itemNames = new List<string>();
+            List<double> unitPrices = new List<double>();
+            var supplierDetails = newPo.Supplier.SupplierDetails;
+            foreach (var supplierDetail in supplierDetails)
+            {
+                itemNames.Add(supplierDetail.Stationery.Description);
+                unitPrices.Add(supplierDetail.UnitPrice);
+            }
+
+            response.ItemNames = itemNames;
+            response.UnitPrices = unitPrices;
+            response.PoId = newPo.Id;
+
+            return JsonSerializer.Serialize(new
+            {
+                result = response
+            });*/
+            var response = new ResponseDTO();
+            response.Message = "Going Next Step";
+
+            return JsonSerializer.Serialize(new
+            {
+                result = response
+            });
+
+        }
+
 
     }
 }
