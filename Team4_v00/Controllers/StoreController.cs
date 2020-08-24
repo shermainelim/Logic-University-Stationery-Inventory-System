@@ -471,6 +471,29 @@ namespace Ben_Project.Controllers
             return View(disbursements);
         }
 
+        // API for Store Clerk Disbursement List
+        public string StoreClerkDisbursementListApi()
+        {
+            var disbursements = _dbContext.Disbursements
+                .Where(d => d.DisbursementStatus != DisbursementStatus.Acknowledged)
+                .ToList();
+
+            var dtos = new List<DisbursementDTO>();
+
+            foreach (var disbursement in disbursements)
+            {
+                var temp = new DisbursementDTO();
+                temp.Id = disbursement.Id;
+                temp.DisbursementStatus = disbursement.DisbursementStatus;
+                dtos.Add(temp);
+            }
+
+            return JsonSerializer.Serialize(new
+            {
+                disbursementList = dtos
+            });
+        }
+
         public IActionResult StoreClerkDisbursementDetail(int id)
         {
             var disbursement = _dbContext.Disbursements.Find(id);
