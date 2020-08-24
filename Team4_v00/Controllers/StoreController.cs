@@ -272,6 +272,7 @@ namespace Ben_Project.Controllers
             foreach (var requisitionDetail in input.RequisitionDetails)
             {
                 DisbursementDetail disbursementDetail = new DisbursementDetail();
+                disbursementDetail.Stationery = new Stationery();
                 disbursementDetail.Stationery.Id = requisitionDetail.StationeryId;
                 disbursementDetail.Qty = requisitionDetail.DisbursedQty;
                 disbursement.DisbursementDetails.Add(disbursementDetail);
