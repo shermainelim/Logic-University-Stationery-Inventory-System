@@ -120,7 +120,7 @@ namespace Ben_Project.Controllers
 
         public IActionResult StoreClerkRequisitionList()
         {
-            var requisitions = _dbContext.DeptRequisitions.Where(dr => dr.RequisitionApprovalStatus == RequisitionApprovalStatus.Approved).ToList();
+            var requisitions = _dbContext.DeptRequisitions.Where(dr => dr.RequisitionApprovalStatus == RequisitionApprovalStatus.Approved && dr.RequisitionFulfillmentStatus != RequisitionFulfillmentStatus.Fulfilled).ToList();
 
             return View(requisitions);
         }
@@ -132,7 +132,7 @@ namespace Ben_Project.Controllers
             var dTOs = new List<DeptRequisitionDTO>();
 
             var requisitions = _dbContext.DeptRequisitions
-                .Where(dr => dr.RequisitionApprovalStatus == RequisitionApprovalStatus.Approved).ToList();
+                .Where(dr => dr.RequisitionApprovalStatus == RequisitionApprovalStatus.Approved && dr.RequisitionFulfillmentStatus != RequisitionFulfillmentStatus.Fulfilled).ToList();
 
             foreach (var requisition in requisitions)
             {
@@ -264,6 +264,8 @@ namespace Ben_Project.Controllers
 
             // transfer DeptRequisitionDTO data to Disbursement object
             Disbursement disbursement = new Disbursement();
+            disbursement.DeptRequisition = new DeptRequisition();
+            disbursement.DisbursementDetails = new List<DisbursementDetail>();
 
             disbursement.DeptRequisition.Id = input.Id;
 
@@ -471,6 +473,7 @@ namespace Ben_Project.Controllers
         public IActionResult StoreClerkDisbursementDetail(int id)
         {
             var disbursement = _dbContext.Disbursements.Find(id);
+            disbursement.DisbursementDetails = _dbContext.DisbursementDetails.Where(dd => dd.Disbursement.Id == id).ToList();
 
             return View(disbursement);
         }
@@ -697,10 +700,10 @@ namespace Ben_Project.Controllers
 
             //var uh = _dbContext.DisbursementDetails.FromSqlRaw("SELECT [DisbursementDetail].[Id], [StationeryId],[Description],[Qty],[DisbursementId],[A_Date],[Departmentid],[Month],[Year] FROM[BenProject].[dbo].[DisbursementDetail] INNER JOIN[Stationeries] ON[DisbursementDetail].[StationeryId] = [Stationeries].[Id] WHERE[Description] = 'Pencil 2B' AND([Month] BETWEEN '5' AND '7') ORDER BY[A_Date], [Departmentid], [DisbursementId],[StationeryId] ").ToList();
 
-            var uh = _dbContext.DisbursementDetails.ToList();
+            var uh = _dbContext.DisbursementDetails.Where(x => x.Department.id == 3 || x.Department.id == 4 || x.Department.id == 5).ToList();
             ViewData["histories"] = uh;
 
-            var dd = _dbContext.DisbursementDetails.ToList();
+            var dd = _dbContext.DisbursementDetails.Where(x => x.Department.id == 3 || x.Department.id == 4 || x.Department.id == 5).ToList();
             HashSet<Stationery> stationeries = new HashSet<Stationery>();
             foreach (var cc in dd)
             {
