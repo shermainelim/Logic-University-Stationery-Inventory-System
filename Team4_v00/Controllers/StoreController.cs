@@ -696,10 +696,10 @@ namespace Ben_Project.Controllers
 
             //var uh = _dbContext.DisbursementDetails.FromSqlRaw("SELECT [DisbursementDetail].[Id], [StationeryId],[Description],[Qty],[DisbursementId],[A_Date],[Departmentid],[Month],[Year] FROM[BenProject].[dbo].[DisbursementDetail] INNER JOIN[Stationeries] ON[DisbursementDetail].[StationeryId] = [Stationeries].[Id] WHERE[Description] = 'Pencil 2B' AND([Month] BETWEEN '5' AND '7') ORDER BY[A_Date], [Departmentid], [DisbursementId],[StationeryId] ").ToList();
 
-            var uh = _dbContext.DisbursementDetails.ToList();
+            var uh = _dbContext.DisbursementDetails.Where(x => x.Department.id == 3 || x.Department.id == 4 || x.Department.id == 5).ToList();
             ViewData["histories"] = uh;
 
-            var dd = _dbContext.DisbursementDetails.ToList();
+            var dd = _dbContext.DisbursementDetails.Where(x => x.Department.id == 3 || x.Department.id == 4 || x.Department.id == 5).ToList();
             HashSet<Stationery> stationeries = new HashSet<Stationery>();
             foreach (var cc in dd)
             {
