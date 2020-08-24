@@ -9,6 +9,7 @@ using Ben_Project.Models.AndroidDTOs;
 using Ben_Project.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.JSInterop.Infrastructure;
 using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.ProjectModel;
 
 namespace Ben_Project.Controllers
@@ -42,14 +43,14 @@ namespace Ben_Project.Controllers
 
         public string DeptHeadRequisitionListApi()
         {
-            var dTOs = new List<DeptRequisitionDTONotInUse>();
+            var dTOs = new List<DeptRequisitionDTO>();
 
             var requisitions = _dbContext.DeptRequisitions
-                .Where(dr => dr.RequisitionApprovalStatus == RequisitionApprovalStatus.Pending).ToList();
+                .Where(dr => dr.RequisitionApprovalStatus == RequisitionApprovalStatus.Pending && dr.SubmissionStatus == SubmissionStatus.Submitted).ToList();
 
             foreach (var requisition in requisitions)
             {
-                var dTO = new DeptRequisitionDTONotInUse();
+                var dTO = new DeptRequisitionDTO();
                 dTO.Id = requisition.Id;
                 dTO.RequisitionApprovalStatus = requisition.RequisitionApprovalStatus;
                 dTO.RequisitionFulfillmentStatus = requisition.RequisitionFulfillmentStatus;
@@ -62,6 +63,38 @@ namespace Ben_Project.Controllers
                 requisitions = dTOs
             });
         }
+
+        public string DeptHeadRequisitionDetailsApi(int id)
+        {
+            //In android we will get the id from intent.
+            //Getting respective requisition based on id.
+            var requisition = _dbContext.DeptRequisitions.FirstOrDefault(dr => dr.Id == id);
+
+            var requisitionDetailsDTO = new List<RequisitionDetailDTO>();
+
+            //accessing the list of requisition details for the specific requisition
+            foreach (var requisitionDetail in requisition.RequisitionDetails)
+            {
+                //creating a RequisitionDetailDTO for each req details to add to list of reqDetails
+                var DTO = new RequisitionDetailDTO();
+                DTO.Id = requisitionDetail.Id;
+                DTO.StationeryId = requisitionDetail.Stationery.Id;
+                DTO.StationeryName = requisitionDetail.Stationery.Description;
+                DTO.Qty = requisitionDetail.Qty;
+                requisitionDetailsDTO.Add(DTO);
+            }
+
+
+            return JsonSerializer.Serialize(new
+            {
+                requisitionId = requisition.Id,
+                requisitionDetails = requisitionDetailsDTO
+            });
+        }
+        
+        /////////////////////////////// API /////////////////////////////////////////////
+
+
 
         public IActionResult DeptHeadRequisitionDetail(int id)
         {
@@ -183,6 +216,21 @@ namespace Ben_Project.Controllers
 
             requisition.SubmissionStatus = SubmissionStatus.Submitted;
 
+            //The purpose of this step is to remove requisition details that have quantity zero from the database.
+            //This will only be done when the dept rep submits the req to the dept head.
+            List<RequisitionDetail> toBeRemoved = new List<RequisitionDetail>();
+            foreach(var reqDet in requisition.RequisitionDetails)
+            {
+                if (reqDet.Qty == 0)
+                {
+                    toBeRemoved.Add(reqDet);
+                }
+            }
+            foreach(var delObj in toBeRemoved)
+            {
+                requisition.RequisitionDetails.Remove(delObj);
+            }
+
             _dbContext.SaveChanges();
             return RedirectToAction("EmployeeRequisitionList", "Dept");
         }
@@ -201,13 +249,16 @@ namespace Ben_Project.Controllers
 
         }
 
+
         //Manage Collection Point
         public IActionResult chooseCollectionPt()
         {
-
+            //using session data to find current employee so we can access info about which department they are from
             string usernameInSession = HttpContext.Session.GetString("username");
             var employee = _dbContext.Employees.FirstOrDefault(ep => ep.Username == usernameInSession);
             var empDept = employee.Dept;
+
+            //To list all the collection points in the view
             ViewBag.listCollectionPts = Enum.GetValues(typeof(CollectionPoint)).Cast<CollectionPoint>();
             return View(empDept);
 
