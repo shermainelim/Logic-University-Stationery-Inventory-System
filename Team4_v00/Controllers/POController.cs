@@ -476,7 +476,7 @@ namespace Ben_Project.Controllers
             {
                 result = response
             });
-        }
+        }/*
         //Summer add POCreate to receive Json fr Android 
         //then send message (PoId, ItemNames (list), UnitPrices (List))
         [HttpPost]
@@ -494,7 +494,7 @@ namespace Ben_Project.Controllers
 
             _context.SaveChanges();
 
-            /*var response = new ResponsePOCreateStep1();
+            *//*var response = new ResponsePOCreateStep1();
             List<string> itemNames = new List<string>();
             List<double> unitPrices = new List<double>();
             var supplierDetails = newPo.Supplier.SupplierDetails;
@@ -511,7 +511,7 @@ namespace Ben_Project.Controllers
             return JsonSerializer.Serialize(new
             {
                 result = response
-            });*/
+            });*//*
             var response = new ResponseDTO();
             response.Message = "Create Successfully";
 
@@ -519,7 +519,7 @@ namespace Ben_Project.Controllers
             {
                 result = response
             });
-        }
+        }*/
 
         //Summer add POCreate to receive Json fr Android 
         //then send message (PoId, ItemNames (list), UnitPrices (List))
