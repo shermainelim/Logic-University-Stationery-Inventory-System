@@ -120,7 +120,7 @@ namespace Ben_Project.Controllers
 
         public IActionResult StoreClerkRequisitionList()
         {
-            var requisitions = _dbContext.DeptRequisitions.Where(dr => dr.RequisitionApprovalStatus == RequisitionApprovalStatus.Approved).ToList();
+            var requisitions = _dbContext.DeptRequisitions.Where(dr => dr.RequisitionApprovalStatus == RequisitionApprovalStatus.Approved && dr.RequisitionFulfillmentStatus != RequisitionFulfillmentStatus.Fulfilled).ToList();
 
             return View(requisitions);
         }
@@ -472,6 +472,7 @@ namespace Ben_Project.Controllers
         public IActionResult StoreClerkDisbursementDetail(int id)
         {
             var disbursement = _dbContext.Disbursements.Find(id);
+            disbursement.DisbursementDetails = _dbContext.DisbursementDetails.Where(dd => dd.Disbursement.Id == id).ToList();
 
             return View(disbursement);
         }

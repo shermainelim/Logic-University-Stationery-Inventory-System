@@ -1350,19 +1350,33 @@ namespace Ben_Project.DB
             //start by Saw
 
             Disbursement dbur1 = new Disbursement();
+            dbur1.DisbursementStatus = DisbursementStatus.Acknowledged;
             Disbursement dbur2 = new Disbursement();
+            dbur2.DisbursementStatus = DisbursementStatus.Acknowledged;
             Disbursement dbur3 = new Disbursement();
+            dbur3.DisbursementStatus = DisbursementStatus.Acknowledged;
             Disbursement dbur4 = new Disbursement();
+            dbur4.DisbursementStatus = DisbursementStatus.Acknowledged;
             Disbursement dbur5 = new Disbursement();
+            dbur5.DisbursementStatus = DisbursementStatus.Acknowledged;
             Disbursement dbur6 = new Disbursement();
+            dbur6.DisbursementStatus = DisbursementStatus.Acknowledged;
             Disbursement dbur7 = new Disbursement();
+            dbur7.DisbursementStatus = DisbursementStatus.Acknowledged;
             Disbursement dbur8 = new Disbursement();
+            dbur8.DisbursementStatus = DisbursementStatus.Acknowledged;
             Disbursement dbur9 = new Disbursement();
+            dbur9.DisbursementStatus = DisbursementStatus.Acknowledged;
             Disbursement dbur10 = new Disbursement();
+            dbur10.DisbursementStatus = DisbursementStatus.Acknowledged;
             Disbursement dbur11 = new Disbursement();
+            dbur11.DisbursementStatus = DisbursementStatus.Acknowledged;
             Disbursement dbur12 = new Disbursement();
+            dbur12.DisbursementStatus = DisbursementStatus.Acknowledged;
             Disbursement dbur13 = new Disbursement();
+            dbur13.DisbursementStatus = DisbursementStatus.Acknowledged;
             Disbursement dbur14 = new Disbursement();
+            dbur14.DisbursementStatus = DisbursementStatus.Acknowledged;
 
             dbContext.Add(dbur1);
             dbContext.Add(dbur2);
