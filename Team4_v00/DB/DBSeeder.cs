@@ -609,301 +609,301 @@ namespace Ben_Project.DB
 
             // Adding Requisition
 
-            DeptRequisition dr1 = new DeptRequisition();
-            dr1.Employee = e1;
-            dr1.RequisitionApprovalStatus = RequisitionApprovalStatus.Pending;
-            dr1.SubmissionStatus = SubmissionStatus.Submitted;
+            //DeptRequisition dr1 = new DeptRequisition();
+            //dr1.Employee = e1;
+            //dr1.RequisitionApprovalStatus = RequisitionApprovalStatus.Pending;
+            //dr1.SubmissionStatus = SubmissionStatus.Submitted;
 
-            DeptRequisition dr2 = new DeptRequisition();
-            dr2.Employee = e1;
-            dr2.RequisitionApprovalStatus = RequisitionApprovalStatus.Pending;
-            dr2.SubmissionStatus = SubmissionStatus.Submitted;
+            //DeptRequisition dr2 = new DeptRequisition();
+            //dr2.Employee = e1;
+            //dr2.RequisitionApprovalStatus = RequisitionApprovalStatus.Pending;
+            //dr2.SubmissionStatus = SubmissionStatus.Submitted;
 
-            DeptRequisition dr3 = new DeptRequisition();
-            dr3.Employee = e1;
-            dr3.RequisitionApprovalStatus = RequisitionApprovalStatus.Pending;
-            dr3.SubmissionStatus = SubmissionStatus.Submitted;
+            //DeptRequisition dr3 = new DeptRequisition();
+            //dr3.Employee = e1;
+            //dr3.RequisitionApprovalStatus = RequisitionApprovalStatus.Pending;
+            //dr3.SubmissionStatus = SubmissionStatus.Submitted;
 
-            DeptRequisition dr4 = new DeptRequisition();
-            dr4.Employee = e1;
-            dr4.RequisitionApprovalStatus = RequisitionApprovalStatus.Approved;
-            dr4.SubmissionStatus = SubmissionStatus.Submitted;
-            dr4.RequisitionFulfillmentStatus = RequisitionFulfillmentStatus.ToBeProcessed;
+            //DeptRequisition dr4 = new DeptRequisition();
+            //dr4.Employee = e1;
+            //dr4.RequisitionApprovalStatus = RequisitionApprovalStatus.Approved;
+            //dr4.SubmissionStatus = SubmissionStatus.Submitted;
+            //dr4.RequisitionFulfillmentStatus = RequisitionFulfillmentStatus.ToBeProcessed;
 
 
-            DeptRequisition dr5 = new DeptRequisition();
-            dr5.Employee = e1;
-            dr5.RequisitionApprovalStatus = RequisitionApprovalStatus.Approved;
-            dr5.SubmissionStatus = SubmissionStatus.Submitted;
-            dr5.RequisitionFulfillmentStatus = RequisitionFulfillmentStatus.ToBeProcessed;
+            //DeptRequisition dr5 = new DeptRequisition();
+            //dr5.Employee = e1;
+            //dr5.RequisitionApprovalStatus = RequisitionApprovalStatus.Approved;
+            //dr5.SubmissionStatus = SubmissionStatus.Submitted;
+            //dr5.RequisitionFulfillmentStatus = RequisitionFulfillmentStatus.ToBeProcessed;
 
-            DeptRequisition dr6 = new DeptRequisition();
-            dr6.Employee = e1;
-            dr6.RequisitionApprovalStatus = RequisitionApprovalStatus.Approved;
-            dr6.SubmissionStatus = SubmissionStatus.Submitted;
-            dr6.RequisitionFulfillmentStatus = RequisitionFulfillmentStatus.ToBeProcessed;
+            //DeptRequisition dr6 = new DeptRequisition();
+            //dr6.Employee = e1;
+            //dr6.RequisitionApprovalStatus = RequisitionApprovalStatus.Approved;
+            //dr6.SubmissionStatus = SubmissionStatus.Submitted;
+            //dr6.RequisitionFulfillmentStatus = RequisitionFulfillmentStatus.ToBeProcessed;
 
-            DeptRequisition dr7 = new DeptRequisition();
-            dr7.Employee = e1;
-            dr7.SubmissionStatus = SubmissionStatus.Submitted;
-            dr7.RequisitionApprovalStatus = RequisitionApprovalStatus.Rejected;
+            //DeptRequisition dr7 = new DeptRequisition();
+            //dr7.Employee = e1;
+            //dr7.SubmissionStatus = SubmissionStatus.Submitted;
+            //dr7.RequisitionApprovalStatus = RequisitionApprovalStatus.Rejected;
 
-            DeptRequisition dr8 = new DeptRequisition();
-            dr8.Employee = e1;
-            dr8.SubmissionStatus = SubmissionStatus.Submitted;
-            dr8.RequisitionApprovalStatus = RequisitionApprovalStatus.Rejected;
+            //DeptRequisition dr8 = new DeptRequisition();
+            //dr8.Employee = e1;
+            //dr8.SubmissionStatus = SubmissionStatus.Submitted;
+            //dr8.RequisitionApprovalStatus = RequisitionApprovalStatus.Rejected;
 
-            DeptRequisition dr9 = new DeptRequisition();
-            dr9.Employee = e1;
-            dr9.SubmissionStatus = SubmissionStatus.Submitted;
-            dr9.RequisitionApprovalStatus = RequisitionApprovalStatus.Rejected;
+            //DeptRequisition dr9 = new DeptRequisition();
+            //dr9.Employee = e1;
+            //dr9.SubmissionStatus = SubmissionStatus.Submitted;
+            //dr9.RequisitionApprovalStatus = RequisitionApprovalStatus.Rejected;
 
-            DeptRequisition dr10 = new DeptRequisition();
-            dr10.Employee = e1;
-            dr10.RequisitionApprovalStatus = RequisitionApprovalStatus.Rejected;
+            //DeptRequisition dr10 = new DeptRequisition();
+            //dr10.Employee = e1;
+            //dr10.RequisitionApprovalStatus = RequisitionApprovalStatus.Rejected;
 
-            DeptRequisition dr11 = new DeptRequisition();
-            dr11.Employee = e1;
-            dr11.RequisitionApprovalStatus = RequisitionApprovalStatus.Approved;
+            //DeptRequisition dr11 = new DeptRequisition();
+            //dr11.Employee = e1;
+            //dr11.RequisitionApprovalStatus = RequisitionApprovalStatus.Approved;
 
-            dbContext.Add(dr1);
-            dbContext.Add(dr2);
-            dbContext.Add(dr3);
-            dbContext.Add(dr4);
-            dbContext.Add(dr5);
-            dbContext.Add(dr6);
-            dbContext.Add(dr7);
-            dbContext.Add(dr8);
-            dbContext.Add(dr9);
-            dbContext.Add(dr10);
-            dbContext.Add(dr11);
+            //dbContext.Add(dr1);
+            //dbContext.Add(dr2);
+            //dbContext.Add(dr3);
+            //dbContext.Add(dr4);
+            //dbContext.Add(dr5);
+            //dbContext.Add(dr6);
+            //dbContext.Add(dr7);
+            //dbContext.Add(dr8);
+            //dbContext.Add(dr9);
+            //dbContext.Add(dr10);
+            //dbContext.Add(dr11);
 
             // Adding Requisition Details
 
-            RequisitionDetail rd1 = new RequisitionDetail();
-            rd1.Stationery = s1;
-            rd1.Qty = 10;
-            rd1.DeptRequisition = dr1;
+            //RequisitionDetail rd1 = new RequisitionDetail();
+            //rd1.Stationery = s1;
+            //rd1.Qty = 10;
+            //rd1.DeptRequisition = dr1;
 
-            RequisitionDetail rd2 = new RequisitionDetail();
-            rd2.Stationery = s3;
-            rd2.Qty = 45;
-            rd2.DeptRequisition = dr1;
+            //RequisitionDetail rd2 = new RequisitionDetail();
+            //rd2.Stationery = s3;
+            //rd2.Qty = 45;
+            //rd2.DeptRequisition = dr1;
 
-            RequisitionDetail rd3 = new RequisitionDetail();
-            rd3.Stationery = s5;
-            rd3.Qty = 100;
-            rd3.DeptRequisition = dr1;
+            //RequisitionDetail rd3 = new RequisitionDetail();
+            //rd3.Stationery = s5;
+            //rd3.Qty = 100;
+            //rd3.DeptRequisition = dr1;
 
-            RequisitionDetail rd4 = new RequisitionDetail();
-            rd4.Stationery = s7;
-            rd4.Qty = 25;
-            rd4.DeptRequisition = dr1;
+            //RequisitionDetail rd4 = new RequisitionDetail();
+            //rd4.Stationery = s7;
+            //rd4.Qty = 25;
+            //rd4.DeptRequisition = dr1;
 
-            RequisitionDetail rd5 = new RequisitionDetail();
-            rd5.Stationery = s9;
-            rd5.Qty = 25;
-            rd5.DeptRequisition = dr1;
+            //RequisitionDetail rd5 = new RequisitionDetail();
+            //rd5.Stationery = s9;
+            //rd5.Qty = 25;
+            //rd5.DeptRequisition = dr1;
 
-            dbContext.Add(rd1);
-            dbContext.Add(rd2);
-            dbContext.Add(rd3);
-            dbContext.Add(rd4);
-            dbContext.Add(rd5);
+            //dbContext.Add(rd1);
+            //dbContext.Add(rd2);
+            //dbContext.Add(rd3);
+            //dbContext.Add(rd4);
+            //dbContext.Add(rd5);
 
-            RequisitionDetail rd6 = new RequisitionDetail();
-            rd6.Stationery = s1;
-            rd6.Qty = 10;
-            rd6.DeptRequisition = dr2;
+            //RequisitionDetail rd6 = new RequisitionDetail();
+            //rd6.Stationery = s1;
+            //rd6.Qty = 10;
+            //rd6.DeptRequisition = dr2;
 
-            RequisitionDetail rd7 = new RequisitionDetail();
-            rd7.Stationery = s3;
-            rd7.Qty = 45;
-            rd7.DeptRequisition = dr3;
+            //RequisitionDetail rd7 = new RequisitionDetail();
+            //rd7.Stationery = s3;
+            //rd7.Qty = 45;
+            //rd7.DeptRequisition = dr3;
 
-            RequisitionDetail rd8 = new RequisitionDetail();
-            rd8.Stationery = s5;
-            rd8.Qty = 100;
-            rd8.DeptRequisition = dr4;
+            //RequisitionDetail rd8 = new RequisitionDetail();
+            //rd8.Stationery = s5;
+            //rd8.Qty = 100;
+            //rd8.DeptRequisition = dr4;
 
-            RequisitionDetail rd9 = new RequisitionDetail();
-            rd9.Stationery = s7;
-            rd9.Qty = 25;
-            rd9.DeptRequisition = dr5;
+            //RequisitionDetail rd9 = new RequisitionDetail();
+            //rd9.Stationery = s7;
+            //rd9.Qty = 25;
+            //rd9.DeptRequisition = dr5;
 
-            RequisitionDetail rd10 = new RequisitionDetail();
-            rd10.Stationery = s9;
-            rd10.Qty = 25;
-            rd10.DeptRequisition = dr6;
+            //RequisitionDetail rd10 = new RequisitionDetail();
+            //rd10.Stationery = s9;
+            //rd10.Qty = 25;
+            //rd10.DeptRequisition = dr6;
 
-            RequisitionDetail rd11 = new RequisitionDetail();
-            rd11.Stationery = s9;
-            rd11.Qty = 25;
-            rd11.DeptRequisition = dr7;
+            //RequisitionDetail rd11 = new RequisitionDetail();
+            //rd11.Stationery = s9;
+            //rd11.Qty = 25;
+            //rd11.DeptRequisition = dr7;
 
-            RequisitionDetail rd12 = new RequisitionDetail();
-            rd12.Stationery = s9;
-            rd12.Qty = 25;
-            rd12.DeptRequisition = dr8;
+            //RequisitionDetail rd12 = new RequisitionDetail();
+            //rd12.Stationery = s9;
+            //rd12.Qty = 25;
+            //rd12.DeptRequisition = dr8;
 
-            RequisitionDetail rd13 = new RequisitionDetail();
-            rd13.Stationery = s9;
-            rd13.Qty = 25;
-            rd13.DeptRequisition = dr9;
+            //RequisitionDetail rd13 = new RequisitionDetail();
+            //rd13.Stationery = s9;
+            //rd13.Qty = 25;
+            //rd13.DeptRequisition = dr9;
 
-            dbContext.Add(rd6);
-            dbContext.Add(rd7);
-            dbContext.Add(rd8);
-            dbContext.Add(rd9);
-            dbContext.Add(rd10);
-            dbContext.Add(rd11);
-            dbContext.Add(rd12);
-            dbContext.Add(rd13);
+            //dbContext.Add(rd6);
+            //dbContext.Add(rd7);
+            //dbContext.Add(rd8);
+            //dbContext.Add(rd9);
+            //dbContext.Add(rd10);
+            //dbContext.Add(rd11);
+            //dbContext.Add(rd12);
+            //dbContext.Add(rd13);
 
-            RequisitionDetail rd14 = new RequisitionDetail();
-            rd14.Stationery = s1;
-            rd14.Qty = 25;
-            rd14.DeptRequisition = dr11;
+            //RequisitionDetail rd14 = new RequisitionDetail();
+            //rd14.Stationery = s1;
+            //rd14.Qty = 25;
+            //rd14.DeptRequisition = dr11;
 
-            RequisitionDetail rd15 = new RequisitionDetail();
-            rd15.Stationery = s2;
-            rd15.Qty = 25;
-            rd15.DeptRequisition = dr11;
+            //RequisitionDetail rd15 = new RequisitionDetail();
+            //rd15.Stationery = s2;
+            //rd15.Qty = 25;
+            //rd15.DeptRequisition = dr11;
 
-            RequisitionDetail rd16 = new RequisitionDetail();
-            rd16.Stationery = s3;
-            rd16.Qty = 25;
-            rd16.DeptRequisition = dr11;
+            //RequisitionDetail rd16 = new RequisitionDetail();
+            //rd16.Stationery = s3;
+            //rd16.Qty = 25;
+            //rd16.DeptRequisition = dr11;
 
-            RequisitionDetail rd17 = new RequisitionDetail();
-            rd17.Stationery = s4;
-            rd17.Qty = 25;
-            rd17.DeptRequisition = dr11;
+            //RequisitionDetail rd17 = new RequisitionDetail();
+            //rd17.Stationery = s4;
+            //rd17.Qty = 25;
+            //rd17.DeptRequisition = dr11;
 
-            RequisitionDetail rd18 = new RequisitionDetail();
-            rd18.Stationery = s5;
-            rd18.Qty = 25;
-            rd18.DeptRequisition = dr11;
+            //RequisitionDetail rd18 = new RequisitionDetail();
+            //rd18.Stationery = s5;
+            //rd18.Qty = 25;
+            //rd18.DeptRequisition = dr11;
 
-            RequisitionDetail rd19 = new RequisitionDetail();
-            rd19.Stationery = s6;
-            rd19.Qty = 25;
-            rd19.DeptRequisition = dr11;
+            //RequisitionDetail rd19 = new RequisitionDetail();
+            //rd19.Stationery = s6;
+            //rd19.Qty = 25;
+            //rd19.DeptRequisition = dr11;
 
-            RequisitionDetail rd20 = new RequisitionDetail();
-            rd20.Stationery = s7;
-            rd20.Qty = 25;
-            rd20.DeptRequisition = dr11;
+            //RequisitionDetail rd20 = new RequisitionDetail();
+            //rd20.Stationery = s7;
+            //rd20.Qty = 25;
+            //rd20.DeptRequisition = dr11;
 
-            RequisitionDetail rd21 = new RequisitionDetail();
-            rd21.Stationery = s8;
-            rd21.Qty = 25;
-            rd21.DeptRequisition = dr11;
+            //RequisitionDetail rd21 = new RequisitionDetail();
+            //rd21.Stationery = s8;
+            //rd21.Qty = 25;
+            //rd21.DeptRequisition = dr11;
 
-            RequisitionDetail rd22 = new RequisitionDetail();
-            rd22.Stationery = s9;
-            rd22.Qty = 25;
-            rd22.DeptRequisition = dr11;
+            //RequisitionDetail rd22 = new RequisitionDetail();
+            //rd22.Stationery = s9;
+            //rd22.Qty = 25;
+            //rd22.DeptRequisition = dr11;
 
-            RequisitionDetail rd23 = new RequisitionDetail();
-            rd23.Stationery = s10;
-            rd23.Qty = 25;
-            rd23.DeptRequisition = dr11;
+            //RequisitionDetail rd23 = new RequisitionDetail();
+            //rd23.Stationery = s10;
+            //rd23.Qty = 25;
+            //rd23.DeptRequisition = dr11;
 
-            RequisitionDetail rd24 = new RequisitionDetail();
-            rd24.Stationery = s11;
-            rd24.Qty = 25;
-            rd24.DeptRequisition = dr11;
+            //RequisitionDetail rd24 = new RequisitionDetail();
+            //rd24.Stationery = s11;
+            //rd24.Qty = 25;
+            //rd24.DeptRequisition = dr11;
 
-            RequisitionDetail rd25 = new RequisitionDetail();
-            rd25.Stationery = s12;
-            rd25.Qty = 25;
-            rd25.DeptRequisition = dr11;
+            //RequisitionDetail rd25 = new RequisitionDetail();
+            //rd25.Stationery = s12;
+            //rd25.Qty = 25;
+            //rd25.DeptRequisition = dr11;
 
-            RequisitionDetail rd26 = new RequisitionDetail();
-            rd26.Stationery = s13;
-            rd26.Qty = 25;
-            rd26.DeptRequisition = dr11;
+            //RequisitionDetail rd26 = new RequisitionDetail();
+            //rd26.Stationery = s13;
+            //rd26.Qty = 25;
+            //rd26.DeptRequisition = dr11;
 
-            RequisitionDetail rd27 = new RequisitionDetail();
-            rd27.Stationery = s14;
-            rd27.Qty = 25;
-            rd27.DeptRequisition = dr11;
+            //RequisitionDetail rd27 = new RequisitionDetail();
+            //rd27.Stationery = s14;
+            //rd27.Qty = 25;
+            //rd27.DeptRequisition = dr11;
 
-            RequisitionDetail rd28 = new RequisitionDetail();
-            rd28.Stationery = s15;
-            rd28.Qty = 25;
-            rd28.DeptRequisition = dr11;
+            //RequisitionDetail rd28 = new RequisitionDetail();
+            //rd28.Stationery = s15;
+            //rd28.Qty = 25;
+            //rd28.DeptRequisition = dr11;
 
-            RequisitionDetail rd29 = new RequisitionDetail();
-            rd29.Stationery = s16;
-            rd29.Qty = 25;
-            rd29.DeptRequisition = dr11;
+            //RequisitionDetail rd29 = new RequisitionDetail();
+            //rd29.Stationery = s16;
+            //rd29.Qty = 25;
+            //rd29.DeptRequisition = dr11;
 
-            RequisitionDetail rd30 = new RequisitionDetail();
-            rd30.Stationery = s17;
-            rd30.Qty = 25;
-            rd30.DeptRequisition = dr11;
+            //RequisitionDetail rd30 = new RequisitionDetail();
+            //rd30.Stationery = s17;
+            //rd30.Qty = 25;
+            //rd30.DeptRequisition = dr11;
 
-            RequisitionDetail rd31 = new RequisitionDetail();
-            rd31.Stationery = s18;
-            rd31.Qty = 25;
-            rd31.DeptRequisition = dr11;
+            //RequisitionDetail rd31 = new RequisitionDetail();
+            //rd31.Stationery = s18;
+            //rd31.Qty = 25;
+            //rd31.DeptRequisition = dr11;
 
-            RequisitionDetail rd32 = new RequisitionDetail();
-            rd32.Stationery = s19;
-            rd32.Qty = 25;
-            rd32.DeptRequisition = dr11;
+            //RequisitionDetail rd32 = new RequisitionDetail();
+            //rd32.Stationery = s19;
+            //rd32.Qty = 25;
+            //rd32.DeptRequisition = dr11;
 
-            RequisitionDetail rd33 = new RequisitionDetail();
-            rd33.Stationery = s20;
-            rd33.Qty = 25;
-            rd33.DeptRequisition = dr11;
+            //RequisitionDetail rd33 = new RequisitionDetail();
+            //rd33.Stationery = s20;
+            //rd33.Qty = 25;
+            //rd33.DeptRequisition = dr11;
 
-            RequisitionDetail rd34 = new RequisitionDetail();
-            rd34.Stationery = s21;
-            rd34.Qty = 25;
-            rd34.DeptRequisition = dr11;
+            //RequisitionDetail rd34 = new RequisitionDetail();
+            //rd34.Stationery = s21;
+            //rd34.Qty = 25;
+            //rd34.DeptRequisition = dr11;
 
-            RequisitionDetail rd35 = new RequisitionDetail();
-            rd35.Stationery = s22;
-            rd35.Qty = 25;
-            rd35.DeptRequisition = dr11;
+            //RequisitionDetail rd35 = new RequisitionDetail();
+            //rd35.Stationery = s22;
+            //rd35.Qty = 25;
+            //rd35.DeptRequisition = dr11;
 
-            RequisitionDetail rd36 = new RequisitionDetail();
-            rd36.Stationery = s23;
-            rd36.Qty = 25;
-            rd36.DeptRequisition = dr11;
+            //RequisitionDetail rd36 = new RequisitionDetail();
+            //rd36.Stationery = s23;
+            //rd36.Qty = 25;
+            //rd36.DeptRequisition = dr11;
 
-            RequisitionDetail rd37 = new RequisitionDetail();
-            rd37.Stationery = s24;
-            rd37.Qty = 25;
-            rd37.DeptRequisition = dr11;
+            //RequisitionDetail rd37 = new RequisitionDetail();
+            //rd37.Stationery = s24;
+            //rd37.Qty = 25;
+            //rd37.DeptRequisition = dr11;
 
-            dbContext.Add(rd14);
-            dbContext.Add(rd15);
-            dbContext.Add(rd16);
-            dbContext.Add(rd17);
-            dbContext.Add(rd18);
-            dbContext.Add(rd19);
-            dbContext.Add(rd20);
-            dbContext.Add(rd21);
-            dbContext.Add(rd22);
-            dbContext.Add(rd23);
-            dbContext.Add(rd24);
-            dbContext.Add(rd25);
-            dbContext.Add(rd26);
-            dbContext.Add(rd27);
-            dbContext.Add(rd28);
-            dbContext.Add(rd29);
-            dbContext.Add(rd30);
-            dbContext.Add(rd31);
-            dbContext.Add(rd32);
-            dbContext.Add(rd33);
-            dbContext.Add(rd34);
-            dbContext.Add(rd35);
-            dbContext.Add(rd36);
-            dbContext.Add(rd37);
+            //dbContext.Add(rd14);
+            //dbContext.Add(rd15);
+            //dbContext.Add(rd16);
+            //dbContext.Add(rd17);
+            //dbContext.Add(rd18);
+            //dbContext.Add(rd19);
+            //dbContext.Add(rd20);
+            //dbContext.Add(rd21);
+            //dbContext.Add(rd22);
+            //dbContext.Add(rd23);
+            //dbContext.Add(rd24);
+            //dbContext.Add(rd25);
+            //dbContext.Add(rd26);
+            //dbContext.Add(rd27);
+            //dbContext.Add(rd28);
+            //dbContext.Add(rd29);
+            //dbContext.Add(rd30);
+            //dbContext.Add(rd31);
+            //dbContext.Add(rd32);
+            //dbContext.Add(rd33);
+            //dbContext.Add(rd34);
+            //dbContext.Add(rd35);
+            //dbContext.Add(rd36);
+            //dbContext.Add(rd37);
 
 
 
@@ -1350,19 +1350,33 @@ namespace Ben_Project.DB
             //start by Saw
 
             Disbursement dbur1 = new Disbursement();
+            dbur1.DisbursementStatus = DisbursementStatus.Acknowledged;
             Disbursement dbur2 = new Disbursement();
+            dbur2.DisbursementStatus = DisbursementStatus.Acknowledged;
             Disbursement dbur3 = new Disbursement();
+            dbur3.DisbursementStatus = DisbursementStatus.Acknowledged;
             Disbursement dbur4 = new Disbursement();
+            dbur4.DisbursementStatus = DisbursementStatus.Acknowledged;
             Disbursement dbur5 = new Disbursement();
+            dbur5.DisbursementStatus = DisbursementStatus.Acknowledged;
             Disbursement dbur6 = new Disbursement();
+            dbur6.DisbursementStatus = DisbursementStatus.Acknowledged;
             Disbursement dbur7 = new Disbursement();
+            dbur7.DisbursementStatus = DisbursementStatus.Acknowledged;
             Disbursement dbur8 = new Disbursement();
+            dbur8.DisbursementStatus = DisbursementStatus.Acknowledged;
             Disbursement dbur9 = new Disbursement();
+            dbur9.DisbursementStatus = DisbursementStatus.Acknowledged;
             Disbursement dbur10 = new Disbursement();
+            dbur10.DisbursementStatus = DisbursementStatus.Acknowledged;
             Disbursement dbur11 = new Disbursement();
+            dbur11.DisbursementStatus = DisbursementStatus.Acknowledged;
             Disbursement dbur12 = new Disbursement();
+            dbur12.DisbursementStatus = DisbursementStatus.Acknowledged;
             Disbursement dbur13 = new Disbursement();
+            dbur13.DisbursementStatus = DisbursementStatus.Acknowledged;
             Disbursement dbur14 = new Disbursement();
+            dbur14.DisbursementStatus = DisbursementStatus.Acknowledged;
 
             dbContext.Add(dbur1);
             dbContext.Add(dbur2);
@@ -2210,6 +2224,9 @@ namespace Ben_Project.DB
 
 
             DelegatedEmployee de = new DelegatedEmployee();
+            de.Employee = e1;
+            de.Name = e1.Name;
+            de.delegationStatus = DelegationStatus.mock;
             de.EndDate = new DateTime(2020, 1, 1);
             dbContext.Add(de);
 

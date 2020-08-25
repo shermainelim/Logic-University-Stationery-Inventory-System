@@ -13,7 +13,7 @@
 
 <form asp-controller="Store" asp-action="StoreClerkSaveRequisition" method="post">
 
-    <table id="ReqFulfill" align="center" border="1">
+    <table id="" align="center" border="1">
         <thead style="background-color: lightskyblue">
             <tr>
                 <th>Item Name</th>
@@ -25,34 +25,34 @@
             </tr>
         </thead>
         <tbody>
-        @for (int i = 0; i < requisition.RequisitionDetails.Count; i++)
-        {
-            var itemName = @requisition.RequisitionDetails[i].Stationery.Description;
-            var requestedQty = @requisition.RequisitionDetails[i].Qty;
-            var stockQty = @stocks.Find(s => s.Stationery.Id == @requisition.RequisitionDetails[i].Stationery.Id).Qty;
-            var collectedQty = @requisition.RequisitionDetails[i].CollectedQty;
-            var toWithdrawQty = requestedQty - collectedQty;
+            @for (int i = 0; i < requisition.RequisitionDetails.Count; i++)
+            {
+                var itemName = @requisition.RequisitionDetails[i].Stationery.Description;
+                var requestedQty = @requisition.RequisitionDetails[i].Qty;
+                var stockQty = @stocks.Find(s => s.Stationery.Id == @requisition.RequisitionDetails[i].Stationery.Id).Qty;
+                var collectedQty = @requisition.RequisitionDetails[i].CollectedQty;
+                var toWithdrawQty = requestedQty - collectedQty;
 
-            var deptRequisitionId = @requisition.Id;
-            var stationeryId = @requisition.RequisitionDetails[i].Stationery.Id;
+                var deptRequisitionId = @requisition.Id;
+                var stationeryId = @requisition.RequisitionDetails[i].Stationery.Id;
 
 
-            <tr>
-                <td>@itemName</td>
-                <td>@requestedQty</td>
-                <td>@stockQty</td>
-                <td>@collectedQty</td>
-                <td>@toWithdrawQty</td>
-                <td>
-                    <input asp-for="@Model.DeptRequisition.Id" type="hidden" value="@deptRequisitionId"/>
-                    <input asp-for="@Model.DisbursementDetails[i].Stationery.Id" type="hidden" value="@stationeryId"/>
-                    <input asp-for="@Model.DisbursementDetails[i].Qty" type="number"/>
-                </td>
-            </tr>
-        }
+                <tr>
+                    <td>@itemName</td>
+                    <td>@requestedQty</td>
+                    <td>@stockQty</td>
+                    <td>@collectedQty</td>
+                    <td>@toWithdrawQty</td>
+                    <td>
+                        <input asp-for="@Model.DisbursementDetails[i].Stationery.Id" type="hidden" value="@stationeryId" />
+                        <input asp-for="@Model.DisbursementDetails[i].Qty" type="number" />
+                    </td>
+                </tr>
+            }
         </tbody>
     </table>
 
+    <input asp-for="@Model.DeptRequisition.Id" type="hidden" value="@requisition.Id" />
     <input id="saveBtn" type="submit" value="Save" />
 </form>
 

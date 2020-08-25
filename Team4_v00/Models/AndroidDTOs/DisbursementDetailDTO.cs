@@ -10,6 +10,7 @@ namespace Ben_Project.Models.AndroidDTOs
     {
         public int Id { get; set; }
         public int StationeryId { get; set; }
+        public string StationeryCode { get; set; }
         public string StationeryName { get; set; }
         public int Qty { get; set; }
 

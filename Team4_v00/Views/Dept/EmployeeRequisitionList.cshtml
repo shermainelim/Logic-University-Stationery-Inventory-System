@@ -10,12 +10,15 @@
 </div>
 
 <table id="EmpReqList" align="center" border="1">
-    <tr>
-        <th>Requisition Id</th>
-        <th>Action</th>
-        <th>Submission Status</th>
-    </tr>
-
+    <thead style="background-color: lightskyblue">
+        <tr>
+            <th>Requisition Id</th>
+            <th>Submission Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    
+    <tbody>
     @foreach (var requisition in @Model)
     {
         var requisitionId = @requisition.Id;
@@ -27,4 +30,6 @@
             <td>@Html.ActionLink("Details", "EmployeeRequisitionDetail", "Dept", new {id = requisitionId}, null)</td>
         </tr>
     }
+    </tbody>
+    
 </table>
