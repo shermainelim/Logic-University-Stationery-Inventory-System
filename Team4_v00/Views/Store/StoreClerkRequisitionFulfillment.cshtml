@@ -1,6 +1,7 @@
 ﻿@model Ben_Project.Models.Disbursement
 
 @{
+    Layout = "~/Views/Shared/_StoreClerk.cshtml";    
     ViewData["Title"] = "StoreClerkRequisitionFulfillment";
     var stocks = (List<Stock>) ViewData["stocks"];
     var requisition = (DeptRequisition) ViewData["requisition"];

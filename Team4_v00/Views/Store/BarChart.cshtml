@@ -1,4 +1,6 @@
-﻿@{ var history = (List<DisbursementDetail>)ViewData["histories"];
+﻿@{ 
+     Layout = "~/Views/Shared/_StoreClerk.cshtml";
+    var history = (List<DisbursementDetail>)ViewData["histories"];
     var history2 = (List<Stationery>)ViewData["histories2"];
     var departments = (List<Department>)ViewData["depts"];
 }

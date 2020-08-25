@@ -108,7 +108,7 @@ namespace Ben_Project.Controllers
         public IActionResult StoreClerkStockList()
         {
             var stocks = _dbContext.Stocks.ToList();
-
+            ViewData["username"] = HttpContext.Session.GetString("username");
             return View(stocks);
         }
 
@@ -121,7 +121,7 @@ namespace Ben_Project.Controllers
         public IActionResult StoreClerkRequisitionList()
         {
             var requisitions = _dbContext.DeptRequisitions.Where(dr => dr.RequisitionApprovalStatus == RequisitionApprovalStatus.Approved && dr.RequisitionFulfillmentStatus != RequisitionFulfillmentStatus.Fulfilled).ToList();
-
+            ViewData["username"] = HttpContext.Session.GetString("username");
             return View(requisitions);
         }
 
@@ -441,7 +441,7 @@ namespace Ben_Project.Controllers
             var disbursements = _dbContext.Disbursements
                 .Where(d => d.DisbursementStatus != DisbursementStatus.Acknowledged)
                 .ToList();
-
+            ViewData["username"] = HttpContext.Session.GetString("username");
             return View(disbursements);
         }
 
@@ -624,7 +624,7 @@ namespace Ben_Project.Controllers
             //var adjustmentVouchers = _dbContext.AdjustmentVouchers.Where(av => av.Status == AdjustmentVoucherStatus.Draft).ToList();
 
             var adjustmentVouchers = _dbContext.AdjustmentVouchers.ToList();
-
+            ViewData["username"] = HttpContext.Session.GetString("username");
             return View(adjustmentVouchers);
         }
 
@@ -805,6 +805,7 @@ namespace Ben_Project.Controllers
                 depts.Add(d);
             }
             ViewData["depts"] = depts;
+            ViewData["username"] = HttpContext.Session.GetString("username");
 
             return View();
         }
