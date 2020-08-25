@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Ben_Project.DB;
 using Ben_Project.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace Ben_Project.Controllers
 {
@@ -31,6 +32,7 @@ namespace Ben_Project.Controllers
                     dList.Add(d);
                 }
             }
+            ViewData["username"] = HttpContext.Session.GetString("username");
             return View(dList);
             
         }
@@ -56,7 +58,7 @@ namespace Ben_Project.Controllers
             {
                 return NotFound();
             }
-
+            ViewData["username"] = HttpContext.Session.GetString("username");
             return View(department);
         }
 
@@ -79,6 +81,7 @@ namespace Ben_Project.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["username"] = HttpContext.Session.GetString("username");
             return View(department);
         }
 
@@ -95,6 +98,7 @@ namespace Ben_Project.Controllers
             {
                 return NotFound();
             }
+            ViewData["username"] = HttpContext.Session.GetString("username");
             return View(department);
         }
 
@@ -130,6 +134,7 @@ namespace Ben_Project.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["username"] = HttpContext.Session.GetString("username");
             return View(department);
         }
 
@@ -147,6 +152,7 @@ namespace Ben_Project.Controllers
             {
                 return NotFound();
             }
+            ViewData["username"] = HttpContext.Session.GetString("username");
 
             return View(department);
         }

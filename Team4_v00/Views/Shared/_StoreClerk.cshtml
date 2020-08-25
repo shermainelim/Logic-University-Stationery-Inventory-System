@@ -1,14 +1,14 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+@{ 
+        String name = (String)ViewData["username"];
+ }
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Logic University</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
 
-    @*
-        Data Table
-    *@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
@@ -17,37 +17,45 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-            
-                <a href="@Url.Action("Index", "Home")">
+                <a href="@Url.Action("BarChart", "Store")">
                     <img src="@Url.Content("/images/icon.png")" />
                 </a>
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"> </a>
+                <a class="navbar-brand" asp-area="" asp-controller="Store" asp-action="BarChart"> </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <p class="nav navbar-text navbar-right">Hello, @User.Identity.Name!</p>
+                    <p class="nav navbar-text navbar-right">Hello, @name !</p>
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Store" asp-action="BarChart">Trend Analysis</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Dept" asp-action="Index">Dept</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Store" asp-action="StoreClerkRequisitionList">Requisition</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Store" asp-action="Index">Store</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Store" asp-action="StoreClerkDisbursementList">Disbursement</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Store" asp-action="StoreClerkStockList">Stocks</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Store" asp-action="StoreClerkAdjustmentVoucherList">Adjustment</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="PO" asp-action="Index">P.O.</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="StoreSupplier" asp-action="StoreSupplierList">Supplier</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="StoreDept" asp-action="Index">Department</a>
                         </li>
                     </ul>
                 </div>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Login" asp-action="Index">Login</a>
-                        </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Logout" asp-action="Index">Logout</a>
                         </li>
@@ -92,9 +100,10 @@
             $('#DisburseDetail').DataTable();
             $('#DisburseList').DataTable();
             $('#ReqFulfill').DataTable();
-            $('#ReqList').DataTable(); 
+            $('#ReqList').DataTable();
 
-            $('#deptHeadRequisitionList').DataTable;
+             $('#stockList_tbl').DataTable();
+            $('#deptHeadRequisitionList').DataTable();
 
         });
     </script>

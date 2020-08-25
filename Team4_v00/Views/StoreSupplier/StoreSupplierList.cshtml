@@ -1,9 +1,15 @@
-﻿
+﻿@{
+    Layout = "~/Views/Shared/_StoreClerk.cshtml";
+}
 
 
 <h3>Suppliers</h3>
-<input type="button" title="Create" value="Create" onclick="location.href='@Url.Action("ManageSupplier", "StoreSupplier",  new { flag = "Create" },null)'" />
+@*
+    <input type="button" title="Create" value="Create" onclick="location.href='@Url.Action("ManageSupplier", "StoreSupplier",  new { flag = "Create" },null)'" />
 
+*@
+
+@Html.ActionLink("Create", "ManageSupplier", "StoreSupplier", new { flag = "Create" }, null)
 <br />
 <br />
 <br />
@@ -36,16 +42,16 @@
                         <td>@supplier.TelephoneNo</td>
                         <td>
                             @*
-        @Html.ActionLink("Edit", "ManageSupplier", "StoreSupplier", new { id = supplier.Id, flag = "Edit" }, null)
+                                @Html.ActionLink("Edit", "ManageSupplier", "StoreSupplier", new { id = supplier.Id, flag = "Edit" }, null)
                             *@
                             @Html.ActionLink("Details", "ManageSupplier", "StoreSupplier", new { id = supplier.Id, flag = "Detail" }, null)
-                            | @Html.ActionLink("Delete", "Delete", new { id = supplier.Id,flag = "Delete" }, new {@style = "color:#FF0000;" , data_toggle = "modal", data_target = "#myModal" })
-                        
+                            | @Html.ActionLink("Delete", "Delete", new { id = supplier.Id, flag = "Delete" }, new { @style = "color:#FF0000;", data_toggle = "modal", data_target = "#myModal" })
+
                         </td>
                     </tr>
                     i++;
                     <!--
-                modal-->
+                    modal-->
                     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
@@ -55,7 +61,7 @@
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                                     <input type="button" class="btn btn-danger" title="Delete" value="Delete" onclick="location.href='@Url.Action("ManageSupplier", "StoreSupplier",  new {  id = supplier.Id, flag = "Delete" },null)'" />
-                    
+
                                 </div>
                             </div>
                         </div>
@@ -75,6 +81,6 @@
         </tfoot>
     </table>
 
-   
+
 
 </form>

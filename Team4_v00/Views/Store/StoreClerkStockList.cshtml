@@ -1,8 +1,9 @@
 ﻿
-@*@model IEnumerable<Ben_Project.Models.Stock>
+@model IEnumerable<Ben_Project.Models.Stock>
 
 
     @{
+        Layout = "~/Views/Shared/_StoreClerk.cshtml";    
         ViewData["Title"] = "Store EmployeeRequisitionList Page";
     }
 
@@ -11,23 +12,25 @@
         <h1 class="display-4">Store EmployeeRequisitionList Page</h1>
     </div>
 
-    <table align="center" border="1">
-        <tr>
-            <th>Item Number</th>
-            <th>Category</th>
-            <th>Description</th>
-            <th>Unit of Measure</th>
-            <th>In Stock</th>
-        </tr>
-
-        @foreach (var stock in @Model)
-        {
+    <table align="center" border="1" id="stockList_tbl">
+        <thead style="background-color: lightskyblue">
             <tr>
-                <td>@stock.Stationery.ItemNumber</td>
-                <td>@stock.Stationery.Category</td>
-                <td>@stock.Stationery.Description</td>
-                <td>@stock.Stationery.Uom</td>
-                <td>@stock.Qty</td>
+                <th>Item Number</th>
+                <th>Category</th>
+                <th>Description</th>
+                <th>Unit of Measure</th>
+                <th>In Stock</th>
             </tr>
-        }
-    </table>*@
+            </thead>
+
+            @foreach (var stock in @Model)
+            {
+                <tr>
+                    <td>@stock.Stationery.ItemNumber</td>
+                    <td>@stock.Stationery.Category</td>
+                    <td>@stock.Stationery.Description</td>
+                    <td>@stock.Stationery.Uom</td>
+                    <td>@stock.Qty</td>
+                </tr>
+            }
+    </table>
