@@ -39,6 +39,10 @@ namespace Ben_Project.Controllers
 
             var employee = _dbContext.Employees.FirstOrDefault(e => e.Username == username);
 
+            if (employee.Role == DeptRole.StoreClerk) {
+                return RedirectToAction("BarChart", "Store");
+            }
+
             return RedirectToAction("Index", "Home");
         }
     }

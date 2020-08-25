@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Ben_Project.DB;
 using Ben_Project.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ben_Project.Controllers
@@ -19,6 +20,7 @@ namespace Ben_Project.Controllers
 
         public IActionResult Index()
         {
+            ViewData["username"] = HttpContext.Session.GetString("username");
             return View();
         }
 
@@ -33,6 +35,7 @@ namespace Ben_Project.Controllers
                     sList.Add(s);
                 }
             }
+            ViewData["username"] = HttpContext.Session.GetString("username");
             return View(sList);
         }
         public IActionResult ManageSupplier(int id, String flag)
@@ -60,7 +63,7 @@ namespace Ben_Project.Controllers
                 _dbContext.SaveChanges();
                 return RedirectToAction("StoreSupplierList");
             }
-
+            ViewData["username"] = HttpContext.Session.GetString("username");
 
             return View();
         }
@@ -80,6 +83,7 @@ namespace Ben_Project.Controllers
             }
 
             Console.WriteLine(newSupplier);
+            ViewData["username"] = HttpContext.Session.GetString("username");
             return View(newSupplier);
         }
 
@@ -87,7 +91,7 @@ namespace Ben_Project.Controllers
         {
 
             var supplier = new Supplier();
-
+            ViewData["username"] = HttpContext.Session.GetString("username");
             return View(supplier);
         }
 
@@ -113,20 +117,21 @@ namespace Ben_Project.Controllers
                 }
             }
             _dbContext.SaveChanges();
+            ViewData["username"] = HttpContext.Session.GetString("username");
             return RedirectToAction("StoreSupplierList");
         }
 
         public IActionResult SupplierEdit(int Id)
         {
             var s = _dbContext.Suppliers.FirstOrDefault(s => s.Id == Id);
-
+            ViewData["username"] = HttpContext.Session.GetString("username");
             return View(s);
         }
 
         public IActionResult SupplierDetail(int Id)
         {
             var s = _dbContext.Suppliers.FirstOrDefault(s => s.Id == Id);
-
+            ViewData["username"] = HttpContext.Session.GetString("username");
             return View(s);
         }
 
