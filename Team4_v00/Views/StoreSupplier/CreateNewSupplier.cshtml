@@ -53,7 +53,7 @@
                     <span asp-validation-for="TelephoneNo" class="text-danger"></span>
                 </div>
                 <div class="col-sm-6">
-                    <input name="TelephoneNo" class="form-control" id="TelephoneNo" placeholder="TelephoneNo" value="@Model.TelephoneNo" />
+                    <input name="TelephoneNo" class="form-control" id="TelephoneNo" placeholder="TelephoneNo" type="tel" value="@Model.TelephoneNo" />
                 </div>
                 <span asp-validation-for="TelephoneNo" class="text-danger"></span>
 
@@ -84,7 +84,7 @@
                             <input asp-for="@Model.SupplierDetails[i].Stationery.Category" type="hidden" value="@itemCate" />
                             <input asp-for="@Model.SupplierDetails[i].Stationery.ItemNumber" type="hidden" value="@itemNumeber" />
                             <input asp-for="@Model.SupplierDetails[i].Stationery.Uom" type="hidden" value="@itemUOM" />
-                            <input asp-for="@Model.SupplierDetails[i].UnitPrice" type="number" />
+                            <input asp-for="@Model.SupplierDetails[i].UnitPrice" type="number" min="0"/>
                         </td>
                     </tr>
                 }

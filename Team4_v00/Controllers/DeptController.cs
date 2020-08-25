@@ -233,6 +233,10 @@ namespace Ben_Project.Controllers
                 requisition.RequisitionDetails.Remove(delObj);
             }
 
+             int userId = (int) HttpContext.Session.GetInt32("Id");
+            Employee user = _dbContext.Employees.SingleOrDefault(x => x.Id == userId);
+
+            requisition.Employee = user;
             _dbContext.SaveChanges();
             return RedirectToAction("EmployeeRequisitionList", "Dept");
         }
@@ -268,7 +272,7 @@ namespace Ben_Project.Controllers
 
         public IActionResult setCollectionPt(IFormCollection frmCollect, Department department)
         {
-            string usernameInSession = HttpContext.Session.GetString("username");
+            string usernameInSession = HttpContext.Session.GetString("loginName");
             var employee = _dbContext.Employees.FirstOrDefault(ep => ep.Username == usernameInSession);
             var empDept = employee.Dept;
 

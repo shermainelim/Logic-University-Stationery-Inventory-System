@@ -301,6 +301,7 @@ namespace Ben_Project.Controllers
 
                 if (disbursementDetail.Qty > (requisitionDetail.Qty - requisitionDetail.CollectedQty))
                 {
+                    TempData["Error"] = "Fulfilling more than is required";
                     return RedirectToAction("StoreClerkRequisitionFulfillment", new { id = deptRequisition.Id });
                 }
 
