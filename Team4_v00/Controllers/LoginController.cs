@@ -36,7 +36,8 @@ namespace Ben_Project.Controllers
             }
 
             HttpContext.Session.SetString("username", username);
-
+            HttpContext.Session.SetString("role", user.Role.ToString());
+            HttpContext.Session.SetInt32("id", user.Id);
             var employee = _dbContext.Employees.FirstOrDefault(e => e.Username == username);
 
             return RedirectToAction("Index", "Home");

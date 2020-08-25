@@ -1,4 +1,10 @@
-﻿<h3>Delegated Employee List</h3>
+﻿
+@{
+    ViewData["Title"] = "DelegatedEmployeeList";
+    Layout = "~/Views/Shared/_DeptLayout.cshtml";
+}
+
+<h3>Delegated Employee List</h3>
 <input type="button" title="Create" value="Create" onclick="location.href='@Url.Action("ManageDelegatedEmployee", "Delegate",  new { flag = "Create" },null)'" />
 
 <br />
@@ -24,55 +30,55 @@
                 {
                     var employeeId = delegatedEmployee.Id;
 
-            <tr>
-                <td>
-                    @i
-                    <input type="hidden" value="@delegatedEmployee.Id" id="YourKey" />
-                </td>
-                <td>@delegatedEmployee.Name</td>
-                <td>
-                    @delegatedEmployee.StartDate.ToString("dd-MMMM-yyyy")
-                </td>
-                <td>
-                    @delegatedEmployee.EndDate.ToString("dd-MMMM-yyyy")
-                </td>
-                <td>
-                @delegatedEmployee.delegationStatus
-                </td>
-                <td>
-                    @*
-            @Html.ActionLink("Edit", "ManageDelegatedEmployee", "Delegate", new { id = delegatedEmployee.Id, flag = "Edit" }, null)
-                    *@
-                    @Html.ActionLink("Cancel", "ManageDelegatedEmployee", "Delegate", new { id = delegatedEmployee.Id, flag = "Cancel" }, new { @style = "color:#FF0000;" })
-                   @*new { @style = "color:#FF0000;", data_toggle = "modal", data_target = "#myModal" })*@
-                    | @Html.ActionLink("Extend", "ManageDelegatedEmployee", "Delegate", new { id = delegatedEmployee.Id, flag = "Extend" }, null)
+                    <tr>
+                        <td>
+                            @i
+                            <input type="hidden" value="@delegatedEmployee.Id" id="YourKey" />
+                        </td>
+                        <td>@delegatedEmployee.Name</td>
+                        <td>
+                            @delegatedEmployee.StartDate.ToString("dd-MMMM-yyyy")
+                        </td>
+                        <td>
+                            @delegatedEmployee.EndDate.ToString("dd-MMMM-yyyy")
+                        </td>
+                        <td>
+                            @delegatedEmployee.delegationStatus
+                        </td>
+                        <td>
+                            @*
+                                @Html.ActionLink("Edit", "ManageDelegatedEmployee", "Delegate", new { id = delegatedEmployee.Id, flag = "Edit" }, null)
+                            *@
+                            @Html.ActionLink("Cancel", "ManageDelegatedEmployee", "Delegate", new { id = delegatedEmployee.Id, flag = "Cancel" }, new { @style = "color:#FF0000;" })
+                            @*new { @style = "color:#FF0000;", data_toggle = "modal", data_target = "#myModal" })*@
+                            | @Html.ActionLink("Extend", "ManageDelegatedEmployee", "Delegate", new { id = delegatedEmployee.Id, flag = "Extend" }, null)
 
-                </td>
-            </tr>
+                        </td>
+                    </tr>
                     i++;
-                <!--
-                modal-->
+                    <!--
+                    modal-->
                     @*
-                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-body">
-                                Are you sure you want to cancel this delegation ?
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Abort Cancellation</button>
-                                <input type="button" class="btn btn-danger" title="Cancel" value="Cancel" onclick="location.href='@Url.Action("ManageDelegatedEmployee", "Delegate",  new {  id = delegatedEmployee.Id, flag = "Cancel" },null)'" />
+                        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-body">
+                                        Are you sure you want to cancel this delegation ?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Abort Cancellation</button>
+                                        <input type="button" class="btn btn-danger" title="Cancel" value="Cancel" onclick="location.href='@Url.Action("ManageDelegatedEmployee", "Delegate",  new {  id = delegatedEmployee.Id, flag = "Cancel" },null)'" />
 
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-                        *@
+                    *@
                 }
 
             }
         </tbody>
-        
+
     </table>
 
 

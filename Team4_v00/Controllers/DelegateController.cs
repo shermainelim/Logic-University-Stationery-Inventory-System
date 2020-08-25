@@ -95,6 +95,7 @@ namespace Ben_Project.Controllers
             var employee = _dbContext.Employees.SingleOrDefault(x => x.Id == id);
             var newDelegatedEmployee = new DelegatedEmployee();
             newDelegatedEmployee.Name = employee.Name;
+            employee.Role = DeptRole.DelegatedEmployee;
             newDelegatedEmployee.Employee = employee;
             newDelegatedEmployee.StartDate = Convert.ToDateTime(startDate);
             newDelegatedEmployee.EndDate = Convert.ToDateTime(endDate);
@@ -115,6 +116,7 @@ namespace Ben_Project.Controllers
                 var deEmp = _dbContext.DelegatedEmployees.FirstOrDefault(x => x.delegationStatus == DelegationStatus.Selected || x.delegationStatus == DelegationStatus.Extended);
                 if (deEmp != null)
                 {
+                    deEmp.Employee.Role = deEmp.Employee.JobTitle;
                     deEmp.delegationStatus = DelegationStatus.Cancelled;
                     _dbContext.SaveChanges();
                 }
@@ -142,6 +144,7 @@ namespace Ben_Project.Controllers
             else if (flag == "Cancel")
             {
                 var de = _dbContext.DelegatedEmployees.FirstOrDefault(x => x.Id == id);
+                de.Employee.Role = de.Employee.JobTitle;
                 de.delegationStatus = DelegationStatus.Cancelled;
 
                 MailAddress FromEmail = new MailAddress("sa50team4@gmail.com", "Dept head");
@@ -232,7 +235,7 @@ namespace Ben_Project.Controllers
                 newDelegatedEmployee.StartDate = delegatedEmployee.StartDate;
                 newDelegatedEmployee.EndDate = delegatedEmployee.EndDate;
                 newDelegatedEmployee.delegationStatus = DelegationStatus.Selected;
-
+                newDelegatedEmployee.Employee.Role = DeptRole.DelegatedEmployee;
                 MailAddress FromEmail = new MailAddress("sa50team4@gmail.com", "Dept head");
                 MailAddress ToEmail = new MailAddress("e0533391@u.nus.edu", "Dept Employee");
                 string Subject = "Selected to stand in for dept head";
