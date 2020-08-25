@@ -463,7 +463,7 @@ namespace Ben_Project.DB
             e1.Username = "deptrep";
             e1.Password = Crypto.Sha256("deptrep");
             e1.Dept = d1;
-            e1.JobTitle = DeptRole.Employee;
+            e1.JobTitle = DeptRole.DeptRep;
             e1.Role = DeptRole.DeptRep;
 
             Employee e2 = new Employee();

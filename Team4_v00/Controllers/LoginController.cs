@@ -39,6 +39,7 @@ namespace Ben_Project.Controllers
             HttpContext.Session.SetString("username", user.Name);
             HttpContext.Session.SetString("loginName", user.Username);
             HttpContext.Session.SetInt32("Id", user.Id);
+            HttpContext.Session.SetString("jobTitle", user.JobTitle.ToString());
             HttpContext.Session.SetString("Role", user.Role.ToString());
 
             if (user.Role == DeptRole.StoreClerk) {

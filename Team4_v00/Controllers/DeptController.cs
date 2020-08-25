@@ -213,7 +213,9 @@ namespace Ben_Project.Controllers
         public IActionResult DeptRepChangeSubmissionStatus(int id)
         {
             var requisition = _dbContext.DeptRequisitions.FirstOrDefault(dr => dr.Id == id);
-
+            int userId = (int)HttpContext.Session.GetInt32("Id");
+            Employee user = _dbContext.Employees.SingleOrDefault(x => x.Id == userId);
+            requisition.Employee = user;
             requisition.SubmissionStatus = SubmissionStatus.Submitted;
 
             //The purpose of this step is to remove requisition details that have quantity zero from the database.

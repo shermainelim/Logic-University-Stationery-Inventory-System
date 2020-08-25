@@ -7,6 +7,7 @@
     string role = (string)Context.Session.GetString("Role");
     string username = (string)Context.Session.GetString("username");
     string id = (string)Context.Session.GetString("Id");
+    string jobTitle = (string)Context.Session.GetString("jobTitle");
 
 }
 <head>
@@ -38,7 +39,7 @@
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                        <p class="nav navbar-text navbar-right">Hello, @username !</p>
+                        <p class="nav navbar-text navbar-right"> @username </p>
                         <ul class="navbar-nav flex-grow-1">
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Dept" asp-action="DeptHeadRequisitionList">Requisition List</a>
@@ -60,7 +61,7 @@
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                        <p class="nav navbar-text navbar-right">Hello, @username !</p>
+                        <p class="nav navbar-text navbar-right"> @username </p>
                         <ul class="navbar-nav flex-grow-1">
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Dept" asp-action="EmployeeRequisitionList">Add in Requisition</a>
@@ -82,7 +83,7 @@
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                        <p class="nav navbar-text navbar-right">Hello, @username !</p>
+                        <p class="nav navbar-text navbar-right"> @username </p>
                         <ul class="navbar-nav flex-grow-1">
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Dept" asp-action="DeptHeadRequisitionList">Requisition List</a>
@@ -93,22 +94,30 @@
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Dept" asp-action="EmployeeRequisitionForm">Requisition Form</a>
                             </li>
+                            @if (jobTitle.Equals(Ben_Project.Models.DeptRole.DeptRep.ToString()))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Dept" asp-action="DeptRepRequisitionDraft">Submit Requisition</a>
+                                </li>
+                            }
                         </ul>
                     </div>
                 }
+
+              
                 @if (role.Equals(Ben_Project.Models.DeptRole.DeptRep.ToString()))
                 {
 
                     <a href="@Url.Action("EmployeeRequisitionList", "Dept")">
                         <img src="@Url.Content("/images/icon.png")" />
                     </a>
-                    <a class="navbar-brand" asp-area="" asp-controller="Dept" asp-action="DeptHeadRequisitionList"> </a>
+                    <a class="navbar-brand" asp-area="" asp-controller="Dept" asp-action="EmployeeRequisitionList"> </a>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                             aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                        <p class="nav navbar-text navbar-right">Hello, @username !</p>
+                        <p class="nav navbar-text navbar-right"> @username </p>
                         <ul class="navbar-nav flex-grow-1">
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Dept" asp-action="EmployeeRequisitionList">Add in Requisition</a>
@@ -119,34 +128,13 @@
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Dept" asp-action="chooseCollectionPt">Manage Collection Point</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Dept" asp-action="DeptRepRequisitionDraft">Submit Requisition</a>
+                            </li>
+                           
                         </ul>
                     </div>
                 }
-                @*
-        <a href="@Url.Action("Index", "Home")">
-            <img src="@Url.Content("/images/icon.png")" />
-        </a>
-        <a class="navbar-brand" asp-area="" asp-controller="Dept" asp-action="DeptHeadRequisitionList">Department Head Main Page</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-            <ul class="navbar-nav flex-grow-1">
-
-        if(role=deleg){req}
-        elseif(role=head){req,del}
-
-
-                <li class="nav-item">
-                    <a class="nav-link text-dark" asp-area="" asp-controller="Dept" asp-action="DeptHeadRequisitionList">Requisition List</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-dark" asp-area="" asp-controller="Delegate" asp-action="DelegatedEmployeeList">Delegated Employee</a>
-                </li>
-            </ul>
-        </div>
-                *@
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
