@@ -30,42 +30,44 @@
                 int i = 1;
                 @foreach (var supplier in @Model)
                 {
+
                     var itemId = supplier.Id;
+            <tr>
+                <td>
+                    @i
+                    
+                    <input value="@supplier.Id" id="YourKey" />
+                </td>
+                <td>@supplier.Name</td>
+                <td>@supplier.Address</td>
+                <td>@supplier.TelephoneNo</td>
+                <td>
+                    @*
+        @Html.ActionLink("Edit", "ManageSupplier", "StoreSupplier", new { id = supplier.Id, flag = "Edit" }, null)
+                    *@
+                    @Html.ActionLink("Details", "ManageSupplier", "StoreSupplier", new { id = supplier.Id, flag = "Detail" }, null)
+                    | @Html.ActionLink("Delete", "Delete", new { id = supplier.Id, flag = "Delete" }, new { @style = "color:#FF0000;", data_toggle = "modal", data_target = "#myModal" })
+                    <a data-target="#modal-@supplier.Id" asp-route-id="@supplier.Id" data-toggle="modal" style="color:#FF0000;">Delete</a>
+                </td>
+                <!--
+    modal-->
+                <div class="modal fade" id="modal-@supplier.Id" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                Are you sure you wish to delete this nomination?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                <input type="button" class="btn btn-danger" title="Delete" value="Delete" onclick="location.href='@Url.Action("ManageSupplier", "StoreSupplier",  new {  id = @supplier.Id, flag = "Delete" },null)'" />
 
-                    <tr>
-                        <td>
-                            @i
-                            <input type="hidden" value="@supplier.Id" id="YourKey" />
-                        </td>
-                        <td>@supplier.Name</td>
-                        <td>@supplier.Address</td>
-                        <td>@supplier.TelephoneNo</td>
-                        <td>
-                            @*
-                                @Html.ActionLink("Edit", "ManageSupplier", "StoreSupplier", new { id = supplier.Id, flag = "Edit" }, null)
-                            *@
-                            @Html.ActionLink("Details", "ManageSupplier", "StoreSupplier", new { id = supplier.Id, flag = "Detail" }, null)
-                            | @Html.ActionLink("Delete", "Delete", new { id = supplier.Id, flag = "Delete" }, new { @style = "color:#FF0000;", data_toggle = "modal", data_target = "#myModal" })
-
-                        </td>
-                    </tr>
-                    i++;
-                    <!--
-                    modal-->
-                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-body">
-                                    Are you sure you wish to delete this nomination?
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                                    <input type="button" class="btn btn-danger" title="Delete" value="Delete" onclick="location.href='@Url.Action("ManageSupplier", "StoreSupplier",  new {  id = supplier.Id, flag = "Delete" },null)'" />
-
-                                </div>
                             </div>
                         </div>
                     </div>
+                </div>
+            </tr>
+                    i++;
+                    
                 }
 
             }
