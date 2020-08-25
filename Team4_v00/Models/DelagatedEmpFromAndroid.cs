@@ -8,7 +8,7 @@ namespace Ben_Project.Models
     public class DelagatedEmpFromAndroid
     {
         public int EmpId { get; set; }
-        public String StartDate { get; set; }
-        public String EndDate { get; set; }
+        public string StartDate { get; set; }
+        public string EndDate { get; set; }
     }
 }
