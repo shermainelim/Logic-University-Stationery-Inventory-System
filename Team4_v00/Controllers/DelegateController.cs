@@ -44,7 +44,7 @@ namespace Ben_Project.Controllers
         // api endpoint
         public string DelegatedEmployeeListApi()
         {
-            var delegatedEmployee = _dbContext.DelegatedEmployees.ToList();
+            var delegatedEmployee = _dbContext.DelegatedEmployees.Where(x => x.delegationStatus != 0).ToList();
             var deList = new List<DelegatedEmployees>();
             foreach (DelegatedEmployee de in delegatedEmployee)
             {
@@ -99,8 +99,26 @@ namespace Ben_Project.Controllers
             newDelegatedEmployee.StartDate = Convert.ToDateTime(startDate);
             newDelegatedEmployee.EndDate = Convert.ToDateTime(endDate);
             newDelegatedEmployee.delegationStatus = DelegationStatus.Selected;
-            _dbContext.Add(newDelegatedEmployee);
-            _dbContext.SaveChanges();
+            SaveEmployeeDelegation(newDelegatedEmployee);
+            //_dbContext.Add(newDelegatedEmployee);
+            //_dbContext.SaveChanges();
+            return;
+        }
+
+        //Cancel from android
+        [HttpPost]
+        [AllowAnonymous]
+        public void CancelByAndroid([FromBody] DelegateCRUDdto input)
+        {
+            if (input.flag.Equals("CANCEL"))
+            {
+                var deEmp = _dbContext.DelegatedEmployees.FirstOrDefault(x => x.delegationStatus == DelegationStatus.Selected || x.delegationStatus == DelegationStatus.Extended);
+                if (deEmp != null)
+                {
+                    deEmp.delegationStatus = DelegationStatus.Cancelled;
+                    _dbContext.SaveChanges();
+                }
+            }
             return;
         }
 

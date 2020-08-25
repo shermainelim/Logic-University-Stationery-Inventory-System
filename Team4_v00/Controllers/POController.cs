@@ -14,6 +14,7 @@ using Ben_Project.Services;
 using System.Text.Json;
 using Ben_Project.Models.AndroidDTOs;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 
 namespace Ben_Project.Controllers
 {
@@ -38,7 +39,7 @@ namespace Ben_Project.Controllers
                     poList.Add(po);
                 }
             }
-
+            ViewData["username"] = HttpContext.Session.GetString("username");
             return View(poList);
         }
 

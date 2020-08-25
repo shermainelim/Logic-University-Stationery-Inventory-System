@@ -2,14 +2,15 @@
 
 @{
     ViewData["Title"] = "Store Clerk Adjustment Voucher List";
+    Layout = "~/Views/Shared/_StoreClerk.cshtml";
 }
 
-@Html.ActionLink("Create", "StoreClerkAdjustmentVoucherDetail", "Store", null, null)
 <div class="text-center">
-    <h1 class="display-4">Store Clerk Adjustment Voucher List</h1>
+    <h3 class="display-4">Store Clerk Adjustment Voucher List</h3>
 </div>
 
 
+@Html.ActionLink("Create", "StoreClerkAdjustmentVoucherDetail", "Store", null, null)
 <table id="AdjVoucherList" align="center" border="1">
     <thead style="background-color: lightskyblue">
         <tr>
@@ -20,14 +21,14 @@
         </tr>
     </thead>
     <tbody>
-    @foreach (var adjustmentVoucher in @Model)
-    {
-        <tr>
-            <td>@Html.ActionLink(@adjustmentVoucher.VoucherNo, "StoreClerkAdjustmentVoucherDetail", "Store", new {id = @adjustmentVoucher.Id}, null)</td>
-            <td>@(adjustmentVoucher.IssueDate != null ? adjustmentVoucher.IssueDate.ToString() : "N/A")</td>
-            <td>@(adjustmentVoucher.AuthorizedBy != null ? adjustmentVoucher.AuthorizedBy.ToString() : "N/A")</td>
-            <td>@(adjustmentVoucher.Status != null ? adjustmentVoucher.Status.ToString() : "N/A")</td>
-        </tr>
-    }
+        @foreach (var adjustmentVoucher in @Model)
+        {
+            <tr>
+                <td>@Html.ActionLink(@adjustmentVoucher.VoucherNo, "StoreClerkAdjustmentVoucherDetail", "Store", new { id = @adjustmentVoucher.Id }, null)</td>
+                <td>@(adjustmentVoucher.IssueDate != null ? adjustmentVoucher.IssueDate.ToString() : "N/A")</td>
+                <td>@(adjustmentVoucher.AuthorizedBy != null ? adjustmentVoucher.AuthorizedBy.ToString() : "N/A")</td>
+                <td>@(adjustmentVoucher.Status != null ? adjustmentVoucher.Status.ToString() : "N/A")</td>
+            </tr>
+        }
     </tbody>
 </table>

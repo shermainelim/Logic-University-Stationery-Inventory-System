@@ -1,4 +1,6 @@
-﻿@{ var history = (List<DisbursementDetail>)ViewData["histories"];
+﻿@{ 
+     Layout = "~/Views/Shared/_StoreClerk.cshtml";
+    var history = (List<DisbursementDetail>)ViewData["histories"];
     var history2 = (List<Stationery>)ViewData["histories2"];
     var departments = (List<Department>)ViewData["depts"];
 }
@@ -153,7 +155,7 @@
                 <div class="col-sm-4">
                     <label for="exampleFormControlSelect1">Stationery select</label>
                 </div>
-                
+
                 <div class="col-sm-8">
                     <select class="selectpicker show-tick"
                             name="IsHoliday2"
@@ -168,8 +170,12 @@
                             </text>};
                     </select>
                 </div>
-                
+
             </div>
+
+            <input type="submit" name="Assign" id="assign" value="assign" class="btn btn-default">
+            <input type="hidden" name="my_data" value="">
+
             <div class="form-group row">
                 <div class="col-sm-4">
                     <label>Start Date</label>
@@ -177,8 +183,8 @@
                 <div class="col-sm-8">
                     <input name="startDate" type="date" />
                 </div>
-               
-                
+
+
             </div>
             <div class="form-group row">
                 <div class="col-sm-4">
@@ -192,7 +198,7 @@
                 <div class="col-sm-10">
                     <div id="colFilter_div"></div>
                 </div>
-                
+
             </div>
         </div>
         <div class="col-sm-6">
@@ -252,8 +258,6 @@
 
         </table>*@
 
-    <input type="submit" name="assign" id="assign" value="assign" class="btn btn-default">
-    <input type="hidden" name="my_data" value="">
 </form>
 
 <script type="text/javascript">
@@ -308,7 +312,7 @@
 
     <link rel="stylesheet" type="text/css" href="/css/result-light.css">
 
-    <script type="text/javascript" src="http://www.google.com/jsapi?fake=.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js?fake=.js"></script>
 
     <style id="compiled-css" type="text/css">
 
@@ -324,9 +328,6 @@
 </div>
 <div id="colFilter_div"></div>
 <div id="chart_div"></div>
-<div id="creativeCommons" style="text-align: center; width: 400px;">
-    <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/InteractiveResource" property="dct:title" rel="dct:type">Code to use a CategoryFilter as a column selector</span> by <span xmlns:cc="http://creativecommons.org/ns#" property="cc:attributionName">Andrew Gallant</span> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US">Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License</a>.
-</div>
 
 <script type="text/javascript">
     //<![CDATA[
