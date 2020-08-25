@@ -625,18 +625,19 @@ namespace Ben_Project.Controllers
 
             var adjustmentVouchers = _dbContext.AdjustmentVouchers.ToList();
             ViewData["username"] = HttpContext.Session.GetString("username");
+            ViewData["role"] = HttpContext.Session.GetString("Role");
             return View(adjustmentVouchers);
         }
 
         public IActionResult AuthorizeAdjustmentVoucherList()
         {
             // get employee who is logged in from session
-            var username = HttpContext.Session.GetString("username");
+            var username = HttpContext.Session.GetString("loginName");
             var employee = _dbContext.Employees.FirstOrDefault(e => e.Username == username);
             List<AdjustmentVoucher> adjustmentVouchers;
 
             adjustmentVouchers = _dbContext.AdjustmentVouchers.Where(av => av.AuthorizedBy == employee.JobTitle && av.Status == AdjustmentVoucherStatus.PendingIssue).ToList();
-
+            ViewData["username"] = HttpContext.Session.GetString("username");
             return View(adjustmentVouchers);
         }
 

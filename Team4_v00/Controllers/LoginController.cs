@@ -43,6 +43,9 @@ namespace Ben_Project.Controllers
 
             if (user.Role == DeptRole.StoreClerk) {
                 return RedirectToAction("BarChart", "Store");
+            }else if(user.Role == DeptRole.StoreSupervisor || user.Role == DeptRole.StoreManager)
+            {
+                return RedirectToAction("AuthorizeAdjustmentVoucherList", "Store");
             }
 
             return RedirectToAction("Index", "Home");
