@@ -125,6 +125,30 @@ namespace Ben_Project.Controllers
             {
                 var de = _dbContext.DelegatedEmployees.FirstOrDefault(x => x.Id == id);
                 de.delegationStatus = DelegationStatus.Cancelled;
+                // sending email to dept rep
+                SmtpClient client = new SmtpClient()
+                {
+                    Host = "smtp.gmail.com",
+                    Port = 587,
+                    EnableSsl = true,
+                    DeliveryMethod = SmtpDeliveryMethod.Network,
+                    UseDefaultCredentials = false,
+                    Credentials = new NetworkCredential()
+                    {
+                        UserName = "sa50team4@gmail.com",
+                        Password = "sa50team4adproject"
+                    }
+                };
+                MailAddress FromEmail = new MailAddress("sa50team4@gmail.com", "Store Clerk");
+                MailAddress ToEmail = new MailAddress("Lanceyeojh@gmail.com", "Dept Rep");
+                string MessageBody = "Your delegation by dept head has been cancelled." ;
+                MailMessage Message = new MailMessage()
+                {
+                    From = FromEmail,
+                    Subject = "Disbursement Details",
+                    Body = MessageBody
+                };
+                Message.To.Add(ToEmail);
 
                 MailAddress FromEmail = new MailAddress("sa50team4@gmail.com", "Dept head");
                 MailAddress ToEmail = new MailAddress("e0533391@u.nus.edu", "Dept Employee");
@@ -225,6 +249,30 @@ namespace Ben_Project.Controllers
 
                 employee.Role = DeptRole.DelegatedEmployee;
                 newDelegatedEmployee.Employee = employee;
+                // sending email to dept rep
+                SmtpClient client = new SmtpClient()
+                {
+                    Host = "smtp.gmail.com",
+                    Port = 587,
+                    EnableSsl = true,
+                    DeliveryMethod = SmtpDeliveryMethod.Network,
+                    UseDefaultCredentials = false,
+                    Credentials = new NetworkCredential()
+                    {
+                        UserName = "sa50team4@gmail.com",
+                        Password = "sa50team4adproject"
+                    }
+                };
+                MailAddress FromEmail = new MailAddress("sa50team4@gmail.com", "Store Clerk");
+                MailAddress ToEmail = new MailAddress("Lanceyeojh@gmail.com", "Dept Rep");
+                string MessageBody = "You have been selected as the delegated personnel to stand in for dept head" ;
+                MailMessage Message = new MailMessage()
+                {
+                    From = FromEmail,
+                    Subject = "Disbursement Details",
+                    Body = MessageBody
+                };
+                Message.To.Add(ToEmail);
 
                 _dbContext.Add(newDelegatedEmployee);
 

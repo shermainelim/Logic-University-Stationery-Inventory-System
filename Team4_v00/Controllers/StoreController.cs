@@ -231,32 +231,6 @@ namespace Ben_Project.Controllers
         }
 
         // API to receive requisition from android
-        // create DTO to match deptrequisition DTO sent from android
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
         [HttpPost]
         [AllowAnonymous]
         public IActionResult StoreClerkSaveRequisitionApi([FromBody] DeptRequisitionDTO input)
@@ -471,12 +445,73 @@ namespace Ben_Project.Controllers
             return View(disbursements);
         }
 
+        // API for Store Clerk Disbursement List
+        public string StoreClerkDisbursementListApi()
+        {
+            var disbursements = _dbContext.Disbursements
+                .Where(d => d.DisbursementStatus != DisbursementStatus.Acknowledged)
+                .ToList();
+
+            var dtos = new List<DisbursementDTO>();
+
+            foreach (var disbursement in disbursements)
+            {
+                var temp = new DisbursementDTO();
+                temp.Id = disbursement.Id;
+                temp.DisbursementStatus = disbursement.DisbursementStatus;
+                dtos.Add(temp);
+            }
+
+            return JsonSerializer.Serialize(new
+            {
+                disbursementList = dtos
+            });
+        }
+
         public IActionResult StoreClerkDisbursementDetail(int id)
         {
             var disbursement = _dbContext.Disbursements.Find(id);
             disbursement.DisbursementDetails = _dbContext.DisbursementDetails.Where(dd => dd.Disbursement.Id == id).ToList();
 
             return View(disbursement);
+        }
+
+        // API for getting Disbursement Details
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        public string StoreClerkDisbursementDetailApi(int id)
+        {
+            var disbursement = _dbContext.Disbursements.Find(id);
+            disbursement.DisbursementDetails = _dbContext.DisbursementDetails.Where(dd => dd.Disbursement.Id == id).ToList();
+
+            DisbursementDTO dto = new DisbursementDTO();
+            dto.Id = disbursement.Id;
+            dto.DisbursementDetails = new List<DisbursementDetailDTO>();
+
+            foreach (var disbursementDetail in disbursement.DisbursementDetails)
+            {
+                DisbursementDetailDTO temp = new DisbursementDetailDTO();
+                temp.StationeryCode = disbursementDetail.Stationery.ItemNumber;
+                temp.StationeryName = disbursementDetail.Stationery.Description;
+                temp.Qty = disbursementDetail.Qty;
+                dto.DisbursementDetails.Add(temp);
+            }
+
+            return JsonSerializer.Serialize(new
+            {
+                disbursement = dto
+            });
         }
 
         // logic for saving disbursement
@@ -505,10 +540,51 @@ namespace Ben_Project.Controllers
             MailAddress ToEmail = new MailAddress("e0533276@u.nus.edu", "Dept Rep");
             string Subject = "Disbursement Details";
             string MessageBody = "The disbursement is ready for collection. The details of the collection are:\n\n"
-                                 + "Disbursement ID: " + disbursement.Id + "\n"
-                                 + "Date of Collection: " + disbursement.DisbursementDate + "\n"
-                                 + "Collection Point: " + disbursement.DeptRequisition.Employee.Dept.CollectionPoint + "\n"
-                                 + "Acknowledgement Code: " + disbursement.AcknowledgementCode + "\n";
+                                 + "Disbursement ID: " + disbursement.Id + "\n\n"
+                                 + "Date of Collection: " + disbursement.DisbursementDate + "\n\n"
+                                 + "Collection Point: " + disbursement.DeptRequisition.Employee.Dept.CollectionPoint + "\n\n"
+                                 + "Acknowledgement Code: " + disbursement.AcknowledgementCode + "\n\n";
+
+            EmailService.SendEmail(FromEmail, ToEmail, Subject, MessageBody);
+
+            _dbContext.SaveChanges();
+
+            return RedirectToAction("StoreClerkDisbursementList", "Store");
+        }
+
+        // API for saving disbursement
+        [HttpPost]
+        [AllowAnonymous]
+        public IActionResult StoreClerkSaveDisbursementDetailApi([FromBody] DisbursementDTO input)
+        {
+
+            var disbursement = _dbContext.Disbursements.FirstOrDefault(d => d.Id == input.Id);
+            disbursement.DisbursementDate = input.DisbursementDate;
+            disbursement.DisbursementStatus = DisbursementStatus.PendingDisbursement;
+
+            var collectionDate = input.DisbursementDate;
+
+            // check that date is in the future
+            if (!(collectionDate > DateTime.Now))
+                return RedirectToAction("StoreClerkDisbursementDetail", "Store", new { id = input.Id });
+
+            // add date to all disbursementdetails
+            foreach (var disbursementDetail in disbursement.DisbursementDetails)
+            {
+                disbursementDetail.A_Date = collectionDate;
+                disbursementDetail.Month = collectionDate.Month;
+                disbursementDetail.Year = collectionDate.Year;
+            }
+
+            // sending email to dept rep
+            MailAddress FromEmail = new MailAddress("sa50team4@gmail.com", "Store");
+            MailAddress ToEmail = new MailAddress("e0533276@u.nus.edu", "Dept Rep");
+            string Subject = "Disbursement Details";
+            string MessageBody = "The disbursement is ready for collection. The details of the collection are:\n\n"
+                                 + "Disbursement ID: " + disbursement.Id + "\n\n"
+                                 + "Date of Collection: " + disbursement.DisbursementDate + "\n\n"
+                                 + "Collection Point: " + disbursement.DeptRequisition.Employee.Dept.CollectionPoint + "\n\n"
+                                 + "Acknowledgement Code: " + disbursement.AcknowledgementCode + "\n\n";
 
             EmailService.SendEmail(FromEmail, ToEmail, Subject, MessageBody);
 
