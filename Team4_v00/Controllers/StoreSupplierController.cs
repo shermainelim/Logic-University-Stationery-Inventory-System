@@ -100,6 +100,11 @@ namespace Ben_Project.Controllers
 
         public IActionResult Save(Supplier supplier)
         {
+            if (!ModelState.IsValid)
+            {
+                TempData["error"] = " Supplier, Address, Phone can not be null";
+                return RedirectToAction("CreateNewSupplier");
+            }
 
             var newSup = new Supplier();
             newSup.Name = supplier.Name;

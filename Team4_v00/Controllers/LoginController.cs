@@ -47,6 +47,22 @@ namespace Ben_Project.Controllers
             {
                 return RedirectToAction("AuthorizeAdjustmentVoucherList", "Store");
             }
+            if(user.Role == DeptRole.DeptHead)
+            {
+                return RedirectToAction("DeptHeadRequisitionList", "Dept");
+            }
+            if((user.Role == DeptRole.Employee) || (user.Role == DeptRole.Contact))
+            {
+                return RedirectToAction("EmployeeRequisitionList", "Dept");
+            }
+            if (user.Role == DeptRole.DeptRep)
+            {
+                return RedirectToAction("EmployeeRequisitionList", "Dept");
+            }
+            if (user.Role == DeptRole.DelegatedEmployee)
+            {
+                return RedirectToAction("DeptHeadRequisitionList", "Dept");
+            }
 
             return RedirectToAction("Index", "Home");
         }

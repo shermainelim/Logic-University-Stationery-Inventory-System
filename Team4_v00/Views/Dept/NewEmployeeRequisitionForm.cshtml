@@ -1,6 +1,7 @@
 ﻿@model Ben_Project.Models.DeptRequisition
 
-@{ ViewData["Title"] = "EmployeeRequisitionForm"; }
+@{ ViewData["Title"] = "EmployeeRequisitionForm";
+     Layout = "~/Views/Shared/_DeptLayout.cshtml";}
 
 
 <div class="text-center">
@@ -28,8 +29,8 @@
             <tr>
                 <td>@itemName</td>
                 <td>
-                    <input asp-for="@Model.RequisitionDetails[i].Stationery.Id" type="hidden" value="@itemId"/>
-                    <input asp-for="@Model.RequisitionDetails[i].Qty" type="number" min="0" oninput="this.value = Math.abs(this.value)"/>
+                    <input asp-for="@Model.RequisitionDetails[i].Stationery.Id" type="hidden" value="@itemId" />
+                    <input asp-for="@Model.RequisitionDetails[i].Qty" type="number" min="0" />
                 </td>
             </tr>
         }

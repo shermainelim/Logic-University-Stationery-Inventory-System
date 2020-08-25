@@ -10,6 +10,7 @@ using Ben_Project.Models.AndroidDTOs;
 using Ben_Project.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 
 namespace Ben_Project.Controllers
 {
@@ -66,7 +67,12 @@ namespace Ben_Project.Controllers
 
         public string EmployeeListApi()
         {
-            var emp = _dbContext.Employees.ToList();
+            //to be implement later
+            /*int userId = (int) HttpContext.Session.GetInt32("Id");
+            Employee user = _dbContext.Employees.SingleOrDefault(x => x.Id == userId);
+            int deptId = user.Dept.id;
+            var emp = _dbContext.Employees.Where(x => x.Dept.id == deptId && x.Id != userId).ToList();*/
+            var emp = _dbContext.Employees.Where(x=> x.Role != DeptRole.DeptHead).ToList();
             var eList = new List<EmployeeDTO>();
             foreach (Employee e in emp)
             {
@@ -166,7 +172,10 @@ namespace Ben_Project.Controllers
             var newDelegatedEmployee = new DelegatedEmployee();
             newDelegatedEmployee.DelegateEmployeeDetails = new List<DelegateEmployeeDetail>();
 
-            var employees = _dbContext.Employees.ToList();
+            int userId = (int)HttpContext.Session.GetInt32("Id");
+            Employee user = _dbContext.Employees.SingleOrDefault(x => x.Id == userId);
+            int deptId = user.Dept.id;
+            var employees = _dbContext.Employees.Where(x=> x.Dept.id == deptId && x.Id != userId).ToList();
 
             foreach (var employee in employees)
             {
@@ -235,6 +244,7 @@ namespace Ben_Project.Controllers
                 newDelegatedEmployee.StartDate = delegatedEmployee.StartDate;
                 newDelegatedEmployee.EndDate = delegatedEmployee.EndDate;
                 newDelegatedEmployee.delegationStatus = DelegationStatus.Selected;
+                newDelegatedEmployee.Employee = employee;
                 newDelegatedEmployee.Employee.Role = DeptRole.DelegatedEmployee;
                 MailAddress FromEmail = new MailAddress("sa50team4@gmail.com", "Dept head");
                 MailAddress ToEmail = new MailAddress("e0533391@u.nus.edu", "Dept Employee");
