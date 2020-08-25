@@ -38,6 +38,7 @@ namespace Ben_Project.Controllers
             ViewData["username"] = HttpContext.Session.GetString("username");
             return View(sList);
         }
+
         public IActionResult ManageSupplier(int id, String flag)
         {
 

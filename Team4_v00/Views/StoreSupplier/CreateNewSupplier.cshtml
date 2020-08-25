@@ -18,14 +18,17 @@
 
     <div class="form-group row">
         <div class="col-sm-6">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group row">
 
                 <div class="col-sm-4">
                     <label for="SupplierName">Supplier Name</label>
                 </div>
+
                 <div class="col-sm-6">
                     <input name="Name" class="form-control" id="Name" placeholder="Supplier Name" value="@Model.Name" />
                 </div>
+                <span asp-validation-for="Name" class="text-danger"></span>
             </div>
 
 
@@ -36,6 +39,7 @@
                 <div class="col-sm-6">
                     <input name="Address" class="form-control" id="Address" placeholder="Address" value="@Model.Address" />
                 </div>
+                <span asp-validation-for="Address" class="text-danger"></span>
 
             </div>
 
@@ -46,6 +50,7 @@
                 <div class="col-sm-6">
                     <input name="TelephoneNo" class="form-control" id="TelephoneNo" placeholder="TelephoneNo" value="@Model.TelephoneNo" />
                 </div>
+                <span asp-validation-for="TelephoneNo" class="text-danger"></span>
 
             </div>
         </div>
