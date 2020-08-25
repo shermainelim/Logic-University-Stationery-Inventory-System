@@ -31,7 +31,7 @@
                 <td>@itemName</td>
                 <td>
                     <input asp-for="@Model.RequisitionDetails[i].Stationery.Id" type="hidden" value="@itemId" />
-                    <input asp-for="@Model.RequisitionDetails[i].Qty" type="number" />
+                    <input asp-for="@Model.RequisitionDetails[i].Qty" type="number" min="0" oninput="this.value = Math.abs(this.value)" />
                     <input asp-for="@Model.RequisitionDetails[i].Id" type="hidden" value="@reqDtId" />
                     <input asp-for="@Model.Id" type="hidden" value="@reqId" />
                 </td>

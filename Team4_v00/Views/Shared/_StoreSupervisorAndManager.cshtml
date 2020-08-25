@@ -6,7 +6,6 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="@Url.Content("~/images/favicon.ico")" />
     <title>@ViewData["Title"] - Logic University</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
 
@@ -18,7 +17,7 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a href="@Url.Action("BarChart", "Store")">
+                <a href="@Url.Action("AuthorizeAdjustmentVoucherList", "Store")">
                     <img src="@Url.Content("/images/icon.png")" />
                 </a>
                 <a class="navbar-brand" asp-area="" asp-controller="Store" asp-action="BarChart"> </a>
@@ -30,28 +29,7 @@
                     <p class="nav navbar-text navbar-right">@name</p>
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Store" asp-action="BarChart">Trend Analysis</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Store" asp-action="StoreClerkRequisitionList">Requisition</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Store" asp-action="StoreClerkDisbursementList">Disbursement</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Store" asp-action="StoreClerkStockList">Stocks</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Store" asp-action="StoreClerkAdjustmentVoucherList">Adjustment</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="PO" asp-action="Index">P.O.</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="StoreSupplier" asp-action="StoreSupplierList">Supplier</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="StoreDept" asp-action="Index">Department</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Store" asp-action="AuthorizeAdjustmentVoucherList">Adjustment</a>
                         </li>
                     </ul>
                 </div>

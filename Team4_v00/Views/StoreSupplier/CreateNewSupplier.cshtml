@@ -4,28 +4,34 @@
 @model Ben_Project.Models.Supplier
 
 @{
-    Layout = "~/Views/Shared/_StoreClerk.cshtml";    
+    Layout = "~/Views/Shared/_StoreClerk.cshtml";
     // var supplier = (Supplier)ViewData["Supplier"];
 
 
 }
+@*Summer*@
 
 <h3>Create Supplier</h3>
 
 <br />
 
 <form id="loginForm" action="/StoreSupplier/Save" method="POST">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
     <div class="form-group row">
         <div class="col-sm-6">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group row">
 
                 <div class="col-sm-4">
                     <label for="SupplierName">Supplier Name</label>
                 </div>
+
                 <div class="col-sm-6">
-                    <input name="Name" class="form-control" id="Name" placeholder="Supplier Name" value="@Model.Name" />
+                    <input asp-for=" Name" name="Name" class="form-control" id="Name" placeholder="Supplier Name" value="@Model.Name" />
+                    <span asp-validation-for="@Model.Name" class="text-danger"></span>
                 </div>
+                <span asp-validation-for="Name" class="text-danger"></span>
             </div>
 
 
@@ -35,17 +41,21 @@
                 </div>
                 <div class="col-sm-6">
                     <input name="Address" class="form-control" id="Address" placeholder="Address" value="@Model.Address" />
+                    <span asp-validation-for="Address" class="text-danger"></span>
                 </div>
+                <span asp-validation-for="Address" class="text-danger"></span>
 
             </div>
 
             <div class="form-group row">
                 <div class="col-sm-4">
                     <label for="TelephoneNo">TelephoneNo</label>
+                    <span asp-validation-for="TelephoneNo" class="text-danger"></span>
                 </div>
                 <div class="col-sm-6">
                     <input name="TelephoneNo" class="form-control" id="TelephoneNo" placeholder="TelephoneNo" value="@Model.TelephoneNo" />
                 </div>
+                <span asp-validation-for="TelephoneNo" class="text-danger"></span>
 
             </div>
         </div>
@@ -152,5 +162,8 @@
     </div>
 
 </form>
+<p style="color:red">
+    @TempData["error"]
+</p>
 
 

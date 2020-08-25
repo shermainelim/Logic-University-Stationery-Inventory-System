@@ -38,6 +38,7 @@ namespace Ben_Project.Controllers
             ViewData["username"] = HttpContext.Session.GetString("username");
             return View(sList);
         }
+
         public IActionResult ManageSupplier(int id, String flag)
         {
 
@@ -98,6 +99,11 @@ namespace Ben_Project.Controllers
 
         public IActionResult Save(Supplier supplier)
         {
+            if (!ModelState.IsValid)
+            {
+                TempData["error"] = " Supplier, Address, Phone can not be null";
+                return RedirectToAction("CreateNewSupplier");
+            }
 
             var newSup = new Supplier();
             newSup.Name = supplier.Name;
