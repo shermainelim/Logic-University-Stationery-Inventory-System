@@ -1,42 +1,126 @@
-﻿
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
+
+@using Microsoft.AspNetCore.Http
+@{
+    String name = (String)ViewData["username"];
+    string role = (string)Context.Session.GetString("Role");
+    string username = (string)Context.Session.GetString("username");
+    string id = (string)Context.Session.GetString("Id");
+
+}
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    @{
-        ViewData["Title"] = "_DeptLayout";
-    }
+    <title>@ViewData["Title"] - Logic University</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Dept" asp-action="DeptHeadRequisitionList">Department Head Main Page</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+
+                @if (role.Equals(Ben_Project.Models.DeptRole.DeptHead.ToString()))
+                {
+                    <a href="@Url.Action("DeptHeadRequisitionList", "Dept")">
+                        <img src="@Url.Content("/images/icon.png")" />
+                    </a>
+                    <a class="navbar-brand" asp-area="" asp-controller="Dept" asp-action="DeptHeadRequisitionList"> </a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                        <p class="nav navbar-text navbar-right">Hello, @username !</p>
+                        <ul class="navbar-nav flex-grow-1">
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Dept" asp-action="DeptHeadRequisitionList">Requisition List</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Delegate" asp-action="DelegatedEmployeeList">Delegated Employee List</a>
+                            </li>
+                        </ul>
+                    </div>
+                }
+                @if (role.Equals(Ben_Project.Models.DeptRole.Employee.ToString()) || role.Equals(Ben_Project.Models.DeptRole.Contact.ToString()))
+                {
+                    <a href="@Url.Action("EmployeeRequisitionList", "Dept")">
+                        <img src="@Url.Content("/images/icon.png")" />
+                    </a>
+                    <a class="navbar-brand" asp-area="" asp-controller="Dept" asp-action="DeptHeadRequisitionList"> </a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                        <p class="nav navbar-text navbar-right">Hello, @username !</p>
+                        <ul class="navbar-nav flex-grow-1">
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Dept" asp-action="EmployeeRequisitionList">Add in Requisition</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Dept" asp-action="EmployeeRequisitionForm">Requisition Form</a>
+                            </li>
+                        </ul>
+                    </div>
+                }
+                @if (role.Equals(Ben_Project.Models.DeptRole.DelegatedEmployee.ToString()))
+                {
+                    <a href="@Url.Action("DeptHeadRequisitionList", "Dept")">
+                        <img src="@Url.Content("/images/icon.png")" />
+                    </a>
+                    <a class="navbar-brand" asp-area="" asp-controller="Dept" asp-action="DeptHeadRequisitionList"> </a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                        <p class="nav navbar-text navbar-right">Hello, @username !</p>
+                        <ul class="navbar-nav flex-grow-1">
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Dept" asp-action="DeptHeadRequisitionList">Requisition List</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Dept" asp-action="EmployeeRequisitionList">Add in Requisition</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Dept" asp-action="EmployeeRequisitionForm">Requisition Form</a>
+                            </li>
+                        </ul>
+                    </div>
+                }
+                @if (role.Equals(Ben_Project.Models.DeptRole.DeptRep.ToString()))
+                {
+
+                    <a href="@Url.Action("EmployeeRequisitionList", "Dept")">
+                        <img src="@Url.Content("/images/icon.png")" />
+                    </a>
+                    <a class="navbar-brand" asp-area="" asp-controller="Dept" asp-action="DeptHeadRequisitionList"> </a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                        <p class="nav navbar-text navbar-right">Hello, @username !</p>
+                        <ul class="navbar-nav flex-grow-1">
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Dept" asp-action="EmployeeRequisitionList">Add in Requisition</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Dept" asp-action="EmployeeRequisitionForm">Requisition Form</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Dept" asp-action="chooseCollectionPt">Manage Collection Point</a>
+                            </li>
+                        </ul>
+                    </div>
+                }
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <p class="nav navbar-text navbar-right">Hello, @User.Identity.Name!</p>
                     <ul class="navbar-nav flex-grow-1">
-                        @*
-                            if(role=deleg){req}
-                            elseif(role=head){req,del}
-                        
-                            *@
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Dept" asp-action="DeptHeadRequisitionList">Requisition List</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Delegate" asp-action="DelegatedEmployeeList">Delegated Employee</a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <ul class="navbar-nav flex-grow-1"> 
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Logout" asp-action="Index">Logout</a>
                         </li>
@@ -56,11 +140,6 @@
             &copy; 2020 - Ben_Project - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/login.js" asp-append-version="true"></script>
-    <script src="~/lib/crypto/core-min.js"></script>
-    <script src="~/lib/crypto/sha256.js"></script>
-    @RenderSection("Scripts", required: false)
+
 </body>
 </html>
