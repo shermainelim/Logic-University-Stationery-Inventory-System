@@ -254,7 +254,7 @@ namespace Ben_Project.Controllers
         public IActionResult chooseCollectionPt()
         {
             //using session data to find current employee so we can access info about which department they are from
-            string usernameInSession = HttpContext.Session.GetString("username");
+            string usernameInSession = HttpContext.Session.GetString("loginName");
             var employee = _dbContext.Employees.FirstOrDefault(ep => ep.Username == usernameInSession);
             var empDept = employee.Dept;
 

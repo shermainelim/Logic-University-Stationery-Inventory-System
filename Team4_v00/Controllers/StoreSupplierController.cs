@@ -58,7 +58,8 @@ namespace Ben_Project.Controllers
             }
             else if (flag == "Delete")
             {
-                var s = _dbContext.Suppliers.FirstOrDefault(s => s.Id == id);
+                var s = _dbContext.Suppliers.Find(id);
+                //var s = _dbContext.Suppliers.FirstOrDefault(s => s.Id == id);
                 s.supplierStatus = SupplierStatus.ContractRejected;
 
                 _dbContext.SaveChanges();
