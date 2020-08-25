@@ -35,11 +35,13 @@ namespace Ben_Project.Controllers
                 return RedirectToAction("Index");
             }
 
-            HttpContext.Session.SetString("username", username);
+            
+            HttpContext.Session.SetString("username", user.Name);
+            HttpContext.Session.SetString("loginName", user.Username);
+            HttpContext.Session.SetInt32("Id", user.Id);
+            HttpContext.Session.SetString("Role", user.Role.ToString());
 
-            var employee = _dbContext.Employees.FirstOrDefault(e => e.Username == username);
-
-            if (employee.Role == DeptRole.StoreClerk) {
+            if (user.Role == DeptRole.StoreClerk) {
                 return RedirectToAction("BarChart", "Store");
             }
 
