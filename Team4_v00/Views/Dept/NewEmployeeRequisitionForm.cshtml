@@ -28,8 +28,8 @@
             <tr>
                 <td>@itemName</td>
                 <td>
-                    <input asp-for="@Model.RequisitionDetails[i].Stationery.Id" type="hidden" value="@itemId"/>
-                    <input asp-for="@Model.RequisitionDetails[i].Qty" type="number"/>
+                    <input asp-for="@Model.RequisitionDetails[i].Stationery.Id" type="hidden" value="@itemId" />
+                    <input asp-for="@Model.RequisitionDetails[i].Qty" type="number" min="0" />
                 </td>
             </tr>
         }
