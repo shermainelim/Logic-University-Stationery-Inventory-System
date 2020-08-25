@@ -233,8 +233,7 @@ namespace Ben_Project.Controllers
                 requisition.RequisitionDetails.Remove(delObj);
             }
 
-             int userId = (int) HttpContext.Session.GetInt32("Id");
-            Employee user = _dbContext.Employees.SingleOrDefault(x => x.Id == userId);
+             
 
             requisition.Employee = user;
             _dbContext.SaveChanges();
