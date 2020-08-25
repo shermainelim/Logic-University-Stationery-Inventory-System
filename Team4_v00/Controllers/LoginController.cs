@@ -57,6 +57,7 @@ namespace Ben_Project.Controllers
             }
             if (user.Role == DeptRole.DeptRep)
             {
+                     //return RedirectToAction("Index", "Home");
                 return RedirectToAction("EmployeeRequisitionList", "Dept");
             }
             if (user.Role == DeptRole.DelegatedEmployee)
