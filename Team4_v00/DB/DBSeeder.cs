@@ -474,7 +474,7 @@ namespace Ben_Project.DB
             e2.Password = Crypto.Sha256("emp");
             e2.Dept = d1;
             e2.JobTitle = DeptRole.Employee;
-            e2.Role = DeptRole.Contact;
+            e2.Role = DeptRole.Employee;
 
             Employee e3 = new Employee();
             e3.Name = "Prof Ezra Pound";

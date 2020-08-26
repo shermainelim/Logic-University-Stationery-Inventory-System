@@ -2,6 +2,7 @@
 using Castle.Core.Configuration;
 using Microsoft.EntityFrameworkCore;
 using System;
+using Ben_Project.Models.AndroidDTOs;
 
 namespace Ben_Project.DB
 {
@@ -28,6 +29,7 @@ namespace Ben_Project.DB
         public DbSet<DelegateEmployeeDetail> DelegateEmployeeDetails { get; set; }
 
         public DbSet<TempItems> TempItems { get; set; }
+        public DbSet<AndroidUser> AndroidUsers { get; set; }
 
         public LogicContext(DbContextOptions<LogicContext> options)
             : base(options)

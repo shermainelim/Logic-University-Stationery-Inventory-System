@@ -9,14 +9,17 @@
     <h1 class="display-4">Requisition Drafts</h1>
 </div>
 
-<table id="DepRepReqDraft" align="center" border="1">
-    <tr>
-        <th>Requisition Id</th>
-        <th>Submission Status</th>
-        <th>Action</th>
-        <th>View</th>
-    </tr>
-
+<table id="DepRepReqDraft" id="eg_tbl" class="table table-striped table-bordered display" style="width:100%" align="center" border="1">
+    <thead style="background-color: lightskyblue">
+        <tr>
+            <th>Requisition Id</th>
+            <th>Submission Status</th>
+            <th>Action</th>
+            <th>View</th>
+        </tr>
+    </thead>
+    
+    <tbody>
     @{
         var reqId = @Model.Id;
     }
@@ -25,9 +28,11 @@
         <td>@Model.Id</td>
         <td>@Model.SubmissionStatus</td>
         <td>
-            @Html.ActionLink("Submit", "DeptRepChangeSubmissionStatus", "Dept", new { id = reqId }, null)
+            @Html.ActionLink("Submit", "DeptRepChangeSubmissionStatus", "Dept", new {id = reqId}, null)
         </td>
-        <td>@Html.ActionLink("View", "EmployeeRequisitionDetail", "Dept", new { id = reqId }, null)</td>
+        <td>@Html.ActionLink("View", "EmployeeRequisitionDetail", "Dept", new {id = reqId}, null)</td>
     </tr>
+    </tbody>
+    
 
 </table>

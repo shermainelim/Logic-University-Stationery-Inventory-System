@@ -74,7 +74,6 @@ namespace Ben_Project.Controllers
         }
 
         [HttpPost]
-        [AllowAnonymous]
         public string LoginApi([FromBody] LoginDTO input)
         {
             var username = input.Username;
@@ -84,16 +83,27 @@ namespace Ben_Project.Controllers
 
             if (dbUser.Password.Equals(inputPassword))
             {
+
+                var userRole = dbUser.Role.ToString();
+                var userId = dbUser.Id;
+
+                AndroidUser user = new AndroidUser();
+                user.UserId = dbUser.Id;
+
+                _dbContext.Add(user);
+                _dbContext.SaveChanges();
+
                 return JsonSerializer.Serialize(new
                 {
-                    Message = "Login Successful"
+                    response = "Successful",
+                    deptRole = userRole
                 });
             }
             else
             {
                 return JsonSerializer.Serialize(new
                 {
-                    Message = "Login Failed"
+                    response = "Failed"
                 });
             }
         }

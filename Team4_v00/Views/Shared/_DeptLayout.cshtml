@@ -159,6 +159,30 @@
             &copy; 2020 - Ben_Project - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
+    
+<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.5.6/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.html5.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#DepRepReqDraft').DataTable();
+        $('#EmpReqList').DataTable();
+        $('#po_tbl').DataTable(); 
+        $('#barChart_tbl').DataTable();
 
+        $('#SupMgrAdjVoucherDetail').DataTable();
+        $('#AuthAdjVoucherList').DataTable();
+        $('#AdjVoucherDetail').DataTable();
+        $('#AdjVoucherList').DataTable();
+        $('#DisburseAcknowledge').DataTable();
+        $('#DisburseDetail').DataTable();
+        $('#DisburseList').DataTable();
+        $('#ReqFulfill').DataTable();
+        $('#ReqList').DataTable(); 
+
+        $('#deptHeadRequisitionList').DataTable;
+
+    });
+</script>
 </body>
 </html>

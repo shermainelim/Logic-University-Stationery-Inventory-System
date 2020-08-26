@@ -48,8 +48,8 @@ namespace Ben_Project.Controllers
 
         public string DeptHeadRequisitionListApi()
         {
-            int userId = (int)HttpContext.Session.GetInt32("Id");
-            Employee user = _dbContext.Employees.SingleOrDefault(e => e.Id == userId);
+            AndroidUser androidUser = _dbContext.AndroidUsers.FirstOrDefault();
+            Employee user = _dbContext.Employees.SingleOrDefault(e => e.Id == androidUser.UserId);
             int deptId = user.Dept.id;
 
             var dTOs = new List<DeptRequisitionDTO>();
