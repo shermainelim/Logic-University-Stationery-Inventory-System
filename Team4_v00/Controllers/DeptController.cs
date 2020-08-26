@@ -100,7 +100,30 @@ namespace Ben_Project.Controllers
                 requisitionDetails = requisitionDetailsDTO
             });
         }
-        
+
+        //Ayisha Adds
+        [HttpPost]
+        [Microsoft.AspNetCore.Authorization.AllowAnonymous]
+        public string PostReqApprovalStatus([FromBody] ApprovalStatusDTO input)
+        {
+            var id = input.Id;
+            var reqApprovalStatus = input.RequisitionApprovalStatus;
+            var reason = input.Reason;
+
+            var postRequisition = _dbContext.DeptRequisitions.FirstOrDefault(dr => dr.Id == id);
+            RequisitionApprovalStatus mreqApprovalStatus = (RequisitionApprovalStatus)Enum.Parse(typeof(RequisitionApprovalStatus), reqApprovalStatus, true);
+            postRequisition.RequisitionApprovalStatus = mreqApprovalStatus;
+            postRequisition.Reason = reason;
+            _dbContext.SaveChanges();
+
+            var response = new ResponseDTO();
+            response.Message = "Requisition Approval Status Updated";
+            return JsonSerializer.Serialize(new
+            {
+                result = response
+            });
+        }
+
         /////////////////////////////// API /////////////////////////////////////////////
 
 
