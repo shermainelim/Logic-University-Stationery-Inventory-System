@@ -458,9 +458,11 @@ namespace Ben_Project.DB
 
             // Adding Employees
 
+            // Dept 1 Employees
+
             Employee e1 = new Employee();
             e1.Name = "Jenny Wong Mei Lin";
-            e1.Username = "deptrep";
+            e1.Username = "1deptrep1";
             e1.Password = Crypto.Sha256("deptrep");
             e1.Dept = d1;
             e1.JobTitle = DeptRole.DeptRep;
@@ -468,126 +470,189 @@ namespace Ben_Project.DB
 
             Employee e2 = new Employee();
             e2.Name = "Mrs Pamela Kow";
-            e2.Username = "employee";
-            e2.Password = Crypto.Sha256("employee");
+            e2.Username = "1emp1";
+            e2.Password = Crypto.Sha256("emp");
             e2.Dept = d1;
             e2.JobTitle = DeptRole.Employee;
             e2.Role = DeptRole.Contact;
 
             Employee e3 = new Employee();
             e3.Name = "Prof Ezra Pound";
-            e3.Username = "depthead";
+            e3.Username = "1depthead1";
             e3.Password = Crypto.Sha256("depthead");
             e3.Dept = d1;
             e3.JobTitle = DeptRole.DeptHead;
             e3.Role = DeptRole.DeptHead;
 
             Employee e4 = new Employee();
-            e4.Name = "Mrs Jane Koh";
-            e4.Username = "storeclerk";
-            e4.Password = Crypto.Sha256("storeclerk");
-            e4.Dept = d5;
-            e4.JobTitle = DeptRole.StoreClerk;
-            e4.Role = DeptRole.StoreClerk;
+            e4.Name = "Mrs Margaret";
+            e4.Username = "1emp2";
+            e4.Password = Crypto.Sha256("emp");
+            e4.Dept = d1;
+            e4.JobTitle = DeptRole.Employee;
+            e4.Role = DeptRole.Contact;
 
             Employee e5 = new Employee();
-            e5.Name = "Mr Gary Lim";
-            e5.Username = "supervisor";
-            e5.Password = Crypto.Sha256("supervisor");
-            e5.Dept = d5;
-            e5.JobTitle = DeptRole.StoreSupervisor;
-            e5.Role = DeptRole.StoreSupervisor;
+            e5.Name = "Mr Timothy";
+            e5.Username = "1emp3";
+            e5.Password = Crypto.Sha256("emp");
+            e5.Dept = d1;
+            e5.JobTitle = DeptRole.Employee;
+            e5.Role = DeptRole.Contact;
+
+
+
+            // Store Dept Employees
+
 
             Employee e6 = new Employee();
-            e6.Name = "Mrs Marilyn Monroe";
-            e6.Username = "manager";
-            e6.Password = Crypto.Sha256("manager");
+            e6.Name = "Mrs Jane Koh";
+            e6.Username = "storeclerk";
+            e6.Password = Crypto.Sha256("storeclerk");
             e6.Dept = d5;
-            e6.JobTitle = DeptRole.StoreManager;
-            e6.Role = DeptRole.StoreManager;
+            e6.JobTitle = DeptRole.StoreClerk;
+            e6.Role = DeptRole.StoreClerk;
 
             Employee e7 = new Employee();
-            e7.Name = "Mrs Marilyn ";
-            e7.Username = "depthead";
-            e7.Password = Crypto.Sha256("depthead");
+            e7.Name = "Mr Gary Lim";
+            e7.Username = "supervisor";
+            e7.Password = Crypto.Sha256("supervisor");
             e7.Dept = d5;
-            e7.JobTitle = DeptRole.DeptHead;
-            e7.Role = DeptRole.DeptHead;
+            e7.JobTitle = DeptRole.StoreSupervisor;
+            e7.Role = DeptRole.StoreSupervisor;
 
             Employee e8 = new Employee();
-            e8.Name = "Mrs Lynh ";
-            e8.Username = "deptrep";
-            e8.Password = Crypto.Sha256("deptrep");
+            e8.Name = "Mrs Marilyn Monroe";
+            e8.Username = "manager";
+            e8.Password = Crypto.Sha256("manager");
             e8.Dept = d5;
-            e8.JobTitle = DeptRole.DeptRep;
-            e8.Role = DeptRole.DeptRep;
+            e8.JobTitle = DeptRole.StoreManager;
+            e8.Role = DeptRole.StoreManager;
+
+
+            // Dept 2 Employees
 
             Employee e9 = new Employee();
-            e9.Name = "Mrs Lin ";
-            e9.Username = "depthead";
+            e9.Name = "Mrs Marilyn";
+            e9.Username = "2depthead2";
             e9.Password = Crypto.Sha256("depthead");
             e9.Dept = d2;
             e9.JobTitle = DeptRole.DeptHead;
             e9.Role = DeptRole.DeptHead;
 
             Employee e10 = new Employee();
-            e10.Name = "Mr Ong ";
-            e10.Username = "deptrep";
+            e10.Name = "Mrs Lynh ";
+            e10.Username = "2deptrep2";
             e10.Password = Crypto.Sha256("deptrep");
             e10.Dept = d2;
             e10.JobTitle = DeptRole.DeptRep;
             e10.Role = DeptRole.DeptRep;
 
-
             Employee e11 = new Employee();
-            e11.Name = "Mr Ken ";
-            e11.Username = "deptrep";
-            e11.Password = Crypto.Sha256("deptrep");
-            e11.Dept = d3;
-            e11.JobTitle = DeptRole.DeptRep;
-            e11.Role = DeptRole.DeptRep;
+            e11.Name = "Mr Henry";
+            e11.Username = "2emp1";
+            e11.Password = Crypto.Sha256("emp");
+            e11.Dept = d2;
+            e11.JobTitle = DeptRole.Employee;
+            e11.Role = DeptRole.Employee;
 
             Employee e12 = new Employee();
-            e12.Name = "Mr Peter ";
-            e12.Username = "depthead";
-            e12.Password = Crypto.Sha256("depthead");
-            e12.Dept = d3;
-            e12.JobTitle = DeptRole.DeptHead;
-            e12.Role = DeptRole.DeptHead;
+            e12.Name = "Mrs Linda";
+            e12.Username = "2emp2";
+            e12.Password = Crypto.Sha256("emp");
+            e12.Dept = d2;
+            e12.JobTitle = DeptRole.Employee;
+            e12.Role = DeptRole.Employee;
 
+
+            // Dept 3 Employees
 
 
             Employee e13 = new Employee();
-            e13.Name = "Ms Jane ";
-            e13.Username = "depthead";
+            e13.Name = "Mrs Lin ";
+            e13.Username = "3depthead3";
             e13.Password = Crypto.Sha256("depthead");
-            e13.Dept = d4;
+            e13.Dept = d3;
             e13.JobTitle = DeptRole.DeptHead;
             e13.Role = DeptRole.DeptHead;
 
             Employee e14 = new Employee();
-            e14.Name = "Ms. Kelly ";
-            e14.Username = "deptrep";
+            e14.Name = "Mr Ong ";
+            e14.Username = "3deptrep3";
             e14.Password = Crypto.Sha256("deptrep");
-            e14.Dept = d4;
+            e14.Dept = d3;
             e14.JobTitle = DeptRole.DeptRep;
             e14.Role = DeptRole.DeptRep;
 
-            //Employee e15 = new Employee();
-            //e15.Name = "Mr Tom Hanks";
-            //e15.Username = "storesupervisor";
-            //e15.Password = Crypto.Sha256("storesupervisor");
-            //e15.Dept = d5;
-            //e15.JobTitle = DeptRole.StoreSupervisor;
-            //e15.Role = DeptRole.StoreSupervisor;
+            Employee e15 = new Employee();
+            e15.Name = "Mr Ken ";
+            e15.Username = "3emp1";
+            e15.Password = Crypto.Sha256("emp");
+            e15.Dept = d3;
+            e15.JobTitle = DeptRole.Employee;
+            e15.Role = DeptRole.Employee;
 
-            //Employee e16 = new Employee();
-            //e16.Name = "Mr Chris Hemsworth";
-            //e16.Username = "storemanager";
-            //e16.Password = Crypto.Sha256("storemanager");
-            //e16.Dept = d5;
-            //e16.JobTitle = DeptRole.StoreManager;
-            //e16.Role = DeptRole.StoreManager;
+            Employee e16 = new Employee();
+            e16.Name = "Mr Nick";
+            e16.Username = "3emp2";
+            e16.Password = Crypto.Sha256("emp");
+            e16.Dept = d3;
+            e16.JobTitle = DeptRole.Employee;
+            e16.Role = DeptRole.Employee;
+
+            Employee e17 = new Employee();
+            e17.Name = "Mr Fury";
+            e17.Username = "3emp3";
+            e17.Password = Crypto.Sha256("emp");
+            e17.Dept = d3;
+            e17.JobTitle = DeptRole.Employee;
+            e17.Role = DeptRole.Employee;
+
+
+            // Dept 4 Employees
+
+
+            Employee e18 = new Employee();
+            e18.Name = "Mr Peter ";
+            e18.Username = "4depthead4";
+            e18.Password = Crypto.Sha256("depthead");
+            e18.Dept = d4;
+            e18.JobTitle = DeptRole.DeptHead;
+            e18.Role = DeptRole.DeptHead;
+
+
+            Employee e19 = new Employee();
+            e19.Name = "Ms Jane ";
+            e19.Username = "4emp1";
+            e19.Password = Crypto.Sha256("emp");
+            e19.Dept = d4;
+            e19.JobTitle = DeptRole.Employee;
+            e19.Role = DeptRole.Employee;
+
+            Employee e20 = new Employee();
+            e20.Name = "Ms. Kelly ";
+            e20.Username = "deptrep4";
+            e20.Password = Crypto.Sha256("deptrep");
+            e20.Dept = d4;
+            e20.JobTitle = DeptRole.DeptRep;
+            e20.Role = DeptRole.DeptRep;
+
+            Employee e21 = new Employee();
+            e21.Name = "Ms Kate";
+            e21.Username = "4emp2";
+            e21.Password = Crypto.Sha256("emp");
+            e21.Dept = d4;
+            e21.JobTitle = DeptRole.Employee;
+            e21.Role = DeptRole.Employee;
+
+            Employee e22 = new Employee();
+            e22.Name = "Ms Priscilla";
+            e22.Username = "4emp3";
+            e22.Password = Crypto.Sha256("emp");
+            e22.Dept = d4;
+            e22.JobTitle = DeptRole.Employee;
+            e22.Role = DeptRole.Employee;
+
 
             dbContext.Add(e1);
             dbContext.Add(e2);
@@ -603,8 +668,14 @@ namespace Ben_Project.DB
             dbContext.Add(e12);
             dbContext.Add(e13);
             dbContext.Add(e14);
-            //dbContext.Add(e15);
-            //dbContext.Add(e16);
+            dbContext.Add(e15);
+            dbContext.Add(e16);
+            dbContext.Add(e11);
+            dbContext.Add(e12);
+            dbContext.Add(e19);
+            dbContext.Add(e20);
+            dbContext.Add(e21);
+            dbContext.Add(e22);
 
 
             // Adding Requisition
