@@ -46,7 +46,7 @@
                     <td>@toWithdrawQty</td>
                     <td>
                         <input asp-for="@Model.DisbursementDetails[i].Stationery.Id" type="hidden" value="@stationeryId" />
-                        <input asp-for="@Model.DisbursementDetails[i].Qty" type="number" />
+                        <input asp-for="@Model.DisbursementDetails[i].Qty" type="number" min="0"/>
                     </td>
                 </tr>
             }
