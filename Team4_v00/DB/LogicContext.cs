@@ -36,6 +36,10 @@ namespace Ben_Project.DB
 
         protected override void OnModelCreating(ModelBuilder model)
         {
+            model.Entity<Employee>()
+                .HasIndex(u => u.Username)
+                .IsUnique();
+
         }
 
     }

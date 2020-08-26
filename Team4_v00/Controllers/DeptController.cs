@@ -9,6 +9,7 @@ using Ben_Project.Models.AndroidDTOs;
 using Ben_Project.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient.DataClassification;
 using Microsoft.JSInterop.Infrastructure;
 using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.ProjectModel;
 
@@ -34,7 +35,11 @@ namespace Ben_Project.Controllers
 
         public IActionResult DeptHeadRequisitionList()
         {
-            var requisitions = _dbContext.DeptRequisitions.Where(dr => dr.RequisitionApprovalStatus == RequisitionApprovalStatus.Pending && dr.SubmissionStatus == SubmissionStatus.Submitted).ToList();
+            int userId = (int) HttpContext.Session.GetInt32("Id");
+            Employee user = _dbContext.Employees.SingleOrDefault(e => e.Id == userId);
+            int deptId = user.Dept.id;
+
+            var requisitions = _dbContext.DeptRequisitions.Where(dr => dr.RequisitionApprovalStatus == RequisitionApprovalStatus.Pending && dr.SubmissionStatus == SubmissionStatus.Submitted && dr.Employee.Dept.id == deptId).ToList();
 
             return View(requisitions);
         }
@@ -43,10 +48,14 @@ namespace Ben_Project.Controllers
 
         public string DeptHeadRequisitionListApi()
         {
+            int userId = (int)HttpContext.Session.GetInt32("Id");
+            Employee user = _dbContext.Employees.SingleOrDefault(e => e.Id == userId);
+            int deptId = user.Dept.id;
+
             var dTOs = new List<DeptRequisitionDTO>();
 
             var requisitions = _dbContext.DeptRequisitions
-                .Where(dr => dr.RequisitionApprovalStatus == RequisitionApprovalStatus.Pending && dr.SubmissionStatus == SubmissionStatus.Submitted).ToList();
+                .Where(dr => dr.RequisitionApprovalStatus == RequisitionApprovalStatus.Pending && dr.SubmissionStatus == SubmissionStatus.Submitted && dr.Employee.Dept.id == deptId).ToList();
 
             foreach (var requisition in requisitions)
             {
@@ -106,7 +115,11 @@ namespace Ben_Project.Controllers
 
         public IActionResult DeptHeadChangeRequisitionStatus(RequisitionViewModel input)
         {
-            var requisition = _dbContext.DeptRequisitions.FirstOrDefault(dr => dr.Id == input.DeptRequisition.Id);
+            int userId = (int)HttpContext.Session.GetInt32("Id");
+            Employee user = _dbContext.Employees.SingleOrDefault(e => e.Id == userId);
+            int deptId = user.Dept.id;
+
+            var requisition = _dbContext.DeptRequisitions.FirstOrDefault(dr => dr.Id == input.DeptRequisition.Id && dr.Employee.Dept.id == deptId);
 
             requisition.Reason = input.DeptRequisition.Reason;
             requisition.RequisitionApprovalStatus = input.DeptRequisition.RequisitionApprovalStatus;
@@ -119,7 +132,11 @@ namespace Ben_Project.Controllers
 
         public IActionResult EmployeeRequisitionList()
         {
-            var requisitions = _dbContext.DeptRequisitions.ToList();
+            int userId = (int)HttpContext.Session.GetInt32("Id");
+            Employee user = _dbContext.Employees.SingleOrDefault(e => e.Id == userId);
+            int deptId = user.Dept.id;
+
+            var requisitions = _dbContext.DeptRequisitions.Where(dr => dr.Employee.Dept.id == deptId).ToList();
 
             return View(requisitions);
         }
@@ -134,7 +151,11 @@ namespace Ben_Project.Controllers
 
         public IActionResult EmployeeRequisitionForm()
         {
-            var requisition = _dbContext.DeptRequisitions.FirstOrDefault(dr => dr.SubmissionStatus == SubmissionStatus.Draft);
+            int userId = (int)HttpContext.Session.GetInt32("Id");
+            Employee user = _dbContext.Employees.SingleOrDefault(e => e.Id == userId);
+            int deptId = user.Dept.id;
+
+            var requisition = _dbContext.DeptRequisitions.FirstOrDefault(dr => dr.SubmissionStatus == SubmissionStatus.Draft && dr.Employee.Dept.id == deptId);
             //looking for existing requisition with Draft status
             if (requisition != null)
             {
@@ -150,6 +171,9 @@ namespace Ben_Project.Controllers
         //Saving existing requisition
         public IActionResult SaveExRequisition(DeptRequisition requisition)
         {
+            int userId = (int)HttpContext.Session.GetInt32("Id");
+            Employee user = _dbContext.Employees.SingleOrDefault(e => e.Id == userId);
+            int deptId = user.Dept.id;
 
             var result = _dbContext.DeptRequisitions.FirstOrDefault(rd => rd.Id == requisition.Id);
 
@@ -162,6 +186,8 @@ namespace Ben_Project.Controllers
 
 
             }
+
+            result.Employee = user;
             result.RequisitionDetails = requisition.RequisitionDetails;
 
             _dbContext.SaveChanges();
@@ -189,6 +215,10 @@ namespace Ben_Project.Controllers
         //Saving new requisition
         public IActionResult SaveRequisition(DeptRequisition deptRequisition)
         {
+            int userId = (int)HttpContext.Session.GetInt32("Id");
+            Employee user = _dbContext.Employees.SingleOrDefault(e => e.Id == userId);
+            int deptId = user.Dept.id;
+
             //get employee from session data
             var result = new DeptRequisition();
             string usernameInSession = HttpContext.Session.GetString("username");
@@ -205,6 +235,7 @@ namespace Ben_Project.Controllers
                 _dbContext.Add(requisitionDetail);
             }
 
+            result.Employee = user;
             _dbContext.SaveChanges();
 
             return RedirectToAction("EmployeeRequisitionList", "Dept");
@@ -212,9 +243,11 @@ namespace Ben_Project.Controllers
 
         public IActionResult DeptRepChangeSubmissionStatus(int id)
         {
-            var requisition = _dbContext.DeptRequisitions.FirstOrDefault(dr => dr.Id == id);
             int userId = (int)HttpContext.Session.GetInt32("Id");
-            Employee user = _dbContext.Employees.SingleOrDefault(x => x.Id == userId);
+            Employee user = _dbContext.Employees.SingleOrDefault(e => e.Id == userId);
+            int deptId = user.Dept.id;
+
+            var requisition = _dbContext.DeptRequisitions.FirstOrDefault(dr => dr.Id == id && dr.Employee.Dept.id == deptId);
             requisition.Employee = user;
             requisition.SubmissionStatus = SubmissionStatus.Submitted;
 
@@ -242,7 +275,11 @@ namespace Ben_Project.Controllers
 
         public IActionResult DeptRepRequisitionDraft()
         {
-            var requisition = _dbContext.DeptRequisitions.FirstOrDefault(dr => dr.SubmissionStatus == SubmissionStatus.Draft);
+            int userId = (int)HttpContext.Session.GetInt32("Id");
+            Employee user = _dbContext.Employees.SingleOrDefault(e => e.Id == userId);
+            int deptId = user.Dept.id;
+
+            var requisition = _dbContext.DeptRequisitions.FirstOrDefault(dr => dr.SubmissionStatus == SubmissionStatus.Draft && dr.Employee.Dept.id == deptId);
             if (requisition != null)
             {
                 return View(requisition);
