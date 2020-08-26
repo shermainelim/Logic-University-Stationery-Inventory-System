@@ -200,6 +200,7 @@ namespace Ben_Project.Controllers
             if (delegatedEmployee.Id != 0)
             {
                 var dEmp = _dbContext.DelegatedEmployees.SingleOrDefault(x => x.Id == delegatedEmployee.Id);
+              
                 if (delegatedEmployee.EndDate < dEmp.EndDate)
                 {
                     {
@@ -231,12 +232,22 @@ namespace Ben_Project.Controllers
                 var employee = _dbContext.Employees.SingleOrDefault(x => x.Id == delegatedEmployee.Employee.Id);
                 var newDelegatedEmployee = new DelegatedEmployee();
                 newDelegatedEmployee.Name = employee.Name;
-                if (delegatedEmployee.StartDate > delegatedEmployee.EndDate)
+                if (delegatedEmployee.StartDate == Convert.ToDateTime("1 / 1 / 0001 12:00:00 am"))
+                {
+                    TempData["error"] = "Please fill Start Date";
+                    return RedirectToAction("CreateNewDelegatedEmployee");
+                }
+                else if (delegatedEmployee.EndDate == Convert.ToDateTime("1 / 1 / 0001 12:00:00 am"))
+                {
+                    TempData["error"] = "Please fill End Date";
+                    return RedirectToAction("CreateNewDelegatedEmployee");
+                }
+                else if (delegatedEmployee.StartDate > delegatedEmployee.EndDate)
                 {
                     TempData["error"] = "Your start date is after end date";
                     return RedirectToAction("CreateNewDelegatedEmployee");
                 }
-                if (delegatedEmployee.StartDate < DateTime.Now.AddDays(-1) || delegatedEmployee.EndDate < DateTime.Now)
+                else if (delegatedEmployee.StartDate < DateTime.Now.AddDays(-1) || delegatedEmployee.EndDate < DateTime.Now)
                 {
                     TempData["error"] = "Cannot select past date";
                     return RedirectToAction("CreateNewDelegatedEmployee");
