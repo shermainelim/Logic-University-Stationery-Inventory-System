@@ -30,12 +30,12 @@ namespace Ben_Project.Controllers
         {
             Employee user = _dbContext.Employees.FirstOrDefault(u => u.Username == username);
             if (user == null)
-            {
+            {               
                 return RedirectToAction("Index");
-            }
+            }            
 
             if (user.Password != hashPasswd)
-            {
+            {               
                 return RedirectToAction("Index");
             }
 
