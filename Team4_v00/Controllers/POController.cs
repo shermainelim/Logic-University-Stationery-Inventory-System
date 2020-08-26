@@ -320,11 +320,11 @@ namespace Ben_Project.Controllers
                 _context.Add(pd);
             }
             _context.SaveChanges();
-
+            int poId = _context.SupplierDetails.OrderByDescending(p => p.Id).First().Id;
             MailAddress FromEmail = new MailAddress("sa50team4@gmail.com", "Store");
             MailAddress ToEmail = new MailAddress("e0533276@u.nus.edu", "Supplier");
             string Subject = "Purchase Order";
-            string MessageBody = "Title: PO Number " + po.Id + "\n\n" + "You have orders from Store. The items list are:\n\n"
+            string MessageBody = "Title: PO Number " + poId + "\n\n" + "You have orders from Store. The items list are:\n\n"
                                  + items + "\n\n" + "Regards,\n Store Clerk";
 
             EmailService.SendEmail(FromEmail, ToEmail, Subject, MessageBody);
@@ -469,6 +469,27 @@ namespace Ben_Project.Controllers
                 _context.Add(poD);
             }
             _context.SaveChanges();
+            //sending mail
+            String items = "";
+            foreach (PODetailsDTO p in input.poDetailsList)
+            {
+                PODetail poD = new PODetail();
+                poD.SupplierDetail = _context.SupplierDetails.FirstOrDefault(s => s.Id == p.supplierDetailId);
+                poD.PO = newPo;
+                items += poD.SupplierDetail.Stationery.Description.ToString() + ": "
+                        + p.Qty + " \n";
+            }
+            int poId = _context.SupplierDetails.OrderByDescending(p => p.Id).First().Id;
+            MailAddress FromEmail = new MailAddress("sa50team4@gmail.com", "Store");
+            MailAddress ToEmail = new MailAddress("e0533276@u.nus.edu", "Supplier");
+            string Subject = "Purchase Order";
+            string MessageBody = "Title: PO Number " + poId + "\n\n" + "You have orders from Store. The items list are:\n\n"
+                                 + items + "\n\n" + "Regards,\n Store Clerk";
+
+            EmailService.SendEmail(FromEmail, ToEmail, Subject, MessageBody);
+            //(Mail fromMail, Mail toMail, String acknowledgementCode, String flag) 
+
+            //Json Response
 
             var response = new ResponseDTO();
             response.Message = "Create Successfully";
