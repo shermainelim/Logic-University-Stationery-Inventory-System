@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Buffers.Text;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
@@ -14,7 +15,8 @@ namespace Ben_Project.Utils
             SHA256 sha256 = SHA256.Create();
 
             byte[] hash = sha256.ComputeHash(Encoding.UTF8.GetBytes(str));
-            return BitConverter.ToString(hash).Replace("-", "").ToLower();
+            return Convert.ToBase64String(hash);
+            //return BitConverter.ToString(hash).Replace("-", "").ToLower();
         }
     }
 }

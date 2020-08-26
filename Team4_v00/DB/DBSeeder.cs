@@ -615,7 +615,7 @@ namespace Ben_Project.DB
             Employee e18 = new Employee();
             e18.Name = "Mr Peter ";
             e18.Username = "4depthead4";
-            e18.Password = Crypto.Sha256("depthead");
+            e18.Password = Crypto.Sha256("4depthead4");
             e18.Dept = d4;
             e18.JobTitle = DeptRole.DeptHead;
             e18.Role = DeptRole.DeptHead;
@@ -670,12 +670,13 @@ namespace Ben_Project.DB
             dbContext.Add(e14);
             dbContext.Add(e15);
             dbContext.Add(e16);
-            dbContext.Add(e11);
-            dbContext.Add(e12);
+            dbContext.Add(e17);
+            dbContext.Add(e18);
             dbContext.Add(e19);
             dbContext.Add(e20);
             dbContext.Add(e21);
             dbContext.Add(e22);
+
 
 
             // Adding Requisition

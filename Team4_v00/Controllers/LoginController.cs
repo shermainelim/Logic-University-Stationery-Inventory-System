@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Ben_Project.DB;
 using Ben_Project.Models;
+using Ben_Project.Models.AndroidDTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+
 
 namespace Ben_Project.Controllers
 {
@@ -67,6 +71,31 @@ namespace Ben_Project.Controllers
             }
 
             return RedirectToAction("Index", "Home");
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public string LoginApi([FromBody] LoginDTO input)
+        {
+            var username = input.Username;
+            var inputPassword = input.Password.Replace("\n", "");
+
+            var dbUser = _dbContext.Employees.SingleOrDefault(e => e.Username == username);
+
+            if (dbUser.Password.Equals(inputPassword))
+            {
+                return JsonSerializer.Serialize(new
+                {
+                    Message = "Login Successful"
+                });
+            }
+            else
+            {
+                return JsonSerializer.Serialize(new
+                {
+                    Message = "Login Failed"
+                });
+            }
         }
     }
 }
