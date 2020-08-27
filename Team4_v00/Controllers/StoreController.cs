@@ -13,6 +13,7 @@ using Ben_Project.Models;
 using Ben_Project.Models.AndroidDTOs;
 using Ben_Project.Services;
 using Ben_Project.Services.QtyServices;
+using Ben_Project.Services.UserRoleFilterService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -27,24 +28,52 @@ namespace Ben_Project.Controllers
     {
         //Hi saw was here...
         private readonly LogicContext _dbContext;
+        private readonly UserRoleFilterService _filterService;
 
         public StoreController(LogicContext logicContext)
         {
             _dbContext = logicContext;
+            _filterService = new UserRoleFilterService();
         }
+        public string getUserRole()
+        {
 
+            string role = (string)HttpContext.Session.GetString("Role");
+            if (role == null) return "";
+            return role;
+        }
         public IActionResult Index()
         {
-            //ViewData["Message"] = new QtyPredictionService().QtyPredict().Result;
-            //System.Diagnostics.Debug.Write("Here index");
-            //TempData["result"] = "";
-
-            return View();
+            if (getUserRole().Equals(""))
+            {
+                return RedirectToAction("Login", "Login");
+            }
+            //Security
+            if (!((getUserRole().Equals(DeptRole.StoreClerk.ToString())) ||
+                (getUserRole().Equals(DeptRole.StoreSupervisor.ToString())) ||
+                 (getUserRole().Equals(DeptRole.StoreManager.ToString()))))
+            {
+                return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
+            }
+            else
+            {
+                return RedirectToAction(_filterService.Filter(getUserRole()), "Store");
+            }    
         }
 
         public IActionResult Prediction(string item_category, string item_ID, string date, string IsHoliday)
         {
-
+            if (getUserRole().Equals(""))
+            {
+                return RedirectToAction("Login", "Login");
+            }
+            //Security
+            if (!((getUserRole().Equals(DeptRole.StoreClerk.ToString())) ||
+               (getUserRole().Equals(DeptRole.StoreSupervisor.ToString())) ||
+                (getUserRole().Equals(DeptRole.StoreManager.ToString()))))
+            {
+                return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
+            }
             int number;
             var result5 = int.TryParse(item_category, out number);
             var result6 = int.TryParse(item_ID, out number);
@@ -98,30 +127,62 @@ namespace Ben_Project.Controllers
             {
                 TempData["result"] = "You have enough stock";
             }
-            //HttpContext.Session.SetString("answer", answer);
-            //System.Diagnostics.Debug.Write("Hello");
+          
             return RedirectToAction("Index");
 
-            //return View();
         }
 
         public IActionResult StoreClerkStockList()
         {
+            if (getUserRole().Equals(""))
+            {
+                return RedirectToAction("Login", "Login");
+            }
+            //Security
+            if (!((getUserRole().Equals(DeptRole.StoreClerk.ToString())) ||
+               (getUserRole().Equals(DeptRole.StoreSupervisor.ToString())) ||
+                (getUserRole().Equals(DeptRole.StoreManager.ToString()))))
+            {
+                return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
+            }
             var stocks = _dbContext.Stocks.ToList();
             ViewData["username"] = HttpContext.Session.GetString("username");
+
             return View(stocks);
         }
 
         public IActionResult PO_Form()
         {
-
+            if (getUserRole().Equals(""))
+            {
+                return RedirectToAction("Login", "Login");
+            }
+            //Security
+            if (!((getUserRole().Equals(DeptRole.StoreClerk.ToString())) ||
+               (getUserRole().Equals(DeptRole.StoreSupervisor.ToString())) ||
+                (getUserRole().Equals(DeptRole.StoreManager.ToString()))))
+            {
+                return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
+            }
             return View();
         }
 
         public IActionResult StoreClerkRequisitionList()
         {
+            if (getUserRole().Equals(""))
+            {
+                return RedirectToAction("Login", "Login");
+            }
+            //Security
+            if (!((getUserRole().Equals(DeptRole.StoreClerk.ToString())) ||
+               (getUserRole().Equals(DeptRole.StoreSupervisor.ToString())) ||
+                (getUserRole().Equals(DeptRole.StoreManager.ToString()))))
+            {
+                return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
+            }
             var requisitions = _dbContext.DeptRequisitions.Where(dr => dr.RequisitionApprovalStatus == RequisitionApprovalStatus.Approved && dr.RequisitionFulfillmentStatus != RequisitionFulfillmentStatus.Fulfilled).ToList();
             ViewData["username"] = HttpContext.Session.GetString("username");
+
             return View(requisitions);
         }
 
@@ -182,6 +243,17 @@ namespace Ben_Project.Controllers
 
         public IActionResult StoreClerkRequisitionFulfillment(int id)
         {
+            if (getUserRole().Equals(""))
+            {
+                return RedirectToAction("Login", "Login");
+            }
+            //Security
+            if (!((getUserRole().Equals(DeptRole.StoreClerk.ToString())) ||
+               (getUserRole().Equals(DeptRole.StoreSupervisor.ToString())) ||
+                (getUserRole().Equals(DeptRole.StoreManager.ToString()))))
+            {
+                return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
+            }
             var stocks = _dbContext.Stocks.ToList();
             ViewData["stocks"] = stocks;
 
@@ -191,8 +263,7 @@ namespace Ben_Project.Controllers
             var disbursement = new Disbursement();
             disbursement.DisbursementDetails = new List<DisbursementDetail>();
             foreach (var requisitionDetail in requisition.RequisitionDetails)
-                disbursement.DisbursementDetails.Add(new DisbursementDetail());
-
+                disbursement.DisbursementDetails.Add(new DisbursementDetail()); 
             return View(disbursement);
         }
 
@@ -235,7 +306,17 @@ namespace Ben_Project.Controllers
         [AllowAnonymous]
         public IActionResult StoreClerkSaveRequisitionApi([FromBody] DeptRequisitionDTO input)
         {
-
+            if (getUserRole().Equals(""))
+            {
+                return RedirectToAction("Login", "Login");
+            }
+            //Security
+            if (!((getUserRole().Equals(DeptRole.StoreClerk.ToString())) ||
+               (getUserRole().Equals(DeptRole.StoreSupervisor.ToString())) ||
+                (getUserRole().Equals(DeptRole.StoreManager.ToString()))))
+            {
+                return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
+            }
             // transfer DeptRequisitionDTO data to Disbursement object
             Disbursement disbursement = new Disbursement();
             disbursement.DeptRequisition = new DeptRequisition();
@@ -340,14 +421,24 @@ namespace Ben_Project.Controllers
             adjustmentVoucher.VoucherNo = avNo;
 
             // Saving changes to database
-            _dbContext.SaveChanges();
-
+            _dbContext.SaveChanges();        
             return RedirectToAction("StoreClerkRequisitionList", "Store");
         }
 
 
         public IActionResult StoreClerkSaveRequisition(Disbursement disbursement)
         {
+            if (getUserRole().Equals(""))
+            {
+                return RedirectToAction("Login", "Login");
+            }
+            //Security
+            if (!((getUserRole().Equals(DeptRole.StoreClerk.ToString())) ||
+               (getUserRole().Equals(DeptRole.StoreSupervisor.ToString())) ||
+                (getUserRole().Equals(DeptRole.StoreManager.ToString()))))
+            {
+                return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
+            }
 
             // DeptRequisition Id is needed from form //////////////////////////////////////////////////////////////////////////
             var deptRequisition = _dbContext.DeptRequisitions.FirstOrDefault(dr => dr.Id == disbursement.DeptRequisition.Id);
@@ -439,6 +530,17 @@ namespace Ben_Project.Controllers
 
         public IActionResult StoreClerkDisbursementList()
         {
+            if (getUserRole().Equals(""))
+            {
+                return RedirectToAction("Login", "Login");
+            }
+            //Security
+            if (!((getUserRole().Equals(DeptRole.StoreClerk.ToString())) ||
+               (getUserRole().Equals(DeptRole.StoreSupervisor.ToString())) ||
+                (getUserRole().Equals(DeptRole.StoreManager.ToString()))))
+            {
+                return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
+            }
             var disbursements = _dbContext.Disbursements
                 .Where(d => d.DisbursementStatus != DisbursementStatus.Acknowledged)
                 .ToList();
@@ -471,6 +573,17 @@ namespace Ben_Project.Controllers
 
         public IActionResult StoreClerkDisbursementDetail(int id)
         {
+            if (getUserRole().Equals(""))
+            {
+                return RedirectToAction("Login", "Login");
+            }
+            //Security
+            if (!((getUserRole().Equals(DeptRole.StoreClerk.ToString())) ||
+               (getUserRole().Equals(DeptRole.StoreSupervisor.ToString())) ||
+                (getUserRole().Equals(DeptRole.StoreManager.ToString()))))
+            {
+                return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
+            }
             var disbursement = _dbContext.Disbursements.Find(id);
             disbursement.DisbursementDetails = _dbContext.DisbursementDetails.Where(dd => dd.Disbursement.Id == id).ToList();
 
@@ -518,6 +631,17 @@ namespace Ben_Project.Controllers
         // logic for saving disbursement
         public IActionResult StoreClerkSaveDisbursementDetail(Disbursement input)
         {
+            if (getUserRole().Equals(""))
+            {
+                return RedirectToAction("Login", "Login");
+            }
+            //Security
+            if (!((getUserRole().Equals(DeptRole.StoreClerk.ToString())) ||
+               (getUserRole().Equals(DeptRole.StoreSupervisor.ToString())) ||
+                (getUserRole().Equals(DeptRole.StoreManager.ToString()))))
+            {
+                return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
+            }
             var disbursement = _dbContext.Disbursements.FirstOrDefault(d => d.Id == input.Id);
             disbursement.DisbursementDate = input.DisbursementDate;
             disbursement.DisbursementStatus = DisbursementStatus.PendingDisbursement;
@@ -558,7 +682,17 @@ namespace Ben_Project.Controllers
         [AllowAnonymous]
         public IActionResult StoreClerkSaveDisbursementDetailApi([FromBody] DisbursementDTO input)
         {
-
+            if (getUserRole().Equals(""))
+            {
+                return RedirectToAction("Login", "Login");
+            }
+            //Security
+            if (!((getUserRole().Equals(DeptRole.StoreClerk.ToString())) ||
+              (getUserRole().Equals(DeptRole.StoreSupervisor.ToString())) ||
+               (getUserRole().Equals(DeptRole.StoreManager.ToString()))))
+            {
+                return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
+            }
             var disbursement = _dbContext.Disbursements.FirstOrDefault(d => d.Id == input.Id);
             disbursement.DisbursementDate = input.DisbursementDate;
             disbursement.DisbursementStatus = DisbursementStatus.PendingDisbursement;
@@ -597,6 +731,17 @@ namespace Ben_Project.Controllers
         // Disbursement Acknowledgement
         public IActionResult StoreClerkDisbursementAcknowledgement(int id)
         {
+            if (getUserRole().Equals(""))
+            {
+                return RedirectToAction("Login", "Login");
+            }
+            //Security
+            if (!((getUserRole().Equals(DeptRole.StoreClerk.ToString())) ||
+              (getUserRole().Equals(DeptRole.StoreSupervisor.ToString())) ||
+               (getUserRole().Equals(DeptRole.StoreManager.ToString()))))
+            {
+                return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
+            }
             var disbursement = _dbContext.Disbursements.FirstOrDefault(d => d.Id == id);
             ViewData["acknowledgementCode"] = disbursement.AcknowledgementCode;
             disbursement.AcknowledgementCode = null;
@@ -607,6 +752,17 @@ namespace Ben_Project.Controllers
         // method to check if disbursement acknowledgement code is correct
         public IActionResult StoreClerkDisbursementAcknowledgementValidation(Disbursement input)
         {
+            if (getUserRole().Equals(""))
+            {
+                return RedirectToAction("Login", "Login");
+            }
+            //Security
+            if (!((getUserRole().Equals(DeptRole.StoreClerk.ToString())) ||
+              (getUserRole().Equals(DeptRole.StoreSupervisor.ToString())) ||
+               (getUserRole().Equals(DeptRole.StoreManager.ToString()))))
+            {
+                return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
+            }
             var disbursement = _dbContext.Disbursements.Find(input.Id);
 
             if (disbursement.AcknowledgementCode != input.AcknowledgementCode)
@@ -622,6 +778,17 @@ namespace Ben_Project.Controllers
 
         public IActionResult StoreClerkAdjustmentVoucherList()
         {
+            if (getUserRole().Equals(""))
+            {
+                return RedirectToAction("Login", "Login");
+            }
+            //Security
+            if (!((getUserRole().Equals(DeptRole.StoreClerk.ToString())) ||
+               (getUserRole().Equals(DeptRole.StoreSupervisor.ToString())) ||
+                (getUserRole().Equals(DeptRole.StoreManager.ToString()))))
+            {
+                return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
+            }
             //var adjustmentVouchers = _dbContext.AdjustmentVouchers.Where(av => av.Status == AdjustmentVoucherStatus.Draft).ToList();
 
             var adjustmentVouchers = _dbContext.AdjustmentVouchers.ToList();
@@ -632,6 +799,17 @@ namespace Ben_Project.Controllers
 
         public IActionResult AuthorizeAdjustmentVoucherList()
         {
+            if (getUserRole().Equals(""))
+            {
+                return RedirectToAction("Login", "Login");
+            }
+            //Security
+            if (!((getUserRole().Equals(DeptRole.StoreClerk.ToString())) ||
+               (getUserRole().Equals(DeptRole.StoreSupervisor.ToString())) ||
+                (getUserRole().Equals(DeptRole.StoreManager.ToString()))))
+            {
+                return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
+            }
             // get employee who is logged in from session
             var username = HttpContext.Session.GetString("loginName");
             var employee = _dbContext.Employees.FirstOrDefault(e => e.Username == username);
@@ -644,6 +822,17 @@ namespace Ben_Project.Controllers
 
         public IActionResult StoreClerkAdjustmentVoucherDetail(int id)
         {
+            if (getUserRole().Equals(""))
+            {
+                return RedirectToAction("Login", "Login");
+            }
+            //Security
+            if (!((getUserRole().Equals(DeptRole.StoreClerk.ToString())) ||
+               (getUserRole().Equals(DeptRole.StoreSupervisor.ToString())) ||
+                (getUserRole().Equals(DeptRole.StoreManager.ToString()))))
+            {
+                return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
+            }
             AdjustmentVoucher adjustmentVoucher;
 
             if (id != 0)
@@ -665,19 +854,42 @@ namespace Ben_Project.Controllers
 
                 _dbContext.SaveChanges();
             }
-
+            ViewData["username"] = HttpContext.Session.GetString("username");
             return View(adjustmentVoucher);
         }
 
         public IActionResult AuthorizeAdjustmentVoucherDetail(int id)
         {
+            if (getUserRole().Equals(""))
+            {
+                return RedirectToAction("Login", "Login");
+            }
+            //Security
+            if (!((getUserRole().Equals(DeptRole.StoreClerk.ToString())) ||
+               (getUserRole().Equals(DeptRole.StoreSupervisor.ToString())) ||
+                (getUserRole().Equals(DeptRole.StoreManager.ToString()))))
+            {
+                return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
+            }
             var adjustmentVoucher = _dbContext.AdjustmentVouchers.Find(id);
 
+            ViewData["username"] = HttpContext.Session.GetString("username");
             return View(adjustmentVoucher);
         }
 
         public IActionResult SaveAdjustmentVoucher(AdjustmentVoucher adjustmentVoucher)
         {
+            if (getUserRole().Equals(""))
+            {
+                return RedirectToAction("Login", "Login");
+            }
+            //Security
+            if (!((getUserRole().Equals(DeptRole.StoreClerk.ToString())) ||
+              (getUserRole().Equals(DeptRole.StoreSupervisor.ToString())) ||
+               (getUserRole().Equals(DeptRole.StoreManager.ToString()))))
+            {
+                return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
+            }
             var adjustmentVoucherId = adjustmentVoucher.Id;
             var result = new AdjustmentVoucher();
             result.AdjustmentDetails = new List<AdjustmentDetail>();
@@ -717,6 +929,17 @@ namespace Ben_Project.Controllers
 
         public IActionResult DeleteAdjustmentVoucher(int id)
         {
+            if (getUserRole().Equals(""))
+            {
+                return RedirectToAction("Login", "Login");
+            }
+            //Security
+            if (!((getUserRole().Equals(DeptRole.StoreClerk.ToString())) ||
+               (getUserRole().Equals(DeptRole.StoreSupervisor.ToString())) ||
+                (getUserRole().Equals(DeptRole.StoreManager.ToString()))))
+            {
+                return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
+            }
             var toDelete = _dbContext.AdjustmentVouchers.Find(id);
 
             foreach (var adjustmentDetail in toDelete.AdjustmentDetails)
@@ -731,6 +954,17 @@ namespace Ben_Project.Controllers
 
         public IActionResult IssueAdjustmentVoucher(AdjustmentVoucher adjustmentVoucher)
         {
+            if (getUserRole().Equals(""))
+            {
+                return RedirectToAction("Login", "Login");
+            }
+            //Security
+            if (!((getUserRole().Equals(DeptRole.StoreClerk.ToString())) ||
+               (getUserRole().Equals(DeptRole.StoreSupervisor.ToString())) ||
+                (getUserRole().Equals(DeptRole.StoreManager.ToString()))))
+            {
+                return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
+            }
             // get employee who is logged in from session
             var username = HttpContext.Session.GetString("username");
             var employee = _dbContext.Employees.FirstOrDefault(e => e.Username == username);
@@ -776,7 +1010,17 @@ namespace Ben_Project.Controllers
 
         public IActionResult BarChart()
         {
-
+            if (getUserRole().Equals(""))
+            {
+                return RedirectToAction("Login", "Login");
+            }
+            //Security
+            if (!((getUserRole().Equals(DeptRole.StoreClerk.ToString())) ||
+               (getUserRole().Equals(DeptRole.StoreSupervisor.ToString())) ||
+                (getUserRole().Equals(DeptRole.StoreManager.ToString()))))
+            {
+                return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
+            }
             //var uh = _dbContext.DisbursementDetails.FromSqlRaw("SELECT [DisbursementDetail].[Id], [StationeryId],[Description],[Qty],[DisbursementId],[A_Date],[Departmentid],[Month],[Year] FROM[BenProject].[dbo].[DisbursementDetail] INNER JOIN[Stationeries] ON[DisbursementDetail].[StationeryId] = [Stationeries].[Id] WHERE[Description] = 'Pencil 2B' AND([Month] BETWEEN '5' AND '7') ORDER BY[A_Date], [Departmentid], [DisbursementId],[StationeryId] ").ToList();
 
             var uh = _dbContext.DisbursementDetails.Where(x => x.Department.id == 3 || x.Department.id == 4 || x.Department.id == 5).ToList();
@@ -814,6 +1058,17 @@ namespace Ben_Project.Controllers
 
         public ActionResult BarChartFilter(string IsHoliday2, DateTime startDate, DateTime endDate)
         {
+            if (getUserRole().Equals(""))
+            {
+                return RedirectToAction("Login", "Login");
+            }
+            //Security
+            if (!((getUserRole().Equals(DeptRole.StoreClerk.ToString())) ||
+               (getUserRole().Equals(DeptRole.StoreSupervisor.ToString())) ||
+                (getUserRole().Equals(DeptRole.StoreManager.ToString()))))
+            {
+                return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
+            }
             //var uh = _dbContext.DisbursementDetails.FromSqlRaw("SELECT [DisbursementDetail].[Id],[StationeryId],[Description],[Qty],[DisbursementId],[A_Date],[Departmentid],[Month],[Year] FROM[BenProject].[dbo].[DisbursementDetail] INNER JOIN[Stationeries] ON[DisbursementDetail].[StationeryId] = [Stationeries].[Id] WHERE[Description] = '" + IsHoliday2 + "' AND([Month] BETWEEN '" + startMonth + "' AND '" + endMonth + "' AND[Year] = '" + Year + "' ) AND ([Departmentid] BETWEEN '" + startDepartment + "' AND '" + endDepartment + "') ORDER BY[A_Date], [Departmentid], [DisbursementId],[StationeryId] ").ToList();
             if (endDate < startDate)
             {

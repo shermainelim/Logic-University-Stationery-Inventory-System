@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Ben_Project.DB;
 using Ben_Project.Models;
+using Ben_Project.Services.UserRoleFilterService;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,20 +13,55 @@ namespace Ben_Project.Controllers
     public class StoreSupplierController : Controller
     {
         private readonly LogicContext _dbContext;
+        private readonly UserRoleFilterService _filterService;
 
         public StoreSupplierController(LogicContext logicContext)
         {
             _dbContext = logicContext;
+            _filterService = new UserRoleFilterService();
         }
 
+        public string getUserRole()
+        {
+            string role = (string)HttpContext.Session.GetString("Role");
+            if (role == null) return "";
+            return (string)HttpContext.Session.GetString("Role");
+        }
         public IActionResult Index()
         {
+            if (getUserRole().Equals(""))
+            {
+                return RedirectToAction("Login", "Login");
+            }
+            //Security
+            if (!((getUserRole().Equals(DeptRole.StoreClerk.ToString())) ||
+                (getUserRole().Equals(DeptRole.StoreSupervisor.ToString())) ||
+                 (getUserRole().Equals(DeptRole.StoreManager.ToString()))))
+            {
+                return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
+            }
+            else
+            {
+                return RedirectToAction(_filterService.Filter(getUserRole()), "Store");
+            }
             ViewData["username"] = HttpContext.Session.GetString("username");
             return View();
         }
 
         public IActionResult StoreSupplierList()
         {
+            if (getUserRole().Equals(""))
+            {
+                return RedirectToAction("Login", "Login");
+            }
+
+            //Security
+            if (!(getUserRole() == DeptRole.StoreClerk.ToString() ||
+                getUserRole() == DeptRole.StoreSupervisor.ToString() ||
+                getUserRole() == DeptRole.StoreManager.ToString()))
+            {
+                return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
+            }
             var supplier = _dbContext.Suppliers.ToList();
             var sList = new List<Supplier>();
             foreach (Supplier s in supplier)
@@ -41,7 +77,17 @@ namespace Ben_Project.Controllers
 
         public IActionResult ManageSupplier(int id, String flag)
         {
-
+            if (getUserRole().Equals(""))
+            {
+                return RedirectToAction("Login", "Login");
+            }
+            //Security
+            if (!(getUserRole() == DeptRole.StoreClerk.ToString() ||
+                getUserRole() == DeptRole.StoreSupervisor.ToString() ||
+                getUserRole() == DeptRole.StoreManager.ToString()))
+            {
+                return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
+            }
             if (flag == "Create")
             {
                 // Console.WriteLine(newSupplier);
@@ -72,6 +118,17 @@ namespace Ben_Project.Controllers
 
         public IActionResult CreateNewSupplier()
         {
+            if (getUserRole().Equals(""))
+            {
+                return RedirectToAction("Login", "Login");
+            }
+            //Security
+            if (!(getUserRole() == DeptRole.StoreClerk.ToString() ||
+                getUserRole() == DeptRole.StoreSupervisor.ToString() ||
+                getUserRole() == DeptRole.StoreManager.ToString()))
+            {
+                return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
+            }
             var newSupplier = new Supplier();
             newSupplier.SupplierDetails = new List<SupplierDetail>();
 
@@ -91,7 +148,17 @@ namespace Ben_Project.Controllers
 
         public IActionResult CreateNewItem()
         {
-
+            if (getUserRole().Equals(""))
+            {
+                return RedirectToAction("Login", "Login");
+            }
+            //Security
+            if (!(getUserRole() == DeptRole.StoreClerk.ToString() ||
+                getUserRole() == DeptRole.StoreSupervisor.ToString() ||
+                getUserRole() == DeptRole.StoreManager.ToString()))
+            {
+                return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
+            }
             var supplier = new Supplier();
             ViewData["username"] = HttpContext.Session.GetString("username");
             return View(supplier);
@@ -100,6 +167,17 @@ namespace Ben_Project.Controllers
 
         public IActionResult Save(Supplier supplier)
         {
+            if (getUserRole().Equals(""))
+            {
+                return RedirectToAction("Login", "Login");
+            }
+            //Security
+            if (!(getUserRole() == DeptRole.StoreClerk.ToString() ||
+                 getUserRole() == DeptRole.StoreSupervisor.ToString() ||
+                 getUserRole() == DeptRole.StoreManager.ToString()))
+            {
+                return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
+            }
             if (!ModelState.IsValid)
             {
                 TempData["error"] = " Supplier, Address, Phone can not be null";
@@ -130,6 +208,17 @@ namespace Ben_Project.Controllers
 
         public IActionResult SupplierEdit(int Id)
         {
+            if (getUserRole().Equals(""))
+            {
+                return RedirectToAction("Login", "Login");
+            }
+            //Security
+            if (!(getUserRole() == DeptRole.StoreClerk.ToString() ||
+                 getUserRole() == DeptRole.StoreSupervisor.ToString() ||
+                 getUserRole() == DeptRole.StoreManager.ToString()))
+            {
+                return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
+            }
             var s = _dbContext.Suppliers.FirstOrDefault(s => s.Id == Id);
             ViewData["username"] = HttpContext.Session.GetString("username");
             return View(s);
@@ -137,6 +226,17 @@ namespace Ben_Project.Controllers
 
         public IActionResult SupplierDetail(int Id)
         {
+            if (getUserRole().Equals(""))
+            {
+                return RedirectToAction("Login", "Login");
+            }
+            //Security
+            if (!(getUserRole() == DeptRole.StoreClerk.ToString() ||
+                getUserRole() == DeptRole.StoreSupervisor.ToString() ||
+                getUserRole() == DeptRole.StoreManager.ToString()))
+            {
+                return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
+            }
             var s = _dbContext.Suppliers.FirstOrDefault(s => s.Id == Id);
             ViewData["username"] = HttpContext.Session.GetString("username");
             return View(s);

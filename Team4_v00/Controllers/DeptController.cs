@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Ben_Project.DB;
 using Ben_Project.Models;
 using Ben_Project.Models.AndroidDTOs;
+using Ben_Project.Services.UserRoleFilterService;
 using Ben_Project.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -18,23 +19,66 @@ namespace Ben_Project.Controllers
     public class DeptController : Controller
     {
         private readonly LogicContext _dbContext;
+        private readonly UserRoleFilterService _filterService;
 
         public DeptController(LogicContext logicContext)
         {
             _dbContext = logicContext;
+            _filterService = new UserRoleFilterService();
+        }
+        public string getUserRole()
+        {
+            string role = (string)HttpContext.Session.GetString("Role");
+            if (role == null) return "";
+            return (string)HttpContext.Session.GetString("Role");
         }
 
         // Dept StoreClerkStockList Page
 
         public IActionResult Index()
         {
-            return View();
+            if (getUserRole().Equals(""))
+            {
+                return RedirectToAction("Login", "Login");
+            }
+            //Security
+            if (!((getUserRole().Equals(DeptRole.StoreClerk.ToString())) ||
+                (getUserRole().Equals(DeptRole.StoreSupervisor.ToString())) ||
+                 (getUserRole().Equals(DeptRole.StoreManager.ToString()))))
+            {
+                return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
+            }
+            else
+            {
+                return RedirectToAction(_filterService.Filter(getUserRole()), "Store");
+            }
+          
         }
 
         // Dept Head
-
+        
         public IActionResult DeptHeadRequisitionList()
         {
+            if (getUserRole().Equals(""))
+            {
+                return RedirectToAction("Login", "Login");
+            }
+            //Security
+            if (!(getUserRole() == DeptRole.DeptHead.ToString() ||
+                getUserRole() == DeptRole.DelegatedEmployee.ToString()))
+            {
+                if (getUserRole() == DeptRole.Employee.ToString()
+                    || getUserRole() == DeptRole.Contact.ToString()
+                    || getUserRole() == DeptRole.DeptRep.ToString())
+                {
+                    return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
+                }
+                else
+                {
+                    return RedirectToAction(_filterService.Filter(getUserRole()), "Store");
+                }
+
+            }
             int userId = (int) HttpContext.Session.GetInt32("Id");
             Employee user = _dbContext.Employees.SingleOrDefault(e => e.Id == userId);
             int deptId = user.Dept.id;
@@ -130,6 +174,26 @@ namespace Ben_Project.Controllers
 
         public IActionResult DeptHeadRequisitionDetail(int id)
         {
+            if (getUserRole().Equals(""))
+            {
+                return RedirectToAction("Login", "Login");
+            }
+            //Security
+            if (!(getUserRole() == DeptRole.DeptHead.ToString() ||
+                getUserRole() == DeptRole.DelegatedEmployee.ToString()))
+            {
+                if (getUserRole() == DeptRole.Employee.ToString()
+                    || getUserRole() == DeptRole.Contact.ToString()
+                    || getUserRole() == DeptRole.DeptRep.ToString())
+                {
+                    return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
+                }
+                else
+                {
+                    return RedirectToAction(_filterService.Filter(getUserRole()), "Store");
+                }
+
+            }
             var viewModel = new RequisitionViewModel();
 
             viewModel.DeptRequisition = _dbContext.DeptRequisitions.Find(id);
@@ -138,6 +202,26 @@ namespace Ben_Project.Controllers
 
         public IActionResult DeptHeadChangeRequisitionStatus(RequisitionViewModel input)
         {
+            if (getUserRole().Equals(""))
+            {
+                return RedirectToAction("Login", "Login");
+            }
+            //Security
+            if (!(getUserRole() == DeptRole.DeptHead.ToString() ||
+                getUserRole() == DeptRole.DelegatedEmployee.ToString()))
+            {
+                if (getUserRole() == DeptRole.Employee.ToString()
+                    || getUserRole() == DeptRole.Contact.ToString()
+                    || getUserRole() == DeptRole.DeptRep.ToString())
+                {
+                    return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
+                }
+                else
+                {
+                    return RedirectToAction(_filterService.Filter(getUserRole()), "Store");
+                }
+
+            }
             int userId = (int)HttpContext.Session.GetInt32("Id");
             Employee user = _dbContext.Employees.SingleOrDefault(e => e.Id == userId);
             int deptId = user.Dept.id;
@@ -155,6 +239,26 @@ namespace Ben_Project.Controllers
 
         public IActionResult EmployeeRequisitionList()
         {
+            if (getUserRole().Equals(""))
+            {
+                return RedirectToAction("Login", "Login");
+            }
+            //Security-Emp Lvl
+            if (!(getUserRole() == DeptRole.Employee.ToString() ||
+                getUserRole() == DeptRole.DeptRep.ToString() ||
+                getUserRole() == DeptRole.Contact.ToString() ||
+                getUserRole() == DeptRole.DelegatedEmployee.ToString()))
+            {
+                if (getUserRole() == DeptRole.DeptHead.ToString())    
+                {
+                    return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
+                }
+                else
+                {
+                    return RedirectToAction(_filterService.Filter(getUserRole()), "Store");
+                }
+
+            }
             int userId = (int)HttpContext.Session.GetInt32("Id");
             Employee user = _dbContext.Employees.SingleOrDefault(e => e.Id == userId);
             int deptId = user.Dept.id;
@@ -166,6 +270,26 @@ namespace Ben_Project.Controllers
 
         public IActionResult EmployeeRequisitionDetail(int id)
         {
+            if (getUserRole().Equals(""))
+            {
+                return RedirectToAction("Login", "Login");
+            }
+            //Security-Emp Lvl
+            if (!(getUserRole() == DeptRole.Employee.ToString() ||
+                getUserRole() == DeptRole.DeptRep.ToString() ||
+                getUserRole() == DeptRole.Contact.ToString() ||
+                getUserRole() == DeptRole.DelegatedEmployee.ToString()))
+            {
+                if (getUserRole() == DeptRole.DeptHead.ToString())
+                {
+                    return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
+                }
+                else
+                {
+                    return RedirectToAction(_filterService.Filter(getUserRole()), "Store");
+                }
+
+            }
             var requisitionDetails = _dbContext.RequisitionDetails
                 .Where(rd => rd.DeptRequisition.Id == id)
                 .ToList();
@@ -174,6 +298,26 @@ namespace Ben_Project.Controllers
 
         public IActionResult EmployeeRequisitionForm()
         {
+            if (getUserRole().Equals(""))
+            {
+                return RedirectToAction("Login", "Login");
+            }
+            //Security-Emp Lvl
+            if (!(getUserRole() == DeptRole.Employee.ToString() ||
+                getUserRole() == DeptRole.DeptRep.ToString() ||
+                getUserRole() == DeptRole.Contact.ToString() ||
+                getUserRole() == DeptRole.DelegatedEmployee.ToString()))
+            {
+                if (getUserRole() == DeptRole.DeptHead.ToString())
+                {
+                    return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
+                }
+                else
+                {
+                    return RedirectToAction(_filterService.Filter(getUserRole()), "Store");
+                }
+
+            }
             int userId = (int)HttpContext.Session.GetInt32("Id");
             Employee user = _dbContext.Employees.SingleOrDefault(e => e.Id == userId);
             int deptId = user.Dept.id;
@@ -252,6 +396,26 @@ namespace Ben_Project.Controllers
         //Saving existing requisition
         public IActionResult SaveExRequisition(DeptRequisition requisition)
         {
+            if (getUserRole().Equals(""))
+            {
+                return RedirectToAction("Login", "Login");
+            }
+            //Security-Emp Lvl
+            if (!(getUserRole() == DeptRole.Employee.ToString() ||
+                getUserRole() == DeptRole.DeptRep.ToString() ||
+                getUserRole() == DeptRole.Contact.ToString() ||
+                getUserRole() == DeptRole.DelegatedEmployee.ToString()))
+            {
+                if (getUserRole() == DeptRole.DeptHead.ToString())
+                {
+                    return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
+                }
+                else
+                {
+                    return RedirectToAction(_filterService.Filter(getUserRole()), "Store");
+                }
+
+            }
             int userId = (int)HttpContext.Session.GetInt32("Id");
             Employee user = _dbContext.Employees.SingleOrDefault(e => e.Id == userId);
             int deptId = user.Dept.id;
@@ -276,6 +440,26 @@ namespace Ben_Project.Controllers
 
         public IActionResult NewEmployeeRequisitionForm()
         {
+            if (getUserRole().Equals(""))
+            {
+                return RedirectToAction("Login", "Login");
+            }
+            //Security-Emp Lvl
+            if (!(getUserRole() == DeptRole.Employee.ToString() ||
+                getUserRole() == DeptRole.DeptRep.ToString() ||
+                getUserRole() == DeptRole.Contact.ToString() ||
+                getUserRole() == DeptRole.DelegatedEmployee.ToString()))
+            {
+                if (getUserRole() == DeptRole.DeptHead.ToString())
+                {
+                    return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
+                }
+                else
+                {
+                    return RedirectToAction(_filterService.Filter(getUserRole()), "Store");
+                }
+
+            }
             DeptRequisition deptRequisition = new DeptRequisition();
             deptRequisition.RequisitionDetails = new List<RequisitionDetail>();
 
@@ -294,6 +478,26 @@ namespace Ben_Project.Controllers
         //Saving new requisition
         public IActionResult SaveRequisition(DeptRequisition deptRequisition)
         {
+            if (getUserRole().Equals(""))
+            {
+                return RedirectToAction("Login", "Login");
+            }
+            //Security-Emp Lvl
+            if (!(getUserRole() == DeptRole.Employee.ToString() ||
+                getUserRole() == DeptRole.DeptRep.ToString() ||
+                getUserRole() == DeptRole.Contact.ToString() ||
+                getUserRole() == DeptRole.DelegatedEmployee.ToString()))
+            {
+                if (getUserRole() == DeptRole.DeptHead.ToString())
+                {
+                    return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
+                }
+                else
+                {
+                    return RedirectToAction(_filterService.Filter(getUserRole()), "Store");
+                }
+
+            }
             int userId = (int)HttpContext.Session.GetInt32("Id");
             Employee user = _dbContext.Employees.SingleOrDefault(e => e.Id == userId);
             int deptId = user.Dept.id;
@@ -392,6 +596,28 @@ namespace Ben_Project.Controllers
 
         public IActionResult DeptRepChangeSubmissionStatus(int id)
         {
+            if (getUserRole().Equals(""))
+            {
+                return RedirectToAction("Login", "Login");
+            }
+            //Security-Rep Lvl
+            if (!((getUserRole() == DeptRole.DeptRep.ToString()) || 
+                ((getUserRole() == DeptRole.DelegatedEmployee.ToString()) &&
+                    (string)HttpContext.Session.GetString("jobTitle")== DeptRole.DeptRep.ToString())))
+            {
+                if (getUserRole() == DeptRole.DeptHead.ToString()
+                    || getUserRole() == DeptRole.Employee.ToString()
+                    || getUserRole() == DeptRole.Contact.ToString()
+                    || getUserRole() == DeptRole.DelegatedEmployee.ToString())
+                {
+                    return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
+                }
+                else
+                {
+                    return RedirectToAction(_filterService.Filter(getUserRole()), "Store");
+                }
+
+            }
             int userId = (int)HttpContext.Session.GetInt32("Id");
             Employee user = _dbContext.Employees.SingleOrDefault(e => e.Id == userId);
             int deptId = user.Dept.id;
@@ -424,6 +650,28 @@ namespace Ben_Project.Controllers
 
         public IActionResult DeptRepRequisitionDraft()
         {
+            if (getUserRole().Equals(""))
+            {
+                return RedirectToAction("Login", "Login");
+            }
+            //Security-Rep Lvl
+            if (!((getUserRole() == DeptRole.DeptRep.ToString()) ||
+                ((getUserRole() == DeptRole.DelegatedEmployee.ToString()) &&
+                    (string)HttpContext.Session.GetString("jobTitle") == DeptRole.DeptRep.ToString())))
+            {
+                if (getUserRole() == DeptRole.DeptHead.ToString()
+                    || getUserRole() == DeptRole.Employee.ToString()
+                    || getUserRole() == DeptRole.Contact.ToString()
+                    || getUserRole() == DeptRole.DelegatedEmployee.ToString())
+                {
+                    return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
+                }
+                else
+                {
+                    return RedirectToAction(_filterService.Filter(getUserRole()), "Store");
+                }
+
+            }
             int userId = (int)HttpContext.Session.GetInt32("Id");
             Employee user = _dbContext.Employees.SingleOrDefault(e => e.Id == userId);
             int deptId = user.Dept.id;
@@ -444,6 +692,28 @@ namespace Ben_Project.Controllers
         //Manage Collection Point
         public IActionResult chooseCollectionPt()
         {
+            if (getUserRole().Equals(""))
+            {
+                return RedirectToAction("Login", "Login");
+            }
+            //Security-Rep Lvl
+            if (!((getUserRole() == DeptRole.DeptRep.ToString()) ||
+                ((getUserRole() == DeptRole.DelegatedEmployee.ToString()) &&
+                    (string)HttpContext.Session.GetString("jobTitle") == DeptRole.DeptRep.ToString())))
+            {
+                if (getUserRole() == DeptRole.DeptHead.ToString()
+                    || getUserRole() == DeptRole.Employee.ToString()
+                    || getUserRole() == DeptRole.Contact.ToString()
+                    || getUserRole() == DeptRole.DelegatedEmployee.ToString())
+                {
+                    return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
+                }
+                else
+                {
+                    return RedirectToAction(_filterService.Filter(getUserRole()), "Store");
+                }
+
+            }
             //using session data to find current employee so we can access info about which department they are from
             string usernameInSession = HttpContext.Session.GetString("loginName");
             var employee = _dbContext.Employees.FirstOrDefault(ep => ep.Username == usernameInSession);
@@ -457,6 +727,28 @@ namespace Ben_Project.Controllers
 
         public IActionResult setCollectionPt(IFormCollection frmCollect, Department department)
         {
+            if (getUserRole().Equals(""))
+            {
+                return RedirectToAction("Login", "Login");
+            }
+            //Security-Rep Lvl
+            if (!((getUserRole() == DeptRole.DeptRep.ToString()) ||
+                ((getUserRole() == DeptRole.DelegatedEmployee.ToString()) &&
+                    (string)HttpContext.Session.GetString("jobTitle") == DeptRole.DeptRep.ToString())))
+            {
+                if (getUserRole() == DeptRole.DeptHead.ToString()
+                    || getUserRole() == DeptRole.Employee.ToString()
+                    || getUserRole() == DeptRole.Contact.ToString()
+                    || getUserRole() == DeptRole.DelegatedEmployee.ToString())
+                {
+                    return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
+                }
+                else
+                {
+                    return RedirectToAction(_filterService.Filter(getUserRole()), "Store");
+                }
+
+            }
             string usernameInSession = HttpContext.Session.GetString("loginName");
             var employee = _dbContext.Employees.FirstOrDefault(ep => ep.Username == usernameInSession);
             var empDept = employee.Dept;
