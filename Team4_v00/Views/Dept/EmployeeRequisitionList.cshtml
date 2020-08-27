@@ -10,30 +10,28 @@
     <h1 class="display-4">Employee Requisition List</h1>
 </div>
 
-<table id="EmpReqList" align="center" border="1">
-    <thead style="background-color: lightskyblue">
-        <tr>
-            <th>Requisition Id</th>
-            <th>Submission Status</th>
-            <th>Approval Status</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    
-    <tbody>
-    @foreach (var requisition in @Model)
-    {
-        var requisitionId = @requisition.Id;
-        var submissionStatus = @requisition.SubmissionStatus;
-        var approvalStatus = @requisition.RequisitionApprovalStatus;
 
-        <tr>
-            <td>@requisitionId</td>
-            <td>@submissionStatus</td>
-            <td>@approvalStatus</td>
-            <td>@Html.ActionLink("Details", "EmployeeRequisitionDetail", "Dept", new {id = requisitionId}, null)</td>
-        </tr>
-    }
-    </tbody>
-    
-</table>
+        <table id="EmpReqList" class="table table-striped table-bordered display" style="width:100%">
+            <thead style="background-color: lightskyblue">
+                <tr>
+                    <th>Requisition Id</th>
+                    <th>Submission Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var requisition in @Model)
+                {
+                    var requisitionId = @requisition.Id;
+                    var submissionStatus = @requisition.SubmissionStatus;
+
+                    <tr>
+                        <td>@requisitionId</td>
+                        <td>@submissionStatus</td>
+                        <td>@Html.ActionLink("Details", "EmployeeRequisitionDetail", "Dept", new { id = requisitionId }, null)</td>
+                    </tr>
+                }
+            </tbody>
+
+        </table>

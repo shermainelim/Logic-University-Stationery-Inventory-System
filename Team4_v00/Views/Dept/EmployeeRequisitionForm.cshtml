@@ -13,31 +13,32 @@
 
 <form asp-controller="Dept" asp-action="SaveExRequisition" method="post">
 
-    <table id="ExEmpReqForm">
-        <tr>
-            <th>Item Name</th>
-            <th>Quantity</th>
-        </tr>
+        <table id="ExEmpReqForm" align="center" border="1">
+            <thead style="background-color: lightskyblue">
+                <tr>
+                    <th>Item Name</th>
+                    <th>Quantity</th>
+                </tr>
+                </thead>
+                @for (int i = 0; i < Model.RequisitionDetails.Count; i++)
+                {
+                    var itemName = @Model.RequisitionDetails[i].Stationery.Description;
+                    var itemId = @Model.RequisitionDetails[i].Stationery.Id;
+                    var qty = @Model.RequisitionDetails[i].Qty;
+                    var reqId = @Model.Id;
+                    var reqDtId = @Model.RequisitionDetails[i].Id;
 
-        @for (int i = 0; i < Model.RequisitionDetails.Count; i++)
-        {
-            var itemName = @Model.RequisitionDetails[i].Stationery.Description;
-            var itemId = @Model.RequisitionDetails[i].Stationery.Id;
-            var qty = @Model.RequisitionDetails[i].Qty;
-            var reqId = @Model.Id;
-            var reqDtId = @Model.RequisitionDetails[i].Id;
+                    <tr>
+                        <td>@itemName</td>
+                        <td>
+                            <input asp-for="@Model.RequisitionDetails[i].Stationery.Id" type="hidden" value="@itemId" />
+                            <input asp-for="@Model.RequisitionDetails[i].Qty" type="number" min="0" oninput="this.value = Math.abs(this.value)" />
+                            <input asp-for="@Model.RequisitionDetails[i].Id" type="hidden" value="@reqDtId" />
+                            <input asp-for="@Model.Id" type="hidden" value="@reqId" />
+                        </td>
+                    </tr>
+                }
+        </table>
 
-            <tr>
-                <td>@itemName</td>
-                <td>
-                    <input asp-for="@Model.RequisitionDetails[i].Stationery.Id" type="hidden" value="@itemId" />
-                    <input asp-for="@Model.RequisitionDetails[i].Qty" type="number" min="0" oninput="this.value = Math.abs(this.value)" />
-                    <input asp-for="@Model.RequisitionDetails[i].Id" type="hidden" value="@reqDtId" />
-                    <input asp-for="@Model.Id" type="hidden" value="@reqId" />
-                </td>
-            </tr>
-        }
-    </table>
-
-    <input id="saveBtn" type="submit" value="Save" />
+        <input id="saveBtn" type="submit" value="Save" />
 </form>
