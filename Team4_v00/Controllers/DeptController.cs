@@ -191,6 +191,64 @@ namespace Ben_Project.Controllers
             }
         }
 
+        // API for getting Employee Requisition Form
+        public string EmployeeRequisitionFormApi()
+        {
+            //int userId = (int)HttpContext.Session.GetInt32("Id");
+            int userId = _dbContext.AndroidUsers.FirstOrDefault().UserId;
+            Employee user = _dbContext.Employees.SingleOrDefault(e => e.Id == userId);
+            int deptId = user.Dept.id;
+
+            var requisition = _dbContext.DeptRequisitions.FirstOrDefault(dr => dr.SubmissionStatus == SubmissionStatus.Draft && dr.Employee.Dept.id == deptId);
+
+            // Create DeptRequisition DTO
+            DeptRequisitionDTO deptRequisitionDto = new DeptRequisitionDTO();
+            deptRequisitionDto.RequisitionDetails = new List<RequisitionDetailDTO>();
+
+            //looking for existing requisition with Draft status
+            if (requisition != null)
+            {
+                deptRequisitionDto.Id = requisition.Id;
+                deptRequisitionDto.FormStatus = "Existing";
+
+                foreach (var requisitionDetail in requisition.RequisitionDetails)
+                {
+                    RequisitionDetailDTO requisitionDetailDto = new RequisitionDetailDTO();
+                    requisitionDetailDto.StationeryId = requisitionDetail.Stationery.Id;
+                    requisitionDetailDto.StationeryName = requisitionDetail.Stationery.Description;
+                    requisitionDetailDto.Qty = requisitionDetail.Qty;
+                    deptRequisitionDto.RequisitionDetails.Add(requisitionDetailDto);
+                }
+
+                return JsonSerializer.Serialize(new
+                {
+                    deptRequisitionDto
+                });
+            }
+
+            else
+            {
+                deptRequisitionDto.FormStatus = "New";
+
+                var stationeries = _dbContext.Stationeries.ToList();
+
+                foreach (var stationery in stationeries)
+                {
+                    RequisitionDetailDTO requisitionDetailDto = new RequisitionDetailDTO();
+                    requisitionDetailDto.StationeryId = stationery.Id;
+                    requisitionDetailDto.StationeryName = stationery.Description;
+                    requisitionDetailDto.Qty = 0;
+                    deptRequisitionDto.RequisitionDetails.Add(requisitionDetailDto);
+                }
+
+                return JsonSerializer.Serialize(new
+                {
+                    deptRequisitionDto
+                });
+            }
+        }
+
+
         //Saving existing requisition
         public IActionResult SaveExRequisition(DeptRequisition requisition)
         {
@@ -199,6 +257,7 @@ namespace Ben_Project.Controllers
             int deptId = user.Dept.id;
 
             var result = _dbContext.DeptRequisitions.FirstOrDefault(rd => rd.Id == requisition.Id);
+            result.Employee = user;
 
             foreach (var requisitionDetail in requisition.RequisitionDetails)
             {
@@ -206,11 +265,8 @@ namespace Ben_Project.Controllers
                 requisitionDetail.Stationery =
                      _dbContext.Stationeries.FirstOrDefault(s => s.Id == requisitionDetail.Stationery.Id);
                 requisitionDetail.DeptRequisition = result;
-
-
             }
 
-            result.Employee = user;
             result.RequisitionDetails = requisition.RequisitionDetails;
 
             _dbContext.SaveChanges();
@@ -262,6 +318,48 @@ namespace Ben_Project.Controllers
             _dbContext.SaveChanges();
 
             return RedirectToAction("EmployeeRequisitionList", "Dept");
+        }
+
+        // API for saving new requisition
+        [HttpPost]
+        public void SaveRequisitionApi([FromBody] DeptRequisitionDTO input)
+        {
+            int userId = _dbContext.AndroidUsers.FirstOrDefault().UserId;
+            Employee user = _dbContext.Employees.SingleOrDefault(e => e.Id == userId);
+            string usernameInSession = user.Username;
+            int deptId = user.Dept.id;
+
+            DeptRequisition result = new DeptRequisition();
+
+            if (input.FormStatus.Equals("New"))
+            {
+                result.Employee = user;
+                result.RequisitionDetails = new List<RequisitionDetail>();
+                _dbContext.Add(result);
+
+                foreach (var requisitionDetail in input.RequisitionDetails)
+                {
+                    RequisitionDetail temp = new RequisitionDetail();
+                    temp.Stationery = _dbContext.Stationeries.FirstOrDefault(s => s.Id == requisitionDetail.StationeryId);
+                    temp.Qty = requisitionDetail.Qty;
+                    result.RequisitionDetails.Add(temp);
+                }
+            }
+            else if (input.FormStatus.Equals("Existing"))
+            {
+                foreach (var requisitionDetail in input.RequisitionDetails)
+                {
+                    var dbRequisitionDetail = _dbContext.RequisitionDetails.FirstOrDefault(rd =>
+                        rd.DeptRequisition.Id == input.Id && rd.Stationery.Id == requisitionDetail.StationeryId);
+
+                    if (dbRequisitionDetail != null)
+                    {
+                        dbRequisitionDetail.Qty = requisitionDetail.Qty;
+                    }
+                }
+            }
+
+            _dbContext.SaveChanges();
         }
 
         public IActionResult DeptRepChangeSubmissionStatus(int id)

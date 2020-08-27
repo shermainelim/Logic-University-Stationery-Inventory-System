@@ -9,6 +9,7 @@ namespace Ben_Project.Models.AndroidDTOs
     {
         public int Id { get; set; }
         public EmployeeDTO Employee { get; set; }
+        public string FormStatus { get; set; }
         public RequisitionApprovalStatus RequisitionApprovalStatus { get; set; }
         public RequisitionFulfillmentStatus RequisitionFulfillmentStatus { get; set; }
         public List<RequisitionDetailDTO> RequisitionDetails { get; set; }
