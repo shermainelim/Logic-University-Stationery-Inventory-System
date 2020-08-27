@@ -99,11 +99,32 @@ namespace Ben_Project.Controllers
             }
             if (user.Role == DeptRole.DeptRep)
             {
-                     //return RedirectToAction("Index", "Home");
                 return RedirectToAction("EmployeeRequisitionList", "Dept");
             }
             if (user.Role == DeptRole.DelegatedEmployee)
             {
+                DelegatedEmployee dEmp = _dbContext.DelegatedEmployees.SingleOrDefault(x => x.delegationStatus == DelegationStatus.Selected && x.Employee.Id == user.Id);
+                if (dEmp != null)
+                {
+                    DateTime startDate = dEmp.StartDate;
+                    DateTime endDate = dEmp.EndDate;
+                    if(endDate < DateTime.Now)
+                    {
+                        dEmp.delegationStatus = DelegationStatus.Cancelled;
+                        user.Role = user.JobTitle;
+                        _dbContext.SaveChanges();
+                        HttpContext.Session.SetString("Role", user.Role.ToString());
+                        return RedirectToAction("EmployeeRequisitionList", "Dept");
+                    }
+                    else if (startDate > DateTime.Now)
+                    {
+                        HttpContext.Session.SetString("delegationStatus", "TBD");
+                        user.Role = user.JobTitle;
+                        _dbContext.SaveChanges();
+                        HttpContext.Session.SetString("Role", user.Role.ToString());
+                        return RedirectToAction("EmployeeRequisitionList", "Dept");
+                    }
+                }
                 return RedirectToAction("DeptHeadRequisitionList", "Dept");
             }
 

@@ -174,10 +174,12 @@ namespace Ben_Project.Controllers
             }
 
             var pO = await _context.POs.FindAsync(id);
+
             if (pO == null)
             {
                 return NotFound();
             }
+            pO.ReceiveDate = DateTime.Now;
             return View(pO);
         }
 
@@ -326,6 +328,11 @@ namespace Ben_Project.Controllers
             }
             var po = new PO();
             po.OrderDate = pO.OrderDate;
+            if (po.OrderDate < DateTime.Now)
+            {
+                TempData["Error"] = "Please select future date";
+                return RedirectToAction("Create", pO);
+            }
             po.POStatus = po.POStatus;
             po.Supplier = _context.Suppliers.FirstOrDefault(s => s.Id == pO.Supplier.Id);
             po.PODetails = new List<PODetail>();

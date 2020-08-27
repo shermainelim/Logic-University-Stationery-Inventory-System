@@ -52,6 +52,19 @@ namespace Ben_Project.Controllers
         }
         public IActionResult DelegatedEmployeeList()
         {
+            List<DelegatedEmployee> dEmps = _dbContext.DelegatedEmployees.Where(x => x.delegationStatus == DelegationStatus.Selected).ToList();
+            if(dEmps != null)
+            {
+                foreach(DelegatedEmployee d in dEmps)
+                {
+                    DateTime endDate = d.EndDate;
+                    if (endDate < DateTime.Now)
+                    {
+                        d.delegationStatus = DelegationStatus.Cancelled;
+                        _dbContext.SaveChanges();
+                    }
+                }
+            }
             if (getUserRole().Equals(""))
             {
                 return RedirectToAction("Login", "Login");
