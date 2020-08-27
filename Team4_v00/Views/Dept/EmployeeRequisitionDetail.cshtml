@@ -11,11 +11,14 @@
 </div>
 
 <table id="EmpReqDet" align="center" border="1">
-    <tr>
-        <th>Item Name</th>
-        <th>Qty</th>
-    </tr>
-
+    <thead style="background-color: lightskyblue">
+        <tr>
+            <th>Item Name</th>
+            <th>Qty</th>
+        </tr>
+    </thead>
+    
+    <tbody>
     @foreach (var requistionDetail in @Model)
     {
         var itemName = @requistionDetail.Stationery.Description;
@@ -30,4 +33,5 @@
             </tr>
         }
     }
+    </tbody>
 </table>
