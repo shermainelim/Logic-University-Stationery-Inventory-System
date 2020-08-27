@@ -362,6 +362,34 @@ namespace Ben_Project.Controllers
             _dbContext.SaveChanges();
         }
 
+        // API for Dept Rep Requisition List
+        public string DeptRepRequisitionListApi()
+        {
+            AndroidUser androidUser = _dbContext.AndroidUsers.FirstOrDefault();
+            Employee user = _dbContext.Employees.SingleOrDefault(e => e.Id == androidUser.UserId);
+            int deptId = user.Dept.id;
+
+            var dTOs = new List<DeptRequisitionDTO>();
+
+            var requisitions = _dbContext.DeptRequisitions
+                .Where(dr => dr.SubmissionStatus == SubmissionStatus.Draft && dr.Employee.Dept.id == deptId).ToList();
+
+            foreach (var requisition in requisitions)
+            {
+                var dTO = new DeptRequisitionDTO();
+                dTO.Id = requisition.Id;
+                dTO.RequisitionApprovalStatus = requisition.RequisitionApprovalStatus;
+                dTO.RequisitionFulfillmentStatus = requisition.RequisitionFulfillmentStatus;
+                dTOs.Add(dTO);
+            }
+
+
+            return JsonSerializer.Serialize(new
+            {
+                requisitions = dTOs
+            });
+        }
+
         public IActionResult DeptRepChangeSubmissionStatus(int id)
         {
             int userId = (int)HttpContext.Session.GetInt32("Id");
