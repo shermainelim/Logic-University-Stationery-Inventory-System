@@ -7,9 +7,9 @@
         var hash = CryptoJS.SHA256(utf8arr);
         var stringPwd = hash.toString(CryptoJS.enc.Base64);
 
-        if (uname.length === 0 || pwd.length === 0) {
+       /* if (uname.length === 0 || pwd.length === 0) {
             return;
-        }
+        }*/
 
         $("#hashPwd").val(stringPwd);
         $("#pwd").val("");

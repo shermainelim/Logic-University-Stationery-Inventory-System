@@ -28,18 +28,30 @@ namespace Ben_Project.Controllers
 
         public IActionResult Login(string username, string hashPasswd)
         {
+            if (username == null)
+            {
+                TempData["error"] = "Username is required!";
+                return RedirectToAction("Index");
+            }
+            if (hashPasswd == "47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=")
+            {
+                TempData["error"] = "Password is required!";
+                return RedirectToAction("Index");
+            }
             Employee user = _dbContext.Employees.FirstOrDefault(u => u.Username == username);
             if (user == null)
-            {               
-                return RedirectToAction("Index");
-            }            
-
-            if (user.Password != hashPasswd)
-            {               
+            {
+                TempData["error"] = "Username is wrong!";
                 return RedirectToAction("Index");
             }
 
-            
+            if (user.Password != hashPasswd)
+            {
+                TempData["error"] = "Password is wrong!";
+                return RedirectToAction("Index");
+            }
+
+
             HttpContext.Session.SetString("username", user.Name);
             HttpContext.Session.SetString("loginName", user.Username);
             HttpContext.Session.SetInt32("Id", user.Id);
