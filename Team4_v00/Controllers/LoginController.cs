@@ -139,31 +139,32 @@ namespace Ben_Project.Controllers
 
             var dbUser = _dbContext.Employees.SingleOrDefault(e => e.Username == username);
 
-            if (dbUser.Password.Equals(inputPassword))
+            if (dbUser != null)
             {
-
-                var userRole = dbUser.Role.ToString();
-                var userId = dbUser.Id;
-
-                AndroidUser user = new AndroidUser();
-                user.UserId = dbUser.Id;
-
-                _dbContext.Add(user);
-                _dbContext.SaveChanges();
-
-                return JsonSerializer.Serialize(new
+                if (dbUser.Password.Equals(inputPassword))
                 {
-                    response = "Successful",
-                    deptRole = userRole
-                });
+
+                    var userRole = dbUser.Role.ToString();
+                    var userId = dbUser.Id;
+
+                    AndroidUser user = new AndroidUser();
+                    user.UserId = dbUser.Id;
+
+                    _dbContext.Add(user);
+                    _dbContext.SaveChanges();
+
+                    return JsonSerializer.Serialize(new
+                    {
+                        response = "Successful",
+                        deptRole = userRole
+                    });
+                }
             }
-            else
+
+            return JsonSerializer.Serialize(new
             {
-                return JsonSerializer.Serialize(new
-                {
-                    response = "Failed"
-                });
-            }
+                response = "Failed"
+            });
         }
     }
 }

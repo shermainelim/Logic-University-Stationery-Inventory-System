@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Ben_Project.Models.RequisitionDetail>
+﻿@model Ben_Project.Models.DeptRequisition
 
 @{
     ViewData["Title"] = "EmployeeRequisitionDetail";
@@ -10,25 +10,32 @@
     <h1 class="display-4">Requisition Details</h1>
 </div>
 
-        <table id="EmpReqDet" class="table table-striped table-bordered display" style="width:100%">
-            <thead style="background-color: lightskyblue">
-                <tr>
-                    <th>Item Name</th>
-                    <th>Qty</th>    
-                </tr>
-            </thead>
-            @foreach (var requistionDetail in @Model)
-            {
-                var itemName = @requistionDetail.Stationery.Description;
-                var qty = @requistionDetail.Qty;
+<table id="EmpReqDet" class="table table-striped table-bordered display" style="width:100%">
+    <thead style="background-color: lightskyblue">
+    <tr>
+        <th>Item Name</th>
+        <th>Qty</th>    
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var requistionDetail in @Model.RequisitionDetails)
+    {
+        var itemName = @requistionDetail.Stationery.Description;
+        var qty = @requistionDetail.Qty;
 
-                //added this qty filter so that 0 qtys are not reflected
-                if (qty > 0)
-                {
-                    <tr>
-                        <td>@itemName</td>
-                        <td>@qty</td>
-                    </tr>
-                }
-            }
-        </table>
+        //added this qty filter so that 0 qtys are not reflected
+        if (qty > 0)
+        {
+            <tr>
+                <td>@itemName</td>
+                <td>@qty</td>
+            </tr>
+        }
+    }
+    </tbody>
+</table>
+
+<h5>Reason:</h5>
+<p>
+    @Model.Reason
+</p>

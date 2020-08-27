@@ -290,10 +290,14 @@ namespace Ben_Project.Controllers
                 }
 
             }
+
+            var requisition = _dbContext.DeptRequisitions.FirstOrDefault(dr => dr.Id == id);
+
             var requisitionDetails = _dbContext.RequisitionDetails
                 .Where(rd => rd.DeptRequisition.Id == id)
                 .ToList();
-            return View(requisitionDetails);
+
+            return View(requisition);
         }
 
         public IActionResult EmployeeRequisitionForm()

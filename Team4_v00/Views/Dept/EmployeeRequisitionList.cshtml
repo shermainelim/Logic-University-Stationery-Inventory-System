@@ -16,6 +16,7 @@
                 <tr>
                     <th>Requisition Id</th>
                     <th>Submission Status</th>
+                    <th>Approval Status</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -25,10 +26,12 @@
                 {
                     var requisitionId = @requisition.Id;
                     var submissionStatus = @requisition.SubmissionStatus;
+                    var approvalStatus = @requisition.RequisitionApprovalStatus;
 
                     <tr>
                         <td>@requisitionId</td>
                         <td>@submissionStatus</td>
+                        <td>@approvalStatus</td>
                         <td>@Html.ActionLink("Details", "EmployeeRequisitionDetail", "Dept", new { id = requisitionId }, null)</td>
                     </tr>
                 }
