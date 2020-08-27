@@ -306,17 +306,18 @@ namespace Ben_Project.Controllers
         [AllowAnonymous]
         public IActionResult StoreClerkSaveRequisitionApi([FromBody] DeptRequisitionDTO input)
         {
-            if (getUserRole().Equals(""))
-            {
-                return RedirectToAction("Login", "Login");
-            }
-            //Security
-            if (!((getUserRole().Equals(DeptRole.StoreClerk.ToString())) ||
-               (getUserRole().Equals(DeptRole.StoreSupervisor.ToString())) ||
-                (getUserRole().Equals(DeptRole.StoreManager.ToString()))))
-            {
-                return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
-            }
+            // security blocking api from android
+            //if (getUserRole().Equals(""))
+            //{
+            //    return RedirectToAction("Login", "Login");
+            //}
+            ////Security
+            //if (!((getUserRole().Equals(DeptRole.StoreClerk.ToString())) ||
+            //   (getUserRole().Equals(DeptRole.StoreSupervisor.ToString())) ||
+            //    (getUserRole().Equals(DeptRole.StoreManager.ToString()))))
+            //{
+            //    return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
+            //}
             // transfer DeptRequisitionDTO data to Disbursement object
             Disbursement disbursement = new Disbursement();
             disbursement.DeptRequisition = new DeptRequisition();
@@ -591,19 +592,6 @@ namespace Ben_Project.Controllers
         }
 
         // API for getting Disbursement Details
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
         public string StoreClerkDisbursementDetailApi(int id)
         {
             var disbursement = _dbContext.Disbursements.Find(id);
@@ -682,17 +670,17 @@ namespace Ben_Project.Controllers
         [AllowAnonymous]
         public IActionResult StoreClerkSaveDisbursementDetailApi([FromBody] DisbursementDTO input)
         {
-            if (getUserRole().Equals(""))
-            {
-                return RedirectToAction("Login", "Login");
-            }
-            //Security
-            if (!((getUserRole().Equals(DeptRole.StoreClerk.ToString())) ||
-              (getUserRole().Equals(DeptRole.StoreSupervisor.ToString())) ||
-               (getUserRole().Equals(DeptRole.StoreManager.ToString()))))
-            {
-                return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
-            }
+            //if (getUserRole().Equals(""))
+            //{
+            //    return RedirectToAction("Login", "Login");
+            //}
+            ////Security
+            //if (!((getUserRole().Equals(DeptRole.StoreClerk.ToString())) ||
+            //  (getUserRole().Equals(DeptRole.StoreSupervisor.ToString())) ||
+            //   (getUserRole().Equals(DeptRole.StoreManager.ToString()))))
+            //{
+            //    return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
+            //}
             var disbursement = _dbContext.Disbursements.FirstOrDefault(d => d.Id == input.Id);
             disbursement.DisbursementDate = input.DisbursementDate;
             disbursement.DisbursementStatus = DisbursementStatus.PendingDisbursement;

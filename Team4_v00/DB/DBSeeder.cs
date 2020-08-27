@@ -490,7 +490,7 @@ namespace Ben_Project.DB
             e4.Password = Crypto.Sha256("emp");
             e4.Dept = d1;
             e4.JobTitle = DeptRole.Employee;
-            e4.Role = DeptRole.Contact;
+            e4.Role = DeptRole.Employee;
 
             Employee e5 = new Employee();
             e5.Name = "Mr Timothy";
@@ -498,7 +498,7 @@ namespace Ben_Project.DB
             e5.Password = Crypto.Sha256("emp");
             e5.Dept = d1;
             e5.JobTitle = DeptRole.Employee;
-            e5.Role = DeptRole.Contact;
+            e5.Role = DeptRole.Employee;
 
 
 

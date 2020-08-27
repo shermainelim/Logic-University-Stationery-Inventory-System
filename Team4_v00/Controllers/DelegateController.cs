@@ -172,9 +172,8 @@ namespace Ben_Project.Controllers
             newDelegatedEmployee.EndDate = DateTime.ParseExact(endDate, "dd-MM-yyyy", null);
             newDelegatedEmployee.delegationStatus = DelegationStatus.Selected;
             SaveEmployeeDelegation(newDelegatedEmployee);
-            //_dbContext.Add(newDelegatedEmployee);
-            //_dbContext.SaveChanges();
-            return;
+            _dbContext.Add(newDelegatedEmployee);
+            _dbContext.SaveChanges();
         }
 
         //Cancel from android

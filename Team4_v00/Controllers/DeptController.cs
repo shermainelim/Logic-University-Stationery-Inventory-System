@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Ben_Project.DB;
 using Ben_Project.Models;
 using Ben_Project.Models.AndroidDTOs;
+using Ben_Project.Services;
 using Ben_Project.Services.UserRoleFilterService;
 using Ben_Project.ViewModels;
 using Microsoft.AspNetCore.Http;
@@ -645,10 +647,18 @@ namespace Ben_Project.Controllers
                 requisition.RequisitionDetails.Remove(delObj);
             }
 
-             
-
             requisition.Employee = user;
             _dbContext.SaveChanges();
+
+            // send email to notify Dept Head
+
+            MailAddress FromEmail = new MailAddress("sa50team4@gmail.com", "Dept");
+            MailAddress ToEmail = new MailAddress("e0533276@u.nus.edu", "Dept Head");
+            string Subject = "Pending Requisition";
+            string MessageBody = "You have received a requisition.";
+
+            EmailService.SendEmail(FromEmail, ToEmail, Subject, MessageBody);
+
             return RedirectToAction("EmployeeRequisitionList", "Dept");
         }
 
