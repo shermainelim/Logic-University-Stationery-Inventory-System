@@ -39,8 +39,12 @@ namespace Ben_Project.Controllers
         public void LogoutApi()
         {
             AndroidUser user = _dbContext.AndroidUsers.FirstOrDefault();
-            _dbContext.Remove(user);
-            _dbContext.SaveChanges();
+
+            if (user != null)
+            {
+                _dbContext.Remove(user);
+                _dbContext.SaveChanges();
+            }
         }
     }
 }
