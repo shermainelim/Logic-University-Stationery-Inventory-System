@@ -1,8 +1,10 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
-@{ 
-        String name = (String)ViewData["username"];
- }
+@using Microsoft.AspNetCore.Http
+@{
+    string username = (string)Context.Session.GetString("username");
+    String name = (String)ViewData["username"];
+}
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -27,7 +29,7 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <p class="nav navbar-text navbar-right">@name</p>
+                    <p class="nav navbar-text navbar-right">@username</p>
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Store" asp-action="AuthorizeAdjustmentVoucherList">Adjustment</a>
@@ -69,7 +71,7 @@
         $(document).ready(function () {
             $('#eg_tbl').DataTable();
             $('#item_tbl').DataTable();
-            $('#po_tbl').DataTable(); 
+            $('#po_tbl').DataTable();
             $('#barChart_tbl').DataTable();
 
             $('#SupMgrAdjVoucherDetail').DataTable();
@@ -82,7 +84,7 @@
             $('#ReqFulfill').DataTable();
             $('#ReqList').DataTable();
 
-             $('#stockList_tbl').DataTable();
+            $('#stockList_tbl').DataTable();
             $('#deptHeadRequisitionList').DataTable();
 
         });

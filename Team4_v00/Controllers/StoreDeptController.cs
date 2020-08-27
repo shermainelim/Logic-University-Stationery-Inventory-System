@@ -8,21 +8,39 @@ using Microsoft.EntityFrameworkCore;
 using Ben_Project.DB;
 using Ben_Project.Models;
 using Microsoft.AspNetCore.Http;
+using Ben_Project.Services.UserRoleFilterService;
 
 namespace Ben_Project.Controllers
 {
     public class StoreDeptController : Controller
     {
         private readonly LogicContext _context;
-
+        private readonly UserRoleFilterService _filterService;
         public StoreDeptController(LogicContext context)
         {
             _context = context;
+            _filterService = new UserRoleFilterService();
         }
-
+        public string getUserRole()
+        {
+            string role = (string)HttpContext.Session.GetString("Role");
+            if (role == null) return "";
+            return role;
+        }
         // GET: StoreDept
         public async Task<IActionResult> Index()
         {
+            if (getUserRole().Equals(""))
+            {
+                return RedirectToAction("Login", "Login");
+            }
+            //Security
+            if (!(getUserRole() == DeptRole.StoreClerk.ToString() ||
+                getUserRole() == DeptRole.StoreSupervisor.ToString() ||
+                getUserRole() == DeptRole.StoreManager.ToString()))
+            {
+                return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
+            }
             var departments = await _context.Departments.ToListAsync();
             var dList = new List<Department>();
             foreach (var d  in departments)
@@ -40,7 +58,17 @@ namespace Ben_Project.Controllers
         // GET: StoreDept/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-
+            if (getUserRole().Equals(""))
+            {
+                return RedirectToAction("Login", "Login");
+            }
+            //Security
+            if (!(getUserRole() == DeptRole.StoreClerk.ToString() ||
+                getUserRole() == DeptRole.StoreSupervisor.ToString() ||
+                getUserRole() == DeptRole.StoreManager.ToString()))
+            {
+                return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
+            }
 
             if (id == null)
             {
@@ -65,6 +93,17 @@ namespace Ben_Project.Controllers
         // GET: StoreDept/Create
         public IActionResult Create()
         {
+            if (getUserRole().Equals(""))
+            {
+                return RedirectToAction("Login", "Login");
+            }
+            //Security
+            if (!(getUserRole() == DeptRole.StoreClerk.ToString() ||
+                getUserRole() == DeptRole.StoreSupervisor.ToString() ||
+                getUserRole() == DeptRole.StoreManager.ToString()))
+            {
+                return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
+            }
             return View();
         }
 
@@ -75,6 +114,17 @@ namespace Ben_Project.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("id,DeptCode,DeptName,TelephoneNo,FaxNo,CollectionPoint")] Department department)
         {
+            if (getUserRole().Equals(""))
+            {
+                return RedirectToAction("Login", "Login");
+            }
+            //Security
+            if (!(getUserRole() == DeptRole.StoreClerk.ToString() ||
+               getUserRole() == DeptRole.StoreSupervisor.ToString() ||
+               getUserRole() == DeptRole.StoreManager.ToString()))
+            {
+                return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
+            }
             if (ModelState.IsValid)
             {
                 _context.Add(department);
@@ -88,6 +138,17 @@ namespace Ben_Project.Controllers
         // GET: StoreDept/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            if (getUserRole().Equals(""))
+            {
+                return RedirectToAction("Login", "Login");
+            }
+            //Security
+            if (!(getUserRole() == DeptRole.StoreClerk.ToString() ||
+               getUserRole() == DeptRole.StoreSupervisor.ToString() ||
+               getUserRole() == DeptRole.StoreManager.ToString()))
+            {
+                return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
+            }
             if (id == null)
             {
                 return NotFound();
@@ -109,6 +170,17 @@ namespace Ben_Project.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("id,DeptCode,DeptName,TelephoneNo,FaxNo,CollectionPoint")] Department department)
         {
+            if (getUserRole().Equals(""))
+            {
+                return RedirectToAction("Login", "Login");
+            }
+            //Security
+            if (!(getUserRole() == DeptRole.StoreClerk.ToString() ||
+               getUserRole() == DeptRole.StoreSupervisor.ToString() ||
+               getUserRole() == DeptRole.StoreManager.ToString()))
+            {
+                return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
+            }
             if (id != department.id)
             {
                 return NotFound();
@@ -141,6 +213,17 @@ namespace Ben_Project.Controllers
         // GET: StoreDept/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            if (getUserRole().Equals(""))
+            {
+                return RedirectToAction("Login", "Login");
+            }
+            //Security
+            if (!(getUserRole() == DeptRole.StoreClerk.ToString() ||
+                getUserRole() == DeptRole.StoreSupervisor.ToString() ||
+                getUserRole() == DeptRole.StoreManager.ToString()))
+            {
+                return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
+            }
             if (id == null)
             {
                 return NotFound();
@@ -162,6 +245,17 @@ namespace Ben_Project.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            if (getUserRole().Equals(""))
+            {
+                return RedirectToAction("Login", "Login");
+            }
+            //Security
+            if (!(getUserRole() == DeptRole.StoreClerk.ToString() ||
+                getUserRole() == DeptRole.StoreSupervisor.ToString() ||
+                getUserRole() == DeptRole.StoreManager.ToString()))
+            {
+                return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
+            }
             var department = await _context.Departments.FindAsync(id);
             department.DepartmentStatus = DepartmentStatus.Cancelled;
             _context.Departments.Update(department);

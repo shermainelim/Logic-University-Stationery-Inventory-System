@@ -15,21 +15,41 @@ using System.Text.Json;
 using Ben_Project.Models.AndroidDTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Ben_Project.Services.UserRoleFilterService;
 
 namespace Ben_Project.Controllers
 {
     public class POController : Controller
     {
         private readonly LogicContext _context;
+        private readonly UserRoleFilterService _filterService;
 
         public POController(LogicContext context)
         {
             _context = context;
+            _filterService = new UserRoleFilterService();
+        }
+        public string getUserRole()
+        {
+            string role = (string)HttpContext.Session.GetString("Role");
+            if (role == null) return "";
+            return role;
         }
 
         // GET: PO
         public async Task<IActionResult> Index()
         {
+            if (getUserRole().Equals(""))
+            {
+                return RedirectToAction("Login", "Login");
+            }
+            //Security
+            if (!(getUserRole() == DeptRole.StoreClerk.ToString() ||
+                getUserRole() == DeptRole.StoreSupervisor.ToString() ||
+                getUserRole() == DeptRole.StoreManager.ToString()))
+            {
+                return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
+            }
             var pos = await _context.POs.ToListAsync();
             var poList = new List<PO>();
             foreach (var po in pos)
@@ -46,6 +66,17 @@ namespace Ben_Project.Controllers
         // GET: PO/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            if (getUserRole().Equals(""))
+            {
+                return RedirectToAction("Login", "Login");
+            }
+            //Security
+            if (!(getUserRole() == DeptRole.StoreClerk.ToString() ||
+                getUserRole() == DeptRole.StoreSupervisor.ToString() ||
+                getUserRole() == DeptRole.StoreManager.ToString()))
+            {
+                return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
+            }
             if (id == null)
             {
                 return NotFound();
@@ -64,6 +95,17 @@ namespace Ben_Project.Controllers
         // GET: PO/Create
         public IActionResult Create()
         {
+            if (getUserRole().Equals(""))
+            {
+                return RedirectToAction("Login", "Login");
+            }
+            //Security
+            if (!(getUserRole() == DeptRole.StoreClerk.ToString() ||
+                getUserRole() == DeptRole.StoreSupervisor.ToString() ||
+                getUserRole() == DeptRole.StoreManager.ToString()))
+            {
+                return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
+            }
             var po = new PO();
             var suppliers = _context.Suppliers.ToList();
 
@@ -80,6 +122,17 @@ namespace Ben_Project.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("OrderDate,Supplier")] PO pO)
         {
+            if (getUserRole().Equals(""))
+            {
+                return RedirectToAction("Login", "Login");
+            }
+            //Security
+            if (!(getUserRole() == DeptRole.StoreClerk.ToString() ||
+                getUserRole() == DeptRole.StoreSupervisor.ToString() ||
+                getUserRole() == DeptRole.StoreManager.ToString()))
+            {
+                return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
+            }
             if (ModelState.IsValid)
             {
                 var po = new PO();
@@ -104,6 +157,17 @@ namespace Ben_Project.Controllers
         // GET: PO/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            if (getUserRole().Equals(""))
+            {
+                return RedirectToAction("Login", "Login");
+            }
+            //Security
+            if (!(getUserRole() == DeptRole.StoreClerk.ToString() ||
+               getUserRole() == DeptRole.StoreSupervisor.ToString() ||
+               getUserRole() == DeptRole.StoreManager.ToString()))
+            {
+                return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
+            }
             if (id == null)
             {
                 return NotFound();
@@ -124,6 +188,17 @@ namespace Ben_Project.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,OrderDate,POStatus,ReceiveDate")] PO pO)
         {
+            if (getUserRole().Equals(""))
+            {
+                return RedirectToAction("Login", "Login");
+            }
+            //Security
+            if (!(getUserRole() == DeptRole.StoreClerk.ToString() ||
+                getUserRole() == DeptRole.StoreSupervisor.ToString() ||
+                getUserRole() == DeptRole.StoreManager.ToString()))
+            {
+                return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
+            }
             if (id != pO.Id)
             {
                 return NotFound();
@@ -173,6 +248,17 @@ namespace Ben_Project.Controllers
         // GET: PO/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            if (getUserRole().Equals(""))
+            {
+                return RedirectToAction("Login", "Login");
+            }
+            //Security
+            if (!(getUserRole() == DeptRole.StoreClerk.ToString() ||
+                getUserRole() == DeptRole.StoreSupervisor.ToString() ||
+                getUserRole() == DeptRole.StoreManager.ToString()))
+            {
+                return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
+            }
             if (id == null)
             {
                 return NotFound();
@@ -193,6 +279,17 @@ namespace Ben_Project.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            if (getUserRole().Equals(""))
+            {
+                return RedirectToAction("Login", "Login");
+            }
+            //Security
+            if (!(getUserRole() == DeptRole.StoreClerk.ToString() ||
+               getUserRole() == DeptRole.StoreSupervisor.ToString() ||
+               getUserRole() == DeptRole.StoreManager.ToString()))
+            {
+                return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
+            }
             var toDelete = await _context.POs.FindAsync(id);
             /*foreach (var poDetail in toDelete.PODetails)
             {
@@ -216,6 +313,17 @@ namespace Ben_Project.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult CreateNext([Bind("OrderDate,Supplier")] PO pO)
         {
+            if (getUserRole().Equals(""))
+            {
+                return RedirectToAction("Login", "Login");
+            }
+            //Security
+            if (!(getUserRole() == DeptRole.StoreClerk.ToString() ||
+                getUserRole() == DeptRole.StoreSupervisor.ToString() ||
+                getUserRole() == DeptRole.StoreManager.ToString()))
+            {
+                return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
+            }
             var po = new PO();
             po.OrderDate = pO.OrderDate;
             po.POStatus = po.POStatus;
@@ -300,6 +408,17 @@ namespace Ben_Project.Controllers
 
         public IActionResult Save(PO po)
         {
+            if (getUserRole().Equals(""))
+            {
+                return RedirectToAction("Login", "Login");
+            }
+            //Security
+            if (!(getUserRole() == DeptRole.StoreClerk.ToString() ||
+                getUserRole() == DeptRole.StoreSupervisor.ToString() ||
+                getUserRole() == DeptRole.StoreManager.ToString()))
+            {
+                return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
+            }
             String items = "";
             var newPo = new PO();
             newPo.OrderDate = po.OrderDate;
@@ -335,7 +454,17 @@ namespace Ben_Project.Controllers
 
         public IActionResult EditSave(PO po)
         {
-
+            if (getUserRole().Equals(""))
+            {
+                return RedirectToAction("Login", "Login");
+            }
+            //Security
+            if (!(getUserRole() == DeptRole.StoreClerk.ToString() ||
+                getUserRole() == DeptRole.StoreSupervisor.ToString() ||
+                getUserRole() == DeptRole.StoreManager.ToString()))
+            {
+                return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
+            }
 
             _context.Update(po);
             _context.SaveChanges();

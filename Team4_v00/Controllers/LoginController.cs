@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Ben_Project.DB;
 using Ben_Project.Models;
 using Ben_Project.Models.AndroidDTOs;
+using Ben_Project.Services.UserRoleFilterService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,16 +17,40 @@ namespace Ben_Project.Controllers
     public class LoginController : Controller
     {
         private readonly LogicContext _dbContext;
+        private readonly UserRoleFilterService _filterService;
 
         public LoginController(LogicContext context)
         {
             _dbContext = context;
+            _filterService = new UserRoleFilterService();
+        }
+        public string getUserRole()
+        {
+
+            string role = (string)HttpContext.Session.GetString("Role");
+            if (role == null) return "";
+            return role;
         }
         public IActionResult Index()
         {
-            return View();
-        }
+            //Security
+            if (getUserRole().Equals(""))
+            {
+                return View();
+            }
+            else if (!((getUserRole().Equals(DeptRole.StoreClerk.ToString())) ||
+                (getUserRole().Equals(DeptRole.StoreSupervisor.ToString())) ||
+                 (getUserRole().Equals(DeptRole.StoreManager.ToString()))))
+            {
+                return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
+            } 
+            else
+            {
+                return RedirectToAction(_filterService.Filter(getUserRole()), "Store");
+            }
 
+        }
+        
         public IActionResult Login(string username, string hashPasswd)
         {
             if (username == null)
