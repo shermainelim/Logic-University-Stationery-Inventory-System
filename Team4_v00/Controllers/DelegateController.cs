@@ -67,12 +67,16 @@ namespace Ben_Project.Controllers
 
         public string EmployeeListApi()
         {
+            AndroidUser androidUser = _dbContext.AndroidUsers.FirstOrDefault();
+            Employee user = _dbContext.Employees.SingleOrDefault(e => e.Id == androidUser.UserId);
+            int deptId = user.Dept.id;
+
             //to be implement later
             /*int userId = (int) HttpContext.Session.GetInt32("Id");
             Employee user = _dbContext.Employees.SingleOrDefault(x => x.Id == userId);
             int deptId = user.Dept.id;
             var emp = _dbContext.Employees.Where(x => x.Dept.id == deptId && x.Id != userId).ToList();*/
-            var emp = _dbContext.Employees.Where(x=> x.Role != DeptRole.DeptHead).ToList();
+            var emp = _dbContext.Employees.Where(x=> x.Role != DeptRole.DeptHead && x.Dept.id == deptId).ToList();
             var eList = new List<EmployeeDTO>();
             foreach (Employee e in emp)
             {
@@ -98,13 +102,19 @@ namespace Ben_Project.Controllers
             var id = input.EmpId;
             var startDate = input.StartDate;
             var endDate = input.EndDate;
+
+            //string iString = input.OrderDate;
+            //newPo.OrderDate = DateTime.ParseExact(iString, "yyyy-MM-dd", null);
+
             var employee = _dbContext.Employees.SingleOrDefault(x => x.Id == id);
             var newDelegatedEmployee = new DelegatedEmployee();
             newDelegatedEmployee.Name = employee.Name;
             employee.Role = DeptRole.DelegatedEmployee;
             newDelegatedEmployee.Employee = employee;
-            newDelegatedEmployee.StartDate = Convert.ToDateTime(startDate);
-            newDelegatedEmployee.EndDate = Convert.ToDateTime(endDate);
+            //newDelegatedEmployee.StartDate = Convert.ToDateTime(startDate);
+            //newDelegatedEmployee.EndDate = Convert.ToDateTime(endDate);
+            newDelegatedEmployee.StartDate = DateTime.ParseExact(startDate, "dd-MM-yyyy", null);
+            newDelegatedEmployee.EndDate = DateTime.ParseExact(endDate, "dd-MM-yyyy", null);
             newDelegatedEmployee.delegationStatus = DelegationStatus.Selected;
             SaveEmployeeDelegation(newDelegatedEmployee);
             //_dbContext.Add(newDelegatedEmployee);

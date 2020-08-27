@@ -262,9 +262,7 @@ namespace Ben_Project.Controllers
             adjustmentVoucher.AdjustmentDetails = new List<AdjustmentDetail>();
 
 
-            // Generate adjustment voucher number
-            var avNo = "AV" + adjustmentVoucher.Id;
-            adjustmentVoucher.VoucherNo = avNo;
+            
 
             // Create a disbursement
             var result = new Disbursement();
@@ -333,9 +331,13 @@ namespace Ben_Project.Controllers
             deptRequisition.RequisitionFulfillmentStatus = fulfillmentStatus;
 
 
-
             // Adding adjustment voucher to database
             _dbContext.Add(adjustmentVoucher);
+
+            // Generate adjustment voucher number
+            var count = _dbContext.AdjustmentVouchers.Count();
+            var avNo = "AV" + (count + 1);
+            adjustmentVoucher.VoucherNo = avNo;
 
             // Saving changes to database
             _dbContext.SaveChanges();
@@ -355,11 +357,6 @@ namespace Ben_Project.Controllers
             var adjustmentVoucher = new AdjustmentVoucher();
             adjustmentVoucher.Status = AdjustmentVoucherStatus.Draft;
             adjustmentVoucher.AdjustmentDetails = new List<AdjustmentDetail>();
-
-
-            // Generate adjustment voucher number
-            var avNo = "AV" + adjustmentVoucher.Id;
-            adjustmentVoucher.VoucherNo = avNo;
 
             // Create a disbursement
             var result = new Disbursement();
@@ -426,10 +423,13 @@ namespace Ben_Project.Controllers
             // Changing fulfillment status of requisition
             deptRequisition.RequisitionFulfillmentStatus = fulfillmentStatus;
 
-
-
             // Adding adjustment voucher to database
             _dbContext.Add(adjustmentVoucher);
+
+            // Generate adjustment voucher number
+            var count = _dbContext.AdjustmentVouchers.Count();
+            var avNo = "AV" + (count + 1);
+            adjustmentVoucher.VoucherNo = avNo;
 
             // Saving changes to database
             _dbContext.SaveChanges();
