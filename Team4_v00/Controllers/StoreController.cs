@@ -1057,6 +1057,10 @@ namespace Ben_Project.Controllers
             {
                 return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
             }
+            if(IsHoliday2 == "Select" || startDate.ToString() == "01-Jan-01 12:00:00 AM" || endDate.ToString() == "01-Jan-01 12:00:00 AM")
+            {
+                return RedirectToAction("BarChart");
+            }
             //var uh = _dbContext.DisbursementDetails.FromSqlRaw("SELECT [DisbursementDetail].[Id],[StationeryId],[Description],[Qty],[DisbursementId],[A_Date],[Departmentid],[Month],[Year] FROM[BenProject].[dbo].[DisbursementDetail] INNER JOIN[Stationeries] ON[DisbursementDetail].[StationeryId] = [Stationeries].[Id] WHERE[Description] = '" + IsHoliday2 + "' AND([Month] BETWEEN '" + startMonth + "' AND '" + endMonth + "' AND[Year] = '" + Year + "' ) AND ([Departmentid] BETWEEN '" + startDepartment + "' AND '" + endDepartment + "') ORDER BY[A_Date], [Departmentid], [DisbursementId],[StationeryId] ").ToList();
             if (endDate < startDate)
             {
