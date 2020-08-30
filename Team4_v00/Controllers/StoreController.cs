@@ -1011,10 +1011,10 @@ namespace Ben_Project.Controllers
             }
             //var uh = _dbContext.DisbursementDetails.FromSqlRaw("SELECT [DisbursementDetail].[Id], [StationeryId],[Description],[Qty],[DisbursementId],[A_Date],[Departmentid],[Month],[Year] FROM[BenProject].[dbo].[DisbursementDetail] INNER JOIN[Stationeries] ON[DisbursementDetail].[StationeryId] = [Stationeries].[Id] WHERE[Description] = 'Pencil 2B' AND([Month] BETWEEN '5' AND '7') ORDER BY[A_Date], [Departmentid], [DisbursementId],[StationeryId] ").ToList();
 
-            var uh = _dbContext.DisbursementDetails.Where(x => x.Department.id == 3 || x.Department.id == 4 || x.Department.id == 5).ToList();
+            var uh = _dbContext.DisbursementDetails.Where(x => x.Department.DeptCode == "COMM" || x.Department.DeptCode == "REGR" || x.Department.DeptCode == "STORE").ToList();
             ViewData["histories"] = uh;
 
-            var dd = _dbContext.DisbursementDetails.Where(x => x.Department.id == 3 || x.Department.id == 4 || x.Department.id == 5).ToList();
+            var dd = _dbContext.DisbursementDetails.Where(x => x.Department.DeptCode == "COMM" || x.Department.DeptCode == "REGR" || x.Department.DeptCode == "STORE").ToList();
             HashSet<Stationery> stationeries = new HashSet<Stationery>();
             foreach (var cc in dd)
             {
@@ -1025,7 +1025,8 @@ namespace Ben_Project.Controllers
             {
                 st.Add(ss);
             }
-            ViewData["histories2"] = st;
+            List<Stationery> st1 = _dbContext.Stationeries.Where(x => x.Id == 16 || x.Id == 17 || x.Id == 18).ToList();
+            ViewData["histories2"] = st1;
             HashSet<Department> departments = new HashSet<Department>();
 
             foreach (var dept in dd)
@@ -1038,7 +1039,8 @@ namespace Ben_Project.Controllers
             {
                 depts.Add(d);
             }
-            ViewData["depts"] = depts;
+            List<Department> dp1 = _dbContext.Departments.Where(x => x.DeptCode == "COMM" || x.DeptCode == "REGR" || x.DeptCode == "STORE").ToList();
+            ViewData["depts"] = dp1;
             ViewData["username"] = HttpContext.Session.GetString("username");
 
             return View();
@@ -1067,7 +1069,7 @@ namespace Ben_Project.Controllers
                 TempData["Error"] = "Please select date in correct order";
                 return RedirectToAction("BarChart");
             }
-            var uh = _dbContext.DisbursementDetails.Where(x => x.Stationery.Description.Equals(IsHoliday2) && x.A_Date > startDate && x.A_Date < endDate).ToList();
+            var uh = _dbContext.DisbursementDetails.Where(x => x.Stationery.Description.Equals(IsHoliday2) && x.A_Date > startDate && x.A_Date < endDate && (x.Department.DeptCode == "COMM" || x.Department.DeptCode == "REGR" || x.Department.DeptCode == "STORE") ).ToList();
             ViewData["histories"] = uh;
 
             var dd = _dbContext.DisbursementDetails.ToList();
@@ -1081,7 +1083,8 @@ namespace Ben_Project.Controllers
             {
                 st.Add(ss);
             }
-            ViewData["histories2"] = st;
+            List<Stationery> st1 = _dbContext.Stationeries.Where(x => x.Id == 16 || x.Id == 17 || x.Id == 18).ToList();
+            ViewData["histories2"] = st1;
 
             HashSet<Department> departments = new HashSet<Department>();
 
@@ -1095,7 +1098,8 @@ namespace Ben_Project.Controllers
             {
                 depts.Add(d);
             }
-            ViewData["depts"] = depts;
+            List<Department> dp1 = _dbContext.Departments.Where(x => x.DeptCode == "COMM" || x.DeptCode == "REGR" || x.DeptCode == "STORE").ToList();
+            ViewData["depts"] = dp1;
             return View("BarChart");
         }
 
