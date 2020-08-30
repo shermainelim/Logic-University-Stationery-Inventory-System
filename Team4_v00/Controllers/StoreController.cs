@@ -365,6 +365,9 @@ namespace Ben_Project.Controllers
                 var stationeryId = disbursementDetail.Stationery.Id;
                 var stock = _dbContext.Stocks.FirstOrDefault(s => s.Stationery.Id == stationeryId);
 
+                if (disbursementDetail.Qty > stock.Qty)
+                    return;
+                
                 stock.Qty -= disbursementDetail.Qty;
 
                 var requisitionDetail = _dbContext.RequisitionDetails.FirstOrDefault(rd =>
@@ -380,6 +383,9 @@ namespace Ben_Project.Controllers
                     adjustmentDetail.AdjustedQty = unaccountedQty;
                     adjustmentVoucher.AdjustmentDetails.Add(adjustmentDetail);
                 }
+
+                if (disbursementDetail.Qty > (requisitionDetail.Qty - requisitionDetail.CollectedQty))
+                    return;
 
                 // updating collected qty
                 requisitionDetail.CollectedQty += disbursementDetail.Qty;
@@ -684,6 +690,10 @@ namespace Ben_Project.Controllers
             disbursement.DisbursementStatus = DisbursementStatus.PendingDisbursement;
 
             var collectionDate = input.DisbursementDate;
+
+            // check that date is in the future
+            if (!(collectionDate > DateTime.Now))
+                return;
 
             // add date to all disbursementdetails
             foreach (var disbursementDetail in disbursement.DisbursementDetails)
