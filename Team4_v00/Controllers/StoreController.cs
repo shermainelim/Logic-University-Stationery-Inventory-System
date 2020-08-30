@@ -516,7 +516,8 @@ namespace Ben_Project.Controllers
             deptRequisition.RequisitionFulfillmentStatus = fulfillmentStatus;
 
             // Adding adjustment voucher to database
-            _dbContext.Add(adjustmentVoucher);
+            if (adjustmentVoucher.AdjustmentDetails.Count > 0)
+                _dbContext.Add(adjustmentVoucher);
 
             // Generate adjustment voucher number
             var count = _dbContext.AdjustmentVouchers.Count();
@@ -595,7 +596,7 @@ namespace Ben_Project.Controllers
         public string StoreClerkDisbursementDetailApi(int id)
         {
             var disbursement = _dbContext.Disbursements.Find(id);
-            disbursement.DisbursementDetails = _dbContext.DisbursementDetails.Where(dd => dd.Disbursement.Id == id).ToList();
+            disbursement.DisbursementDetails = _dbContext.DisbursementDetails.Where(dd => dd.Disbursement.Id == id && dd.Disbursement.DisbursementStatus == DisbursementStatus.PendingPacking).ToList();
 
             DisbursementDTO dto = new DisbursementDTO();
             dto.Id = disbursement.Id;
