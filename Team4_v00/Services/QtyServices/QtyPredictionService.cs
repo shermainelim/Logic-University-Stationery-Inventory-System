@@ -16,6 +16,9 @@ using System.Text;
 // Tools -> Nuget Package Manager -> Package Manager Console
 // Install-Package Microsoft.AspNet.WebApi.Client
 
+
+//Author: Shermaine, wrote the Azure Machine Learning Web Service here so that reduce repititon of code and can call this .cs file in other functions and controller. 
+
 namespace Ben_Project.Services.QtyServices
 {
     public class QtyPredictionService

@@ -61,6 +61,8 @@ namespace Ben_Project.Controllers
             }    
         }
 
+
+        //Author: Saw and Shermaine, Azure Machine Learning Web Services, processing the inputs from Razor Page to get demand forecasting quantity in CreateNext View under PO folder.
         public IActionResult Prediction(string item_category, string item_ID, string date, string IsHoliday)
         {
             if (getUserRole().Equals(""))
@@ -74,6 +76,8 @@ namespace Ben_Project.Controllers
             {
                 return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
             }
+
+            //Validation
             int number;
             var result5 = int.TryParse(item_category, out number);
             var result6 = int.TryParse(item_ID, out number);
@@ -88,13 +92,9 @@ namespace Ben_Project.Controllers
                 TempData["Error"] = "Enter only int fields";
                 return RedirectToAction("Index");
             }
-            // else if (((Int32.Parse(item_category)) == null) || ((Int32.Parse(item_ID)) == null))
 
-            //{
-            //    TempData["Error"] = "Enter only integer";
-            //    return RedirectToAction("Index");
-            //}
 
+            //Demand Forecasting and Linq
             int itemid = Int32.Parse(item_ID);
 
             Stock stock = _dbContext.Stocks.SingleOrDefault(x => x.Stationery.Id == itemid);
@@ -118,6 +118,7 @@ namespace Ben_Project.Controllers
 
             TempData["Message"] = result2;
 
+            //Checking with demand forecasting quantity and safety stock against current stock quantity to determine if need to re-order or have enough stocks
             double final = Math.Round(Double.Parse(result2));
             if (((final + safetyStock) > currentStock))
             {
@@ -131,6 +132,7 @@ namespace Ben_Project.Controllers
             return RedirectToAction("Index");
 
         }
+       
 
         public IActionResult StoreClerkStockList()
         {
@@ -210,13 +212,16 @@ namespace Ben_Project.Controllers
         }
 
         // api endpoint
+
+        //Author: Saw and Shermaine, creating API for JSON for Android and used for Bar Chart and filter. 
         public string StoreClerkDisbursementDetailsListApi()
         {
             var dTOs = new List<DisbursementDetailDTO>();
 
+            //Query is O(log(n)), then toList() is O(n) so is O(n)
             var requisitions = _dbContext.DisbursementDetails.FromSqlRaw("SELECT [DisbursementDetail].[Id], [StationeryId],[Qty],[DisbursementId],[A_Date],[Departmentid],[Month],[Year] FROM[BenProject].[dbo].[DisbursementDetail] WHERE[DepartmentId] = '3' OR [DepartmentId] = '4' OR [DepartmentId] = '5' ORDER BY[A_Date], [Departmentid], [DisbursementId],[StationeryId] ").ToList();
 
-
+            // O(n) because it loop through each of the item once from the list. the .Add is O(1) time. So here is O(n).
             foreach (var requisition in requisitions)
             {
                 var dTO = new DisbursementDetailDTO();
@@ -231,10 +236,15 @@ namespace Ben_Project.Controllers
                 dTOs.Add(dTO);
             }
 
+            //JsonSerializer is O(n), JSON is a format that encodes objects in a string. Serialization means to convert an object into that string,
+            //and deserialization is its inverse operation (convert string -> object). if they go through each letter to convert it , it is O(n)
+
             return JsonSerializer.Serialize(new
             {
                 requisitions = dTOs
             });
+
+            //so the final is still O(n). 
         }
 
         // api endpoint to receive json data
@@ -997,8 +1007,10 @@ namespace Ben_Project.Controllers
         // api endpoint to receive json data
 
 
+        //Author: Saw and Shermaine, to generate Bar Chart from database with Chart.js
         public IActionResult BarChart()
         {
+            //security
             if (getUserRole().Equals(""))
             {
                 return RedirectToAction("Login", "Login");
@@ -1047,8 +1059,11 @@ namespace Ben_Project.Controllers
             return View();
         }
 
+
+        //Saw and Shermaine: Adding Filters to the Bar Chart to render only relevant information based on Stationery Name, Start and End Date and Departments
         public ActionResult BarChartFilter(string IsHoliday2, DateTime startDate, DateTime endDate)
         {
+            //line 1053-1056, login= O(1), because login once.
             if (getUserRole().Equals(""))
             {
                 return RedirectToAction("Login", "Login");
@@ -1060,48 +1075,112 @@ namespace Ben_Project.Controllers
             {
                 return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
             }
+
+            
+            //Space and Time Complexity:
+
+            //this if statement is O(1) because they check once only
+
+            //.toString() is O(n) has a time complexity of O(n), since we are calling ToString() twice, it is (O2n) which becomes O(n).
+            
+            //run time is total time taken for the code to run, time complexity how the run time scales with the input size. 
+
+            //ToString() is n is because the run time scales with input size and e.g. if is 5 chars, the function will need to convert 5 chars then if is like 1000 chars, will need 
+            //to convert 1000 chars which will take longer time , so this means is O(n). 
+
+            //we got startDate.ToString (On) + endDate.toString(On)= O(2n), in the end is still O(n). 
             if(IsHoliday2 == "Select" || startDate.ToString() == "01-Jan-01 12:00:00 AM" || endDate.ToString() == "01-Jan-01 12:00:00 AM")
             {
                 return RedirectToAction("BarChart");
             }
             //var uh = _dbContext.DisbursementDetails.FromSqlRaw("SELECT [DisbursementDetail].[Id],[StationeryId],[Description],[Qty],[DisbursementId],[A_Date],[Departmentid],[Month],[Year] FROM[BenProject].[dbo].[DisbursementDetail] INNER JOIN[Stationeries] ON[DisbursementDetail].[StationeryId] = [Stationeries].[Id] WHERE[Description] = '" + IsHoliday2 + "' AND([Month] BETWEEN '" + startMonth + "' AND '" + endMonth + "' AND[Year] = '" + Year + "' ) AND ([Departmentid] BETWEEN '" + startDepartment + "' AND '" + endDepartment + "') ORDER BY[A_Date], [Departmentid], [DisbursementId],[StationeryId] ").ToList();
-            if (endDate < startDate)
+            
+            //check 1 number only, the operation check 1 time, is instant, so is O(1). O(1)+O(1)+O(1)= O(1)
+            if (endDate < startDate) //O(1)
             {
-                TempData["Error"] = "Please select date in correct order";
-                return RedirectToAction("BarChart");
+                TempData["Error"] = "Please select date in correct order"; //O(1)
+                return RedirectToAction("BarChart"); //O(1)
             }
+
+                // The primary key has an index on it, which is typically a b - tree.
+                //The time complexity would be O(log(n)) where "n" is the size of the table.
+                //THere is an additional fetch for the data from the page.
+                //In practice, the data fetch could be much more expensive than the index lookup.
+
+                //But, performance in databases is much more complicated than this.
+                //You have to deal with multiple levels of memory hierarchy,
+                //different implementations of algorithms, and issues related to
+                //grid computing.
+
             var uh = _dbContext.DisbursementDetails.Where(x => x.Stationery.Description.Equals(IsHoliday2) && x.A_Date > startDate && x.A_Date < endDate && (x.Department.DeptCode == "COMM" || x.Department.DeptCode == "REGR" || x.Department.DeptCode == "STORE") ).ToList();
             ViewData["histories"] = uh;
 
+            //ToList() is O(n) is because it goes through the each item once to conver to to a list.
             var dd = _dbContext.DisbursementDetails.ToList();
-            HashSet<Stationery> stationeries = new HashSet<Stationery>();
+            HashSet<Stationery> stationeries = new HashSet<Stationery>(); 
+
+            // O(n) because it loop through each of the item once from the list. the .Add is O(1) time. So here is O(n).
+            //This foreach loop/for loop iteration uses same time complexity like recursion but with less space complexity while recursion will use more space. 
             foreach (var cc in dd)
             {
                 stationeries.Add(cc.Stationery);
             }
             List<Stationery> st = new List<Stationery>();
+
+            // O(n) because it loop through each of the item once from the list. the .Add is O(1) time. So here is O(n).
             foreach (Stationery ss in stationeries)
             {
                 st.Add(ss);
             }
+            //the query is O(log(n)) but when ToList, it becomes O(n). eventually is O(n).  
             List<Stationery> st1 = _dbContext.Stationeries.Where(x => x.Id == 16 || x.Id == 17 || x.Id == 18).ToList();
             ViewData["histories2"] = st1;
 
             HashSet<Department> departments = new HashSet<Department>();
 
+            // O(n) because it loop through each of the item once from the list. the .Add is O(1) time. So here is O(n).
             foreach (var dept in dd)
             {
                 departments.Add(dept.Department);
             }
 
             List<Department> depts = new List<Department>();
+
+            // O(n) because it loop through each of the item once from the list. the .Add is O(1) time. So here is O(n).
             foreach (var d in departments)
             {
                 depts.Add(d);
             }
+            //the query is O(log(n)) but when ToList, it becomes O(n). eventually is O(n).  
             List<Department> dp1 = _dbContext.Departments.Where(x => x.DeptCode == "COMM" || x.DeptCode == "REGR" || x.DeptCode == "STORE").ToList();
             ViewData["depts"] = dp1;
             return View("BarChart");
+
+            //So the eventual time complexity of this function is O(n). 
+
+            //Time and Space Complexity
+            //Make a trade off between time and space.
+            //Sometimes reduce time complexity, save space.
+            //Reducing time complexity is more impt than space as
+            //space is moree advanced now with 1TB.Try to reduce both.
+            //Space is impt but less impt than time becos space is cheap nowadays
+            //compared to time because time like loading processes is more impt and will
+            //eat cpu.
+
+            //e.g. For space optimization, we reduced the repetition of model attributes for ERD. 
+
+            //Foreach/For loop was also used mainly instead of recursion as 
+            //normally foreach loop /for loop iteration uses same time complexity
+            // like recursion but with less space complexity
+            // while recursion will use more space. 
+
+
+            //Research
+            //STORAGE- LONG TERM STORAGE, SHORT TERM STORAGE, LONG TERM IS SSD OR HDD, SHORT TERM STORAGE IS RAM, WHEN U OPEN APPLICATION, THE COMPUTER GOES INTO LONG TERM STORAGE AND
+            //PUTS INTO SHORT TERM STORAGE RAM. SO THE COMPUTER WILL PUT THE BROWSWER INTO THE RAM SO CAN LOAD. 
+
+            //CPU IS THE BRAIN OF THE COMPUTER, IT DOES THE TASKS, ALL THE PROCESS/CALCULATIONS GOES TO THE COMPUTER. SPACE IS HOW MUCH RAM IT USES. 
+
         }
 
         [HttpPost]
