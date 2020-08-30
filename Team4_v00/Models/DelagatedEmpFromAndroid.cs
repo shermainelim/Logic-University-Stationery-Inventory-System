@@ -7,7 +7,7 @@ namespace Ben_Project.Models
 {
     public class DelagatedEmpFromAndroid
     {
-        public int EmpId { get; set; }
+        public string EmpName { get; set; }
         public string StartDate { get; set; }
         public string EndDate { get; set; }
     }

@@ -100,7 +100,10 @@ namespace Ben_Project.Controllers
         // api endpoint
         public string DelegatedEmployeeListApi()
         {
-            var delegatedEmployee = _dbContext.DelegatedEmployees.Where(x => x.delegationStatus != 0).ToList();
+            AndroidUser androidUser = _dbContext.AndroidUsers.FirstOrDefault();
+            Employee user = _dbContext.Employees.SingleOrDefault(e => e.Id == androidUser.UserId);
+            int deptId = user.Dept.id;
+            var delegatedEmployee = _dbContext.DelegatedEmployees.Where(x => x.delegationStatus != 0 && x.Employee.Dept.id == deptId).ToList();
             var deList = new List<DelegatedEmployees>();
             foreach (DelegatedEmployee de in delegatedEmployee)
             {
@@ -154,14 +157,14 @@ namespace Ben_Project.Controllers
         [AllowAnonymous]
         public void PostSelectedEmp([FromBody] DelagatedEmpFromAndroid input)
         {
-            var id = input.EmpId;
+            var empName = input.EmpName;
             var startDate = input.StartDate;
             var endDate = input.EndDate;
 
             //string iString = input.OrderDate;
             //newPo.OrderDate = DateTime.ParseExact(iString, "yyyy-MM-dd", null);
 
-            var employee = _dbContext.Employees.SingleOrDefault(x => x.Id == id);
+            var employee = _dbContext.Employees.SingleOrDefault(x => x.Name == empName);
             var newDelegatedEmployee = new DelegatedEmployee();
             newDelegatedEmployee.Name = employee.Name;
             employee.Role = DeptRole.DelegatedEmployee;
