@@ -146,9 +146,8 @@ namespace Ben_Project.Controllers
             });
         }
 
-        //Ayisha Adds
+        //Author:Ayisha
         [HttpPost]
-        [Microsoft.AspNetCore.Authorization.AllowAnonymous]
         public string PostReqApprovalStatus([FromBody] ApprovalStatusDTO input)
         {
             var id = input.Id;
@@ -169,7 +168,7 @@ namespace Ben_Project.Controllers
             });
         }
         
-
+        //Author:
         //API GET Request that shows Requisition Details for the Department Head
         public IActionResult DeptHeadRequisitionDetail(int id)
         {
@@ -199,6 +198,8 @@ namespace Ben_Project.Controllers
             return View(viewModel);
         }
 
+        // Author:
+        // Dept Head can approve or reject a requisition, including an optional reason
         public IActionResult DeptHeadChangeRequisitionStatus(RequisitionViewModel input)
         {
             if (getUserRole().Equals(""))
@@ -234,8 +235,8 @@ namespace Ben_Project.Controllers
             return RedirectToAction("DeptHeadRequisitionList", "Dept");
         }
 
-        // Employee
-
+        // Author:
+        // Returns a list of requisitions filtered by department of user
         public IActionResult EmployeeRequisitionList()
         {
             if (getUserRole().Equals(""))
@@ -267,6 +268,8 @@ namespace Ben_Project.Controllers
             return View(requisitions);
         }
 
+        // Author:
+        // Displays details of a requisition
         public IActionResult EmployeeRequisitionDetail(int id)
         {
             if (getUserRole().Equals(""))
@@ -299,6 +302,8 @@ namespace Ben_Project.Controllers
             return View(requisition);
         }
 
+        // Author:
+        // Returns a requisition form that has not been submitted yet by the dept rep
         public IActionResult EmployeeRequisitionForm()
         {
             if (getUserRole().Equals(""))
@@ -338,7 +343,8 @@ namespace Ben_Project.Controllers
             }
         }
 
-        // API for getting Employee Requisition Form
+        // Author:
+        // API to GET a requisition form that has not been submitted yet by the dept rep
         public string EmployeeRequisitionFormApi()
         {
             //int userId = (int)HttpContext.Session.GetInt32("Id");
@@ -395,8 +401,8 @@ namespace Ben_Project.Controllers
             }
         }
 
-
-        //Saving existing requisition
+        // Author:
+        // Updates an existing requisition in the database that has not been submitted yet
         public IActionResult SaveExRequisition(DeptRequisition requisition)
         {
             if (getUserRole().Equals(""))
@@ -441,6 +447,8 @@ namespace Ben_Project.Controllers
             return RedirectToAction("EmployeeRequisitionList", "Dept");
         }
 
+        // Author:
+        // Returns a new requisition form when there are no requisition forms with the Draft status
         public IActionResult NewEmployeeRequisitionForm()
         {
             if (getUserRole().Equals(""))
@@ -478,7 +486,8 @@ namespace Ben_Project.Controllers
             return View(deptRequisition);
         }
 
-        //Saving new requisition
+        // Author:
+        // Creates a new requisition in the database
         public IActionResult SaveRequisition(DeptRequisition deptRequisition)
         {
             if (getUserRole().Equals(""))
@@ -527,7 +536,8 @@ namespace Ben_Project.Controllers
             return RedirectToAction("EmployeeRequisitionList", "Dept");
         }
 
-        // API for saving new requisition
+        // Author: Benedict
+        // POST API to create/update a requisition in the database
         [HttpPost]
         public void SaveRequisitionApi([FromBody] DeptRequisitionDTO input)
         {
@@ -569,7 +579,8 @@ namespace Ben_Project.Controllers
             _dbContext.SaveChanges();
         }
 
-        // API for Dept Rep Requisition List
+        // Author:
+        // GET API to return a list of requisitions for the dept rep
         public string DeptRepRequisitionListApi()
         {
             AndroidUser androidUser = _dbContext.AndroidUsers.FirstOrDefault();
@@ -597,6 +608,8 @@ namespace Ben_Project.Controllers
             });
         }
 
+        // Author:
+        // Allows dept rep to submit a requisition to the dept head for approval, changing its status from Draft to Submitted
         public IActionResult DeptRepChangeSubmissionStatus(int id)
         {
             if (getUserRole().Equals(""))
@@ -659,6 +672,8 @@ namespace Ben_Project.Controllers
             return RedirectToAction("EmployeeRequisitionList", "Dept");
         }
 
+        // Author:
+        // Returns a list of requisitions that have Draft status to the dept rep
         public IActionResult DeptRepRequisitionDraft()
         {
             if (getUserRole().Equals(""))
@@ -699,8 +714,8 @@ namespace Ben_Project.Controllers
 
         }
 
-
-        //Manage Collection Point
+        // Author:
+        // Manage Collection Point
         public IActionResult chooseCollectionPt()
         {
             if (getUserRole().Equals(""))
@@ -736,6 +751,8 @@ namespace Ben_Project.Controllers
 
         }
 
+        // Author:
+        //
         public IActionResult setCollectionPt(IFormCollection frmCollect, Department department)
         {
             if (getUserRole().Equals(""))

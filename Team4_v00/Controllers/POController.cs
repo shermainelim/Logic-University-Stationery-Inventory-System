@@ -36,6 +36,7 @@ namespace Ben_Project.Controllers
             return role;
         }
 
+        // Author:
         // GET: PO
         public async Task<IActionResult> Index()
         {
@@ -63,6 +64,7 @@ namespace Ben_Project.Controllers
             return View(poList);
         }
 
+        // Author:
         // GET: PO/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -92,6 +94,7 @@ namespace Ben_Project.Controllers
             return View(pO);
         }
 
+        // Author:
         // GET: PO/Create
         public IActionResult Create()
         {
@@ -115,6 +118,7 @@ namespace Ben_Project.Controllers
             return View();
         }
 
+        // Author:
         // POST: PO/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -154,6 +158,7 @@ namespace Ben_Project.Controllers
             return View(pO);
         }
 
+        // Author:
         // GET: PO/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -183,6 +188,7 @@ namespace Ben_Project.Controllers
             return View(pO);
         }
 
+        // Author:
         // POST: PO/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -247,6 +253,7 @@ namespace Ben_Project.Controllers
             return View(pO);
         }
 
+        // Author:
         // GET: PO/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -276,6 +283,7 @@ namespace Ben_Project.Controllers
             return View(pO);
         }
 
+        // Author:
         // POST: PO/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -310,7 +318,8 @@ namespace Ben_Project.Controllers
             return _context.POs.Any(e => e.Id == id);
         }
 
-        //Joe
+        // Author: Joe
+        //
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult CreateNext([Bind("OrderDate,Supplier")] PO pO)
@@ -377,17 +386,17 @@ namespace Ben_Project.Controllers
 
             Console.WriteLine(po);
 
-
             return View(po);
         }
 
+        // Author:
+        // 
         public double prediction(int id, int Cat, String IsHoliday, DateTime d)
         {
 
             String item_category = Cat.ToString();
             String item_ID = id.ToString();
             String date = d.ToString();
-
 
             var result = new QtyPredictionService().QtyPredict(item_category, item_ID, date, IsHoliday).Result;
             //string jsonString;
@@ -412,7 +421,8 @@ namespace Ben_Project.Controllers
             return final;
         }
         
-
+        // Author:
+        // 
         public IActionResult Save(PO po)
         {
             if (getUserRole().Equals(""))
@@ -459,6 +469,8 @@ namespace Ben_Project.Controllers
             return RedirectToAction("Index");
         }
 
+        // Author:
+        //
         public IActionResult EditSave(PO po)
         {
             if (getUserRole().Equals(""))
@@ -484,21 +496,21 @@ namespace Ben_Project.Controllers
                 // _context.Stocks.Update(stock);
             }
 
-
-
-
             return RedirectToAction("Index");
         }
 
+        // Author:
         // PO API
-        public string POItemApi() {
-            DateTime d = new DateTime();
-
+        public string POItemApi() 
+        {
             var max = _context.TempItems.OrderByDescending(p => p.id).FirstOrDefault();
             PurchaseOrderItemDTO pdto = new PurchaseOrderItemDTO();
-            pdto.supplierID = max.supplierId;
-            pdto.POStatus = POStatus.Processing;
-            pdto.OrderDate = max.orderDate;
+            if (max != null)
+            {
+                pdto.supplierID = max.supplierId;
+                pdto.POStatus = POStatus.Processing;
+                pdto.OrderDate = max.orderDate;
+            }
 
             List<PODetailsDTO> poDetailsList = new List<PODetailsDTO>();
 
@@ -522,7 +534,7 @@ namespace Ben_Project.Controllers
 
                     Double safetyStock = s.Stationery.ReorderLevel;
                     Stock stock = _context.Stocks.SingleOrDefault(s => s.Stationery.Id == id);
-                    Double currentStock = stock.Qty;
+                    double currentStock = stock.Qty;
                     if (((predictResult + safetyStock) > currentStock))
                     {
                         final = (predictResult + safetyStock) - currentStock;
@@ -545,12 +557,13 @@ namespace Ben_Project.Controllers
                 items = pdto
             });
         }
+
+        // Author:
+        //
         public string POListApi()
         {
-
             var dTOs = new List<PODTO>();
             
-
             var pOs = _context.POs
                 .Where(p => p.POStatus == POStatus.Processing || p.POStatus == POStatus.Completed).ToList();
 
@@ -586,8 +599,9 @@ namespace Ben_Project.Controllers
             });
         }
 
+        // Author:
+        //
         [HttpPost]
-        [AllowAnonymous]
         public string POSave([FromBody]PurchaseOrderItemDTO input)
         {
             var newPo = new PO();
@@ -634,55 +648,11 @@ namespace Ben_Project.Controllers
             {
                 result = response
             });
-        }/*
-        //Summer add POCreate to receive Json fr Android 
-        //then send message (PoId, ItemNames (list), UnitPrices (List))
+        }
+
+        // Author: Summer
+        // add POCreate to receive Json fr Android, then send message (PoId, ItemNames (list), UnitPrices (List))
         [HttpPost]
-        [AllowAnonymous]
-        public string POCreate([FromBody] PurchaseOrderCreateDTO input)
-        {
-            var newPo = new PO();
-
-            string iString = input.OrderDate;
-            newPo.OrderDate = DateTime.ParseExact(iString, "yyyy-MM-dd", null);
-
-            var supplier = _context.Suppliers.FirstOrDefault(s => s.Name == input.SupplierName);
-            newPo.Supplier = supplier;
-            _context.Add(newPo);
-
-            _context.SaveChanges();
-
-            *//*var response = new ResponsePOCreateStep1();
-            List<string> itemNames = new List<string>();
-            List<double> unitPrices = new List<double>();
-            var supplierDetails = newPo.Supplier.SupplierDetails;
-            foreach (var supplierDetail in supplierDetails)
-            {
-                itemNames.Add(supplierDetail.Stationery.Description);
-                unitPrices.Add(supplierDetail.UnitPrice);
-            }
-
-            response.ItemNames = itemNames;
-            response.UnitPrices = unitPrices;
-            response.PoId = newPo.Id;
-
-            return JsonSerializer.Serialize(new
-            {
-                result = response
-            });*//*
-            var response = new ResponseDTO();
-            response.Message = "Create Successfully";
-
-            return JsonSerializer.Serialize(new
-            {
-                result = response
-            });
-        }*/
-
-        //Summer add POCreate to receive Json fr Android 
-        //then send message (PoId, ItemNames (list), UnitPrices (List))
-        [HttpPost]
-        [AllowAnonymous]
         public string POCreate([FromBody] PurchaseOrderCreateDTO input)
         {
             var newPo = new PO();
@@ -705,24 +675,6 @@ namespace Ben_Project.Controllers
 
             _context.SaveChanges();
 
-            /*var response = new ResponsePOCreateStep1();
-            List<string> itemNames = new List<string>();
-            List<double> unitPrices = new List<double>();
-            var supplierDetails = newPo.Supplier.SupplierDetails;
-            foreach (var supplierDetail in supplierDetails)
-            {
-                itemNames.Add(supplierDetail.Stationery.Description);
-                unitPrices.Add(supplierDetail.UnitPrice);
-            }
-
-            response.ItemNames = itemNames;
-            response.UnitPrices = unitPrices;
-            response.PoId = newPo.Id;
-
-            return JsonSerializer.Serialize(new
-            {
-                result = response
-            });*/
             var response = new ResponseDTO();
             response.Message = "Going Next Step";
 
@@ -732,7 +684,5 @@ namespace Ben_Project.Controllers
             });
 
         }
-
-
     }
 }

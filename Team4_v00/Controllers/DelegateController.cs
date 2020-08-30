@@ -26,6 +26,8 @@ namespace Ben_Project.Controllers
             _filterService = new UserRoleFilterService();
         }
 
+        // Author:
+        // Method to redirect user to his landing page depending on his/her role
         public IActionResult Index()
         {
             if (getUserRole().Equals(""))
@@ -44,12 +46,18 @@ namespace Ben_Project.Controllers
                 return RedirectToAction(_filterService.Filter(getUserRole()), "Store");
             }
         }
+
+        // Author:
+        // Method to get user role from session
         public string getUserRole()
         {
             string role = (string)HttpContext.Session.GetString("Role");
             if (role == null) return "";
             return (string)HttpContext.Session.GetString("Role");
         }
+
+        // Author:
+        // Returns a list of delegated employees
         public IActionResult DelegatedEmployeeList()
         {
             List<DelegatedEmployee> dEmps = _dbContext.DelegatedEmployees.Where(x => x.delegationStatus == DelegationStatus.Selected).ToList();
@@ -97,7 +105,8 @@ namespace Ben_Project.Controllers
             return View(deList);
         }
 
-        // api endpoint
+        // Author:
+        // GET API to return a list of delegated employees
         public string DelegatedEmployeeListApi()
         {
             AndroidUser androidUser = _dbContext.AndroidUsers.FirstOrDefault();
@@ -121,19 +130,14 @@ namespace Ben_Project.Controllers
             });
         }
 
-        // api endpoint to receive json data
-       
+        // Author:
+        // GET API to return list of employees
         public string EmployeeListApi()
         {
             AndroidUser androidUser = _dbContext.AndroidUsers.FirstOrDefault();
             Employee user = _dbContext.Employees.SingleOrDefault(e => e.Id == androidUser.UserId);
             int deptId = user.Dept.id;
-           
-            //to be implement later
-            /*int userId = (int) HttpContext.Session.GetInt32("Id");
-            Employee user = _dbContext.Employees.SingleOrDefault(x => x.Id == userId);
-            int deptId = user.Dept.id;
-            var emp = _dbContext.Employees.Where(x => x.Dept.id == deptId && x.Id != userId).ToList();*/
+            
             var emp = _dbContext.Employees.Where(x=> x.Role != DeptRole.DeptHead && x.Dept.id == deptId).ToList();
             var eList = new List<EmployeeDTO>();
             foreach (Employee e in emp)
@@ -151,10 +155,9 @@ namespace Ben_Project.Controllers
             });
         }
 
-        //Receive data from android
-
+        // Author:
+        // POST API to allow dept head to select an employee as a delegate
         [HttpPost]
-        [AllowAnonymous]
         public void PostSelectedEmp([FromBody] DelagatedEmpFromAndroid input)
         {
             var empName = input.EmpName;
@@ -179,9 +182,9 @@ namespace Ben_Project.Controllers
             _dbContext.SaveChanges();
         }
 
-        //Cancel from android
+        // Author:
+        // POST API to allow dept head to cancel the delegate role of an employee
         [HttpPost]
-        [AllowAnonymous]
         public void CancelByAndroid([FromBody] DelegateCRUDdto input)
         {
             if (input.flag.Equals("CANCEL"))
@@ -197,6 +200,8 @@ namespace Ben_Project.Controllers
             return;
         }
 
+        // Author:
+        // 
         public IActionResult ManageDelegatedEmployee(int id, string flag)
         {
             if (getUserRole().Equals(""))
@@ -253,6 +258,8 @@ namespace Ben_Project.Controllers
 
         }
 
+        // Author:
+        //
         public IActionResult CreateNewDelegatedEmployee()
         {
             if (getUserRole().Equals(""))
@@ -297,6 +304,8 @@ namespace Ben_Project.Controllers
             return View(newDelegatedEmployee);
         }
 
+        // Author:
+        // 
         public IActionResult SaveEmployeeDelegation(DelegatedEmployee delegatedEmployee)
         {
             if (getUserRole().Equals(""))
@@ -409,6 +418,9 @@ namespace Ben_Project.Controllers
                 return RedirectToAction("DelegatedEmployeeList");
             }
         }
+
+        // Author:
+        // Allows the dept head to extend the duration that an employee is a delegate
         public IActionResult ExtendEmployeeDelegation(int Id)
         {
             if (getUserRole().Equals(""))
@@ -434,7 +446,5 @@ namespace Ben_Project.Controllers
             var de = _dbContext.DelegatedEmployees.FirstOrDefault(de => de.Id == Id);
             return View(de);
         }
-
-
     }
 }

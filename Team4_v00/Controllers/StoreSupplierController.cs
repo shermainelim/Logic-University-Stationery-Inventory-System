@@ -44,8 +44,6 @@ namespace Ben_Project.Controllers
             {
                 return RedirectToAction(_filterService.Filter(getUserRole()), "Store");
             }
-            ViewData["username"] = HttpContext.Session.GetString("username");
-            return View();
         }
 
         public IActionResult StoreSupplierList()

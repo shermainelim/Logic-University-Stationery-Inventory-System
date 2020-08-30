@@ -48,12 +48,6 @@ namespace Ben_Project.Controllers
             {
                 return RedirectToAction(_filterService.Filter(getUserRole()), "Store");
             }
-            if (String.IsNullOrEmpty(usernameInSession))
-            {
-                return RedirectToAction("Index", "Login");
-            }
-
-            return View();
         }
 
         public IActionResult Privacy()

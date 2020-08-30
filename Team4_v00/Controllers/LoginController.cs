@@ -31,6 +31,9 @@ namespace Ben_Project.Controllers
             if (role == null) return "";
             return role;
         }
+
+        // Author: Benedict, Joe, Saw
+        // Displays the login page
         public IActionResult Index()
         {
             //Security
@@ -48,9 +51,10 @@ namespace Ben_Project.Controllers
             {
                 return RedirectToAction(_filterService.Filter(getUserRole()), "Store");
             }
-
         }
         
+        // Author: Benedict, Joe, Saw
+        // Allows the user to login
         public IActionResult Login(string username, string hashPasswd)
         {
             if (username == null)
@@ -131,6 +135,8 @@ namespace Ben_Project.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        // Author: Benedict
+        // POST API to allow user to login from android
         [HttpPost]
         public string LoginApi([FromBody] LoginDTO input)
         {

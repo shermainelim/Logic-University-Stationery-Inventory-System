@@ -60,7 +60,8 @@ namespace Ben_Project.Controllers
             }    
         }
 
-        //Author: Saw and Shermaine, Azure Machine Learning Web Services, processing the inputs from Razor Page to get demand forecasting quantity in CreateNext View under PO folder.
+        // Author: Saw and Shermaine
+        // Azure Machine Learning Web Services, processing the inputs from Razor Page to get demand forecasting quantity in CreateNext View under PO folder.
         public IActionResult Prediction(string item_category, string item_ID, string date, string IsHoliday)
         {
             if (getUserRole().Equals(""))
@@ -127,9 +128,10 @@ namespace Ben_Project.Controllers
             }
           
             return RedirectToAction("Index");
-
         }
 
+        // Author: Benedict
+        // Returns a list of stocks
         public IActionResult StoreClerkStockList()
         {
             if (getUserRole().Equals(""))
@@ -149,6 +151,18 @@ namespace Ben_Project.Controllers
             return View(stocks);
         }
 
+        // Author: Benedict
+        // GET API that returns a list of stocks
+        public string StoreClerkStockListApi()
+        {
+            return JsonSerializer.Serialize(new
+            {
+                stocks = _dbContext.Stocks.ToList()
+            });
+        }
+
+        // Author:
+        //
         public IActionResult PO_Form()
         {
             if (getUserRole().Equals(""))
@@ -165,6 +179,8 @@ namespace Ben_Project.Controllers
             return View();
         }
 
+        // Author: Benedict
+        // Returns a list of requisitions pending fulfillment by store clerk
         public IActionResult StoreClerkRequisitionList()
         {
             if (getUserRole().Equals(""))
@@ -184,7 +200,8 @@ namespace Ben_Project.Controllers
             return View(requisitions);
         }
 
-        // API
+        // Author: Benedict
+        // GET API that returns a list of requisitions pending fulfillment by store clerk
         public string StoreClerkRequisitionListApi()
         {
 
@@ -207,9 +224,8 @@ namespace Ben_Project.Controllers
             });
         }
 
-        // api endpoint
-
-        //Author: Saw and Shermaine, creating API for JSON for Android and used for Bar Chart and filter. 
+        // Author: Saw and Shermaine
+        // creating API for JSON for Android and used for Bar Chart and filter. 
         public string StoreClerkDisbursementDetailsListApi()
         {
             var dTOs = new List<DisbursementDetailDTO>();
@@ -243,8 +259,8 @@ namespace Ben_Project.Controllers
             //so the final is still O(n). 
         }
 
-        // api endpoint to receive json data
-
+        // Author: Benedict
+        // Returns a specific requisition to be fulfilled by the store clerk
         public IActionResult StoreClerkRequisitionFulfillment(int id)
         {
             if (getUserRole().Equals(""))
@@ -271,7 +287,8 @@ namespace Ben_Project.Controllers
             return View(disbursement);
         }
 
-        // API /store/storeclerkrequisitionfulfillmentapi?id=1
+        // Author: Benedict
+        // GET API to return a specific requisition to be fulfilled by the store clerk
         public string StoreClerkRequisitionFulfillmentApi(int id)
         {
             var stocks = _dbContext.Stocks.ToList();
@@ -297,7 +314,6 @@ namespace Ben_Project.Controllers
                 requisitionDetailsDTO.Add(DTO);
             }
 
-
             return JsonSerializer.Serialize(new
             {
                 requisitionId = requisition.Id,
@@ -305,10 +321,13 @@ namespace Ben_Project.Controllers
             });
         }
 
-        // API to receive requisition from android
+        // Author: Benedict
+        // POST API to:
+        // Change status of requisition to partial or fulfilled depending on disbursement
+        // Create disbursement in database
+        // Create adjustment voucher in database if disbursed qty less than requested qty
         [HttpPost]
-        [AllowAnonymous]
-        public IActionResult StoreClerkSaveRequisitionApi([FromBody] DeptRequisitionDTO input)
+        public void StoreClerkSaveRequisitionApi([FromBody] DeptRequisitionDTO input)
         {
             Disbursement disbursement = new Disbursement();
             disbursement.DeptRequisition = new DeptRequisition();
@@ -346,11 +365,6 @@ namespace Ben_Project.Controllers
                 var stationeryId = disbursementDetail.Stationery.Id;
                 var stock = _dbContext.Stocks.FirstOrDefault(s => s.Stationery.Id == stationeryId);
 
-                // disbursedQty is needed from form 
-                // redirect to StoreClerkRequisitionFulfillment with deptrequisition id if disbursement is MORE than stock
-                if (disbursementDetail.Qty > stock.Qty)
-                    return RedirectToAction("StoreClerkRequisitionFulfillment", new { id = disbursement.DeptRequisition.Id });
-
                 stock.Qty -= disbursementDetail.Qty;
 
                 var requisitionDetail = _dbContext.RequisitionDetails.FirstOrDefault(rd =>
@@ -365,12 +379,6 @@ namespace Ben_Project.Controllers
                     adjustmentDetail.Stationery = _dbContext.Stationeries.Find(stationeryId);
                     adjustmentDetail.AdjustedQty = unaccountedQty;
                     adjustmentVoucher.AdjustmentDetails.Add(adjustmentDetail);
-                }
-
-                if (disbursementDetail.Qty > (requisitionDetail.Qty - requisitionDetail.CollectedQty))
-                {
-                    TempData["Error"] = "Fulfilling more than is required";
-                    return RedirectToAction("StoreClerkRequisitionFulfillment", new { id = deptRequisition.Id });
                 }
 
                 // updating collected qty
@@ -400,9 +408,9 @@ namespace Ben_Project.Controllers
             // Changing fulfillment status of requisition
             deptRequisition.RequisitionFulfillmentStatus = fulfillmentStatus;
 
-
             // Adding adjustment voucher to database
-            _dbContext.Add(adjustmentVoucher);
+            if (adjustmentVoucher.AdjustmentDetails.Count > 0)
+                _dbContext.Add(adjustmentVoucher);
 
             // Generate adjustment voucher number
             var count = _dbContext.AdjustmentVouchers.Count();
@@ -410,10 +418,13 @@ namespace Ben_Project.Controllers
             adjustmentVoucher.VoucherNo = avNo;
 
             // Saving changes to database
-            _dbContext.SaveChanges();        
-            return RedirectToAction("StoreClerkRequisitionList", "Store");
+            _dbContext.SaveChanges();
         }
 
+        // Author: Benedict
+        // Change status of requisition to partial or fulfilled depending on disbursement
+        // Create disbursement in database
+        // Create adjustment voucher in database if disbursed qty less than requested qty
         public IActionResult StoreClerkSaveRequisition(Disbursement disbursement)
         {
             if (getUserRole().Equals(""))
@@ -517,6 +528,8 @@ namespace Ben_Project.Controllers
             return RedirectToAction("StoreClerkRequisitionList", "Store");
         }
 
+        // Author: Benedict
+        // Returns a list of disbursements that the store clerk has to send to the depts
         public IActionResult StoreClerkDisbursementList()
         {
             if (getUserRole().Equals(""))
@@ -537,7 +550,8 @@ namespace Ben_Project.Controllers
             return View(disbursements);
         }
 
-        // API for Store Clerk Disbursement List
+        // Author: Benedict
+        // GET API that returns a list of disbursements that the store clerk has to send to the depts
         public string StoreClerkDisbursementListApi()
         {
             var disbursements = _dbContext.Disbursements
@@ -560,6 +574,8 @@ namespace Ben_Project.Controllers
             });
         }
 
+        // Author: Benedict
+        // Returns the details of a specific disbursement
         public IActionResult StoreClerkDisbursementDetail(int id)
         {
             if (getUserRole().Equals(""))
@@ -579,7 +595,8 @@ namespace Ben_Project.Controllers
             return View(disbursement);
         }
 
-        // API for getting Disbursement Details
+        // Author: Benedict
+        // GET API that returns the details of a specific disbursement
         public string StoreClerkDisbursementDetailApi(int id)
         {
             var disbursement = _dbContext.Disbursements.Find(id);
@@ -604,7 +621,9 @@ namespace Ben_Project.Controllers
             });
         }
 
-        // logic for saving disbursement
+        // Author: Benedict
+        // Allows store clerk to select a date for the dept rep to collect the disbursement
+        // Sends an email to notify the dept rep of the date of collection of the disbursement and the acknowledgement code
         public IActionResult StoreClerkSaveDisbursementDetail(Disbursement input)
         {
             if (getUserRole().Equals(""))
@@ -653,31 +672,18 @@ namespace Ben_Project.Controllers
             return RedirectToAction("StoreClerkDisbursementList", "Store");
         }
 
-        // API for saving disbursement
+        // Author: Benedict
+        // POST API that:
+        // Allows store clerk to select a date for the dept rep to collect the disbursement
+        // Sends an email to notify the dept rep of the date of collection of the disbursement and the acknowledgement code
         [HttpPost]
-        [AllowAnonymous]
-        public IActionResult StoreClerkSaveDisbursementDetailApi([FromBody] DisbursementDTO input)
+        public void StoreClerkSaveDisbursementDetailApi([FromBody] DisbursementDTO input)
         {
-            //if (getUserRole().Equals(""))
-            //{
-            //    return RedirectToAction("Login", "Login");
-            //}
-            ////Security
-            //if (!((getUserRole().Equals(DeptRole.StoreClerk.ToString())) ||
-            //  (getUserRole().Equals(DeptRole.StoreSupervisor.ToString())) ||
-            //   (getUserRole().Equals(DeptRole.StoreManager.ToString()))))
-            //{
-            //    return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
-            //}
             var disbursement = _dbContext.Disbursements.FirstOrDefault(d => d.Id == input.Id);
             disbursement.DisbursementDate = input.DisbursementDate;
             disbursement.DisbursementStatus = DisbursementStatus.PendingDisbursement;
 
             var collectionDate = input.DisbursementDate;
-
-            // check that date is in the future
-            if (!(collectionDate > DateTime.Now))
-                return RedirectToAction("StoreClerkDisbursementDetail", "Store", new { id = input.Id });
 
             // add date to all disbursementdetails
             foreach (var disbursementDetail in disbursement.DisbursementDetails)
@@ -700,11 +706,10 @@ namespace Ben_Project.Controllers
             EmailService.SendEmail(FromEmail, ToEmail, Subject, MessageBody);
 
             _dbContext.SaveChanges();
-
-            return RedirectToAction("StoreClerkDisbursementList", "Store");
         }
 
-        // Disbursement Acknowledgement
+        // Author: Benedict
+        // Returns a form allowing the dept rep to input the acknowledgement code to acknowledge that he/she has received the disbursement
         public IActionResult StoreClerkDisbursementAcknowledgement(int id)
         {
             if (getUserRole().Equals(""))
@@ -752,6 +757,8 @@ namespace Ben_Project.Controllers
             return RedirectToAction("StoreClerkDisbursementList", "Store");
         }
 
+        // Author: Benedict
+        // Returns a list of adjustment vouchers
         public IActionResult StoreClerkAdjustmentVoucherList()
         {
             if (getUserRole().Equals(""))
@@ -773,6 +780,8 @@ namespace Ben_Project.Controllers
             return View(adjustmentVouchers);
         }
 
+        // Author: Benedict
+        // Returns a list of adjustment vouchers pending issue to the supervisor/manager
         public IActionResult AuthorizeAdjustmentVoucherList()
         {
             if (getUserRole().Equals(""))
@@ -796,6 +805,8 @@ namespace Ben_Project.Controllers
             return View(adjustmentVouchers);
         }
 
+        // Author: Benedict
+        // Returns a specific adjustment voucher for store clerk to adjust quantity and/or add reason
         public IActionResult StoreClerkAdjustmentVoucherDetail(int id)
         {
             if (getUserRole().Equals(""))
@@ -834,6 +845,8 @@ namespace Ben_Project.Controllers
             return View(adjustmentVoucher);
         }
 
+        // Author: Benedict
+        // Returns a specific adjustment voucher for the supervisor/manager to issue
         public IActionResult AuthorizeAdjustmentVoucherDetail(int id)
         {
             if (getUserRole().Equals(""))
@@ -853,6 +866,8 @@ namespace Ben_Project.Controllers
             return View(adjustmentVoucher);
         }
 
+        // Author: Benedict
+        // Updates a specific adjustment voucher in the database
         public IActionResult SaveAdjustmentVoucher(AdjustmentVoucher adjustmentVoucher)
         {
             if (getUserRole().Equals(""))
@@ -903,6 +918,8 @@ namespace Ben_Project.Controllers
             return RedirectToAction("StoreClerkAdjustmentVoucherList", "Store");
         }
 
+        // Author: Benedict
+        // Deletes a specific adjustment voucher from the database
         public IActionResult DeleteAdjustmentVoucher(int id)
         {
             if (getUserRole().Equals(""))
@@ -928,6 +945,9 @@ namespace Ben_Project.Controllers
             return RedirectToAction("StoreClerkAdjustmentVoucherList", "Store");
         }
 
+        // Author: Benedict
+        // Allows the supervisor/manager to issue an adjustment voucher
+        // Adjusts the stock qty according to the issued adjustment voucher
         public IActionResult IssueAdjustmentVoucher(AdjustmentVoucher adjustmentVoucher)
         {
             if (getUserRole().Equals(""))
@@ -972,19 +992,8 @@ namespace Ben_Project.Controllers
             return RedirectToAction("AuthorizeAdjustmentVoucherList", "Store");
         }
 
-        // api endpoint
-        public string StoreClerkStockListApi()
-        {
-            return JsonSerializer.Serialize(new
-            {
-                stocks = _dbContext.Stocks.ToList()
-            });
-        }
-
-        // api endpoint to receive json data
-
-
-        //Author: Saw and Shermaine, to generate Bar Chart from database with Chart.js
+        // Author: Saw and Shermaine
+        // to generate Bar Chart from database with Chart.js
         public IActionResult BarChart()
         {
             //security
@@ -1036,8 +1045,8 @@ namespace Ben_Project.Controllers
             return View();
         }
 
-
-        //Saw and Shermaine: Adding Filters to the Bar Chart to render only relevant information based on Stationery Name, Start and End Date and Departments
+        // Author: Saw and Shermaine
+        // Adding Filters to the Bar Chart to render only relevant information based on Stationery Name, Start and End Date and Departments
         public ActionResult BarChartFilter(string IsHoliday2, DateTime startDate, DateTime endDate)
         {
             //line 1053-1056, login= O(1), because login once.
@@ -1158,22 +1167,6 @@ namespace Ben_Project.Controllers
 
             //CPU IS THE BRAIN OF THE COMPUTER, IT DOES THE TASKS, ALL THE PROCESS/CALCULATIONS GOES TO THE COMPUTER. SPACE IS HOW MUCH RAM IT USES. 
 
-        }
-
-        [HttpPost]
-        [AllowAnonymous]
-        public string PostTestObject([FromBody] TestDTO input)
-        { 
-            var id = input.Id;
-            var name = input.Name;
-
-            var response = new ResponseDTO();
-            response.Message = "Hello Team 4";
-
-            return JsonSerializer.Serialize(new
-            {
-                result = response
-            });
         }
     }
 }

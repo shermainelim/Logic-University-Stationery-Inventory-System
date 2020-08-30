@@ -19,6 +19,8 @@ namespace Ben_Project.Controllers
             _dbContext = context;
         }
 
+        // Author: Benedict, Joe, Saw
+        // Logouts the user and clear session data
         public IActionResult Index()
         {
             string tbdDelegate = (string)HttpContext.Session.GetString("delegationStatus");
@@ -36,6 +38,8 @@ namespace Ben_Project.Controllers
             return RedirectToAction("Index", "Login");
         }
 
+        // Author: Benedict
+        // GET API to logout user from android
         public void LogoutApi()
         {
             AndroidUser user = _dbContext.AndroidUsers.FirstOrDefault();
