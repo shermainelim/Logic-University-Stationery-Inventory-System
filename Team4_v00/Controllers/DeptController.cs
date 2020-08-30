@@ -28,6 +28,8 @@ namespace Ben_Project.Controllers
             _dbContext = logicContext;
             _filterService = new UserRoleFilterService();
         }
+
+        //Get user role from session
         public string getUserRole()
         {
             string role = (string)HttpContext.Session.GetString("Role");
@@ -36,7 +38,6 @@ namespace Ben_Project.Controllers
         }
 
         // Dept StoreClerkStockList Page
-
         public IActionResult Index()
         {
             if (getUserRole().Equals(""))
@@ -57,8 +58,7 @@ namespace Ben_Project.Controllers
           
         }
 
-        // Dept Head
-        
+        // Dept Head, get a list of requisition that are pending approval by Department Head
         public IActionResult DeptHeadRequisitionList()
         {
             if (getUserRole().Equals(""))
@@ -90,8 +90,9 @@ namespace Ben_Project.Controllers
             return View(requisitions);
         }
 
-        /////////////////////////////// API /////////////////////////////////////////////
 
+        //Author: Ben
+        //API to Android, GET Request to return list of requisitions pending approval by Department Head.
         public string DeptHeadRequisitionListApi()
         {
             AndroidUser androidUser = _dbContext.AndroidUsers.FirstOrDefault();
@@ -111,14 +112,13 @@ namespace Ben_Project.Controllers
                 dTO.RequisitionFulfillmentStatus = requisition.RequisitionFulfillmentStatus;
                 dTOs.Add(dTO);
             }
-
-
             return JsonSerializer.Serialize(new
             {
                 requisitions = dTOs
             });
         }
 
+        //Author:Ayisha
         public string DeptHeadRequisitionDetailsApi(int id)
         {
             //In android we will get the id from intent.
@@ -138,7 +138,6 @@ namespace Ben_Project.Controllers
                 DTO.Qty = requisitionDetail.Qty;
                 requisitionDetailsDTO.Add(DTO);
             }
-
 
             return JsonSerializer.Serialize(new
             {
@@ -169,11 +168,9 @@ namespace Ben_Project.Controllers
                 result = response
             });
         }
+        
 
-        /////////////////////////////// API /////////////////////////////////////////////
-
-
-
+        //API GET Request that shows Requisition Details for the Department Head
         public IActionResult DeptHeadRequisitionDetail(int id)
         {
             if (getUserRole().Equals(""))

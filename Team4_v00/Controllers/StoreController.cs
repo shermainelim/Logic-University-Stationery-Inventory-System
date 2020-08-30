@@ -26,7 +26,6 @@ namespace Ben_Project.Controllers
 {
     public class StoreController : Controller
     {
-        //Hi saw was here...
         private readonly LogicContext _dbContext;
         private readonly UserRoleFilterService _filterService;
 
@@ -61,7 +60,6 @@ namespace Ben_Project.Controllers
             }    
         }
 
-
         //Author: Saw and Shermaine, Azure Machine Learning Web Services, processing the inputs from Razor Page to get demand forecasting quantity in CreateNext View under PO folder.
         public IActionResult Prediction(string item_category, string item_ID, string date, string IsHoliday)
         {
@@ -92,7 +90,6 @@ namespace Ben_Project.Controllers
                 TempData["Error"] = "Enter only int fields";
                 return RedirectToAction("Index");
             }
-
 
             //Demand Forecasting and Linq
             int itemid = Int32.Parse(item_ID);
@@ -132,7 +129,6 @@ namespace Ben_Project.Controllers
             return RedirectToAction("Index");
 
         }
-       
 
         public IActionResult StoreClerkStockList()
         {
@@ -249,8 +245,6 @@ namespace Ben_Project.Controllers
 
         // api endpoint to receive json data
 
-
-
         public IActionResult StoreClerkRequisitionFulfillment(int id)
         {
             if (getUserRole().Equals(""))
@@ -316,19 +310,6 @@ namespace Ben_Project.Controllers
         [AllowAnonymous]
         public IActionResult StoreClerkSaveRequisitionApi([FromBody] DeptRequisitionDTO input)
         {
-            // security blocking api from android
-            //if (getUserRole().Equals(""))
-            //{
-            //    return RedirectToAction("Login", "Login");
-            //}
-            ////Security
-            //if (!((getUserRole().Equals(DeptRole.StoreClerk.ToString())) ||
-            //   (getUserRole().Equals(DeptRole.StoreSupervisor.ToString())) ||
-            //    (getUserRole().Equals(DeptRole.StoreManager.ToString()))))
-            //{
-            //    return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
-            //}
-            // transfer DeptRequisitionDTO data to Disbursement object
             Disbursement disbursement = new Disbursement();
             disbursement.DeptRequisition = new DeptRequisition();
             disbursement.DisbursementDetails = new List<DisbursementDetail>();
@@ -344,7 +325,7 @@ namespace Ben_Project.Controllers
                 disbursement.DisbursementDetails.Add(disbursementDetail);
             }
 
-            // DeptRequisition Id is needed from form //////////////////////////////////////////////////////////////////////////
+            // DeptRequisition Id is needed from form 
             var deptRequisition = _dbContext.DeptRequisitions.FirstOrDefault(dr => dr.Id == disbursement.DeptRequisition.Id);
             var fulfillmentStatus = RequisitionFulfillmentStatus.Fulfilled;
 
@@ -353,9 +334,6 @@ namespace Ben_Project.Controllers
             adjustmentVoucher.Status = AdjustmentVoucherStatus.Draft;
             adjustmentVoucher.AdjustmentDetails = new List<AdjustmentDetail>();
 
-
-            
-
             // Create a disbursement
             var result = new Disbursement();
             result.DeptRequisition = deptRequisition;
@@ -363,12 +341,12 @@ namespace Ben_Project.Controllers
 
             foreach (var disbursementDetail in disbursement.DisbursementDetails)
             {
-                // stationery Id is needed from form ///////////////////////////////////////////////////////////////////////////////////
+                // stationery Id is needed from form 
                 // withdrawing qty from stock
                 var stationeryId = disbursementDetail.Stationery.Id;
                 var stock = _dbContext.Stocks.FirstOrDefault(s => s.Stationery.Id == stationeryId);
 
-                // disbursedQty is needed from form ///////////////////////////////////////////////////////////////////////////////
+                // disbursedQty is needed from form 
                 // redirect to StoreClerkRequisitionFulfillment with deptrequisition id if disbursement is MORE than stock
                 if (disbursementDetail.Qty > stock.Qty)
                     return RedirectToAction("StoreClerkRequisitionFulfillment", new { id = disbursement.DeptRequisition.Id });
@@ -436,7 +414,6 @@ namespace Ben_Project.Controllers
             return RedirectToAction("StoreClerkRequisitionList", "Store");
         }
 
-
         public IActionResult StoreClerkSaveRequisition(Disbursement disbursement)
         {
             if (getUserRole().Equals(""))
@@ -451,7 +428,7 @@ namespace Ben_Project.Controllers
                 return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
             }
 
-            // DeptRequisition Id is needed from form //////////////////////////////////////////////////////////////////////////
+            // DeptRequisition Id is needed from form 
             var deptRequisition = _dbContext.DeptRequisitions.FirstOrDefault(dr => dr.Id == disbursement.DeptRequisition.Id);
             var fulfillmentStatus = RequisitionFulfillmentStatus.Fulfilled;
 
