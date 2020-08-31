@@ -33,6 +33,7 @@
     </table>
     <input asp-for="@Model.DisbursementDate" type="date" />
     <input asp-for="@Model.Id" type="hidden" value="@Model.Id" />
+    <input asp-for="@Model.DeptRequisition.Id" type="hidden" value="@Model.DeptRequisition.Id"/>
     <input id="saveBtn" type="submit" value="Submit" />
 </form>
 }

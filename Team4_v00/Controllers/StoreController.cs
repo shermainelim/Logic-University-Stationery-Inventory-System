@@ -646,19 +646,21 @@ namespace Ben_Project.Controllers
             var disbursement = _dbContext.Disbursements.FirstOrDefault(d => d.Id == input.Id);
             disbursement.DisbursementDate = input.DisbursementDate;
             disbursement.DisbursementStatus = DisbursementStatus.PendingDisbursement;
-
+            
             var collectionDate = input.DisbursementDate;
 
             // check that date is in the future
             if (!(collectionDate >= DateTime.Now))
                 return RedirectToAction("StoreClerkDisbursementDetail", "Store", new { id = input.Id });
-
+            DeptRequisition deptReq = _dbContext.DeptRequisitions.FirstOrDefault(x => x.Id == input.DeptRequisition.Id);
+            Employee reqEmp = _dbContext.Employees.FirstOrDefault(x => x.Id == deptReq.Employee.Id);
             // add date to all disbursementdetails
             foreach (var disbursementDetail in disbursement.DisbursementDetails)
             {
                 disbursementDetail.A_Date = input.DisbursementDate;
                 disbursementDetail.Month = ((DateTime)input.DisbursementDate).Month;
                 disbursementDetail.Year = ((DateTime)input.DisbursementDate).Year;
+                disbursementDetail.Department = _dbContext.Departments.SingleOrDefault(x=> x.id == reqEmp.Dept.id);
             }
 
             // sending email to dept rep
