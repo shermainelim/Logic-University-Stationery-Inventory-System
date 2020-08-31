@@ -21,7 +21,7 @@ namespace Ben_Project.Controllers
             _filterService = new UserRoleFilterService();
         }
 
-        // Author: Joe, Saw
+        // Author: KyawThiha, SawHtetKyaw
         public string getUserRole()
         {
             string role = (string)HttpContext.Session.GetString("Role");
@@ -29,7 +29,7 @@ namespace Ben_Project.Controllers
             return (string)HttpContext.Session.GetString("Role");
         }
 
-        // Author: Joe
+        // Author: KyawThiha
         public IActionResult Index()
         {
             if (getUserRole().Equals(""))
@@ -49,7 +49,8 @@ namespace Ben_Project.Controllers
             }
         }
 
-        // Author: Joe
+        // Author: KyawThiha
+        //Return the SupplierList
         public IActionResult StoreSupplierList()
         {
             if (getUserRole().Equals(""))
@@ -77,7 +78,8 @@ namespace Ben_Project.Controllers
             return View(sList);
         }
 
-        // Author: Joe
+        // Author: KyawThiha
+        //Manage the routing to do Create/ Detail / Edit / Delete
         public IActionResult ManageSupplier(int id, String flag)
         {
             if (getUserRole().Equals(""))
@@ -119,7 +121,8 @@ namespace Ben_Project.Controllers
             return View();
         }
 
-        // Author: Joe
+        // Author: KyawThiha
+        //Create New Supplier
         public IActionResult CreateNewSupplier()
         {
             if (getUserRole().Equals(""))
@@ -150,7 +153,8 @@ namespace Ben_Project.Controllers
             return View(newSupplier);
         }
 
-        // Author: Joe
+        // Author: KyawThiha
+        //Create New Item
         public IActionResult CreateNewItem()
         {
             if (getUserRole().Equals(""))
@@ -169,7 +173,8 @@ namespace Ben_Project.Controllers
             return View(supplier);
         }
 
-        // Author: Joe
+        // Author: KyawThiha
+        // Save for New Supplier
         public IActionResult Save(Supplier supplier)
         {
             if (getUserRole().Equals(""))
@@ -211,7 +216,8 @@ namespace Ben_Project.Controllers
             return RedirectToAction("StoreSupplierList");
         }
 
-        // Author: Joe
+        // Author: KyawThiha
+        // Supplier Edit
         public IActionResult SupplierEdit(int Id)
         {
             if (getUserRole().Equals(""))
@@ -230,7 +236,8 @@ namespace Ben_Project.Controllers
             return View(s);
         }
 
-        // Author: Joe
+        // Author: KyawThiha
+        //Show Supplier Detail
         public IActionResult SupplierDetail(int Id)
         {
             if (getUserRole().Equals(""))
