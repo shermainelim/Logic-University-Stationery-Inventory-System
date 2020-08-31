@@ -30,7 +30,7 @@ namespace Ben_Project.Controllers
             _filterService = new UserRoleFilterService();
         }
 
-        // Author: Joe, Saw
+        // Author: KyawThiha, Saw
         public string getUserRole()
         {
             string role = (string)HttpContext.Session.GetString("Role");
@@ -96,7 +96,7 @@ namespace Ben_Project.Controllers
             return View(pO);
         }
 
-        // Author: Summer, Joe
+        // Author: Summer, KyawThiha
         // GET: PO/Create
         public IActionResult Create()
         {
@@ -120,7 +120,7 @@ namespace Ben_Project.Controllers
             return View();
         }
 
-        // Author: Summer, Joe
+        // Author: Summer, KyawThiha
         // POST: PO/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -249,7 +249,7 @@ namespace Ben_Project.Controllers
             return View(pO);
         }
 
-        // Author: Summer, Joe
+        // Author: Summer, KyawThiha
         // GET: PO/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -310,7 +310,7 @@ namespace Ben_Project.Controllers
             return _context.POs.Any(e => e.Id == id);
         }
 
-        // Author: Joe
+        // Author: KyawThiha
         //
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -413,7 +413,7 @@ namespace Ben_Project.Controllers
             return final;
         }
 
-        // Author: Summer, Joe
+        // Author: Summer, KyawThiha
         // 
         public IActionResult Save(PO po)
         {
@@ -461,7 +461,7 @@ namespace Ben_Project.Controllers
             return RedirectToAction("Index");
         }
 
-        // Author: Joe
+        // Author: KyawThiha
         //
         public IActionResult EditSave(PO po)
         {
@@ -491,7 +491,7 @@ namespace Ben_Project.Controllers
             return RedirectToAction("Index");
         }
 
-        // Author: Joe
+        // Author: KyawThiha
         // PO API
         public string POItemApi() 
         {
@@ -550,7 +550,7 @@ namespace Ben_Project.Controllers
             });
         }
 
-        // Author: Summer, Joe
+        // Author: Summer, KyawThiha
         //
         public string POListApi()
         {
@@ -591,7 +591,7 @@ namespace Ben_Project.Controllers
             });
         }
 
-        // Author: Summer, Joe
+        // Author: Summer, KyawThiha
         //
         [HttpPost]
         public string POSave([FromBody]PurchaseOrderItemDTO input)

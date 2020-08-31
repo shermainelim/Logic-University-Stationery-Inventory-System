@@ -137,7 +137,7 @@ namespace Ben_Project.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        // Author: Benedict
+        // Author: Benedict, Lance
         // POST API to allow user to login from android
         [HttpPost]
         public string LoginApi([FromBody] LoginDTO input)

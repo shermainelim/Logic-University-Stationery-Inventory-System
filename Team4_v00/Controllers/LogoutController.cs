@@ -38,7 +38,7 @@ namespace Ben_Project.Controllers
             return RedirectToAction("Index", "Login");
         }
 
-        // Author: Benedict
+        // Author: Benedict, Lance
         // GET API to logout user from android
         public void LogoutApi()
         {

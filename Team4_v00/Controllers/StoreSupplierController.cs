@@ -29,7 +29,7 @@ namespace Ben_Project.Controllers
             return (string)HttpContext.Session.GetString("Role");
         }
 
-        // Author: KyawThiha
+        // Author: KyawThiha, Lance
         public IActionResult Index()
         {
             if (getUserRole().Equals(""))
@@ -49,7 +49,7 @@ namespace Ben_Project.Controllers
             }
         }
 
-        // Author: KyawThiha
+        // Author: KyawThiha, Lance
         //Return the SupplierList
         public IActionResult StoreSupplierList()
         {
@@ -78,7 +78,7 @@ namespace Ben_Project.Controllers
             return View(sList);
         }
 
-        // Author: KyawThiha
+        // Author: KyawThiha, Lance
         //Manage the routing to do Create/ Detail / Edit / Delete
         public IActionResult ManageSupplier(int id, String flag)
         {
@@ -117,11 +117,10 @@ namespace Ben_Project.Controllers
                 return RedirectToAction("StoreSupplierList");
             }
             ViewData["username"] = HttpContext.Session.GetString("username");
-
-            return View();
+            return RedirectToAction("StoreSupplierList");
         }
 
-        // Author: KyawThiha
+        // Author: KyawThiha, Lance
         //Create New Supplier
         public IActionResult CreateNewSupplier()
         {
@@ -153,27 +152,7 @@ namespace Ben_Project.Controllers
             return View(newSupplier);
         }
 
-        // Author: KyawThiha
-        //Create New Item
-        public IActionResult CreateNewItem()
-        {
-            if (getUserRole().Equals(""))
-            {
-                return RedirectToAction("Login", "Login");
-            }
-            //Security
-            if (!(getUserRole() == DeptRole.StoreClerk.ToString() ||
-                getUserRole() == DeptRole.StoreSupervisor.ToString() ||
-                getUserRole() == DeptRole.StoreManager.ToString()))
-            {
-                return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
-            }
-            var supplier = new Supplier();
-            ViewData["username"] = HttpContext.Session.GetString("username");
-            return View(supplier);
-        }
-
-        // Author: KyawThiha
+        // Author: KyawThiha, Lance
         // Save for New Supplier
         public IActionResult Save(Supplier supplier)
         {
@@ -216,7 +195,7 @@ namespace Ben_Project.Controllers
             return RedirectToAction("StoreSupplierList");
         }
 
-        // Author: KyawThiha
+        // Author: KyawThiha, Lance
         // Supplier Edit
         public IActionResult SupplierEdit(int Id)
         {
@@ -236,7 +215,7 @@ namespace Ben_Project.Controllers
             return View(s);
         }
 
-        // Author: KyawThiha
+        // Author: KyawThiha, Lance
         //Show Supplier Detail
         public IActionResult SupplierDetail(int Id)
         {
