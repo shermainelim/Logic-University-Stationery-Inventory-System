@@ -26,7 +26,7 @@ namespace Ben_Project.Controllers
             _filterService = new UserRoleFilterService();
         }
 
-        // Author:
+        // Author: Lance
         // Method to redirect user to his landing page depending on his/her role
         public IActionResult Index()
         {
@@ -47,7 +47,7 @@ namespace Ben_Project.Controllers
             }
         }
 
-        // Author:
+        // Author: Saw, Joe
         // Method to get user role from session
         public string getUserRole()
         {
@@ -56,7 +56,7 @@ namespace Ben_Project.Controllers
             return (string)HttpContext.Session.GetString("Role");
         }
 
-        // Author:
+        // Author: Lance, Saw
         // Returns a list of delegated employees
         public IActionResult DelegatedEmployeeList()
         {
@@ -105,7 +105,7 @@ namespace Ben_Project.Controllers
             return View(deList);
         }
 
-        // Author:
+        // Author: Lance, Saw
         // GET API to return a list of delegated employees
         public string DelegatedEmployeeListApi()
         {
@@ -130,7 +130,7 @@ namespace Ben_Project.Controllers
             });
         }
 
-        // Author:
+        // Author: Lance, Saw
         // GET API to return list of employees
         public string EmployeeListApi()
         {
@@ -155,7 +155,7 @@ namespace Ben_Project.Controllers
             });
         }
 
-        // Author:
+        // Author: Lance, Saw
         // POST API to allow dept head to select an employee as a delegate
         [HttpPost]
         public void PostSelectedEmp([FromBody] DelagatedEmpFromAndroid input)
@@ -182,7 +182,7 @@ namespace Ben_Project.Controllers
             _dbContext.SaveChanges();
         }
 
-        // Author:
+        // Author: Lance, Saw
         // POST API to allow dept head to cancel the delegate role of an employee
         [HttpPost]
         public void CancelByAndroid([FromBody] DelegateCRUDdto input)
@@ -200,8 +200,8 @@ namespace Ben_Project.Controllers
             return;
         }
 
-        // Author:
-        // 
+        // Author: Lance, Saw
+        // Validation logic for employee delegation
         public IActionResult ManageDelegatedEmployee(int id, string flag)
         {
             if (getUserRole().Equals(""))
@@ -255,11 +255,10 @@ namespace Ben_Project.Controllers
                 return RedirectToAction("DelegatedEmployeeList");
             }
             return View();
-
         }
 
-        // Author:
-        //
+        // Author: Lance, Saw
+        // return a form to allow dept head to assign an employee as delegate
         public IActionResult CreateNewDelegatedEmployee()
         {
             if (getUserRole().Equals(""))
@@ -304,8 +303,8 @@ namespace Ben_Project.Controllers
             return View(newDelegatedEmployee);
         }
 
-        // Author:
-        // 
+        // Author: Lance, Saw
+        // update an employee as a delegate in the database
         public IActionResult SaveEmployeeDelegation(DelegatedEmployee delegatedEmployee)
         {
             if (getUserRole().Equals(""))
@@ -405,21 +404,13 @@ namespace Ben_Project.Controllers
 
                 _dbContext.Add(newDelegatedEmployee);
 
-                /* foreach (DelegateEmployeeDetail deDetail in delegatedEmployee.DelegateEmployeeDetails)
-                 {
-                     if(deDetail.StartDate<deDetail.EndDate||deDetail.EndDate>deDetail.StartDate)
-                     deDetail.Employee =
-                         _dbContext.Employees.FirstOrDefault(e => e.Id == deDetail.Employee.Id);
-                     deDetail.DelegatedEmployee = newDelegatedEmployee;
-                     _dbContext.Add(deDetail);
-                 }*/
                 _dbContext.SaveChanges();
 
                 return RedirectToAction("DelegatedEmployeeList");
             }
         }
 
-        // Author:
+        // Author: Lance, Saw
         // Allows the dept head to extend the duration that an employee is a delegate
         public IActionResult ExtendEmployeeDelegation(int Id)
         {

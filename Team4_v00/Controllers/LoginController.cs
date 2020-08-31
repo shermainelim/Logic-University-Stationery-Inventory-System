@@ -24,6 +24,8 @@ namespace Ben_Project.Controllers
             _dbContext = context;
             _filterService = new UserRoleFilterService();
         }
+
+        // Author: Joe, Saw
         public string getUserRole()
         {
 

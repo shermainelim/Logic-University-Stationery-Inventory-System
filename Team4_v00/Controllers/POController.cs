@@ -29,6 +29,8 @@ namespace Ben_Project.Controllers
             _context = context;
             _filterService = new UserRoleFilterService();
         }
+
+        // Author: Joe, Saw
         public string getUserRole()
         {
             string role = (string)HttpContext.Session.GetString("Role");
@@ -36,7 +38,7 @@ namespace Ben_Project.Controllers
             return role;
         }
 
-        // Author:
+        // Author: Summer
         // GET: PO
         public async Task<IActionResult> Index()
         {
@@ -64,7 +66,7 @@ namespace Ben_Project.Controllers
             return View(poList);
         }
 
-        // Author:
+        // Author: Summer
         // GET: PO/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -94,7 +96,7 @@ namespace Ben_Project.Controllers
             return View(pO);
         }
 
-        // Author:
+        // Author: Summer, Joe
         // GET: PO/Create
         public IActionResult Create()
         {
@@ -118,7 +120,7 @@ namespace Ben_Project.Controllers
             return View();
         }
 
-        // Author:
+        // Author: Summer, Joe
         // POST: PO/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -143,13 +145,7 @@ namespace Ben_Project.Controllers
                 po.OrderDate = pO.OrderDate;
                 po.POStatus = po.POStatus;
                 po.Supplier = _context.Suppliers.FirstOrDefault(s => s.Id == pO.Supplier.Id);
-                /*var supplierDetails = _context.SupplierDetails.ToList();
-
-                foreach (SupplierDetail sd in supplierDetails) {
-                    if (sd.Supplier.Id == pO.Supplier.Id) {
-                        pO.Supplier.SupplierDetails.Add(sd);
-                    }
-                }*/
+                
                 Console.WriteLine(po);
                 _context.Add(po);
                 await _context.SaveChangesAsync();
@@ -158,7 +154,7 @@ namespace Ben_Project.Controllers
             return View(pO);
         }
 
-        // Author:
+        // Author: Summer
         // GET: PO/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -188,7 +184,7 @@ namespace Ben_Project.Controllers
             return View(pO);
         }
 
-        // Author:
+        // Author: Summer
         // POST: PO/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -253,7 +249,7 @@ namespace Ben_Project.Controllers
             return View(pO);
         }
 
-        // Author:
+        // Author: Summer, Joe
         // GET: PO/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -283,7 +279,7 @@ namespace Ben_Project.Controllers
             return View(pO);
         }
 
-        // Author:
+        // Author: Summer
         // POST: PO/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -301,11 +297,7 @@ namespace Ben_Project.Controllers
                 return RedirectToAction(_filterService.Filter(getUserRole()), "Dept");
             }
             var toDelete = await _context.POs.FindAsync(id);
-            /*foreach (var poDetail in toDelete.PODetails)
-            {
-                _context.Remove(poDetail);
-            }
-            _context.Remove(toDelete);*/
+            
             toDelete.POStatus = POStatus.Cancelled;
             _context.Update(toDelete);
 
@@ -389,7 +381,7 @@ namespace Ben_Project.Controllers
             return View(po);
         }
 
-        // Author:
+        // Author: Shermaine, Saw
         // 
         public double prediction(int id, int Cat, String IsHoliday, DateTime d)
         {
@@ -420,8 +412,8 @@ namespace Ben_Project.Controllers
 
             return final;
         }
-        
-        // Author:
+
+        // Author: Summer, Joe
         // 
         public IActionResult Save(PO po)
         {
@@ -469,7 +461,7 @@ namespace Ben_Project.Controllers
             return RedirectToAction("Index");
         }
 
-        // Author:
+        // Author: Joe
         //
         public IActionResult EditSave(PO po)
         {
@@ -499,7 +491,7 @@ namespace Ben_Project.Controllers
             return RedirectToAction("Index");
         }
 
-        // Author:
+        // Author: Joe
         // PO API
         public string POItemApi() 
         {
@@ -558,7 +550,7 @@ namespace Ben_Project.Controllers
             });
         }
 
-        // Author:
+        // Author: Summer, Joe
         //
         public string POListApi()
         {
@@ -599,7 +591,7 @@ namespace Ben_Project.Controllers
             });
         }
 
-        // Author:
+        // Author: Summer, Joe
         //
         [HttpPost]
         public string POSave([FromBody]PurchaseOrderItemDTO input)
@@ -619,6 +611,7 @@ namespace Ben_Project.Controllers
                 _context.Add(poD);
             }
             _context.SaveChanges();
+            
             //sending mail
             String items = "";
             foreach (PODetailsDTO p in input.poDetailsList)

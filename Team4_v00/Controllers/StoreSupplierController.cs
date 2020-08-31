@@ -21,12 +21,15 @@ namespace Ben_Project.Controllers
             _filterService = new UserRoleFilterService();
         }
 
+        // Author: Joe, Saw
         public string getUserRole()
         {
             string role = (string)HttpContext.Session.GetString("Role");
             if (role == null) return "";
             return (string)HttpContext.Session.GetString("Role");
         }
+
+        // Author: Joe
         public IActionResult Index()
         {
             if (getUserRole().Equals(""))
@@ -46,6 +49,7 @@ namespace Ben_Project.Controllers
             }
         }
 
+        // Author: Joe
         public IActionResult StoreSupplierList()
         {
             if (getUserRole().Equals(""))
@@ -73,6 +77,7 @@ namespace Ben_Project.Controllers
             return View(sList);
         }
 
+        // Author: Joe
         public IActionResult ManageSupplier(int id, String flag)
         {
             if (getUserRole().Equals(""))
@@ -114,6 +119,7 @@ namespace Ben_Project.Controllers
             return View();
         }
 
+        // Author: Joe
         public IActionResult CreateNewSupplier()
         {
             if (getUserRole().Equals(""))
@@ -144,6 +150,7 @@ namespace Ben_Project.Controllers
             return View(newSupplier);
         }
 
+        // Author: Joe
         public IActionResult CreateNewItem()
         {
             if (getUserRole().Equals(""))
@@ -162,7 +169,7 @@ namespace Ben_Project.Controllers
             return View(supplier);
         }
 
-
+        // Author: Joe
         public IActionResult Save(Supplier supplier)
         {
             if (getUserRole().Equals(""))
@@ -204,6 +211,7 @@ namespace Ben_Project.Controllers
             return RedirectToAction("StoreSupplierList");
         }
 
+        // Author: Joe
         public IActionResult SupplierEdit(int Id)
         {
             if (getUserRole().Equals(""))
@@ -222,6 +230,7 @@ namespace Ben_Project.Controllers
             return View(s);
         }
 
+        // Author: Joe
         public IActionResult SupplierDetail(int Id)
         {
             if (getUserRole().Equals(""))
@@ -239,7 +248,5 @@ namespace Ben_Project.Controllers
             ViewData["username"] = HttpContext.Session.GetString("username");
             return View(s);
         }
-
-
     }
 }
