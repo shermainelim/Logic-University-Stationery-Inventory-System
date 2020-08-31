@@ -29,8 +29,8 @@ namespace Ben_Project.Controllers
             _context = context;
             _filterService = new UserRoleFilterService();
         }
-
-        // Author: Joe, Saw
+        // Author: Joe, Saw, Lance
+        //Get user role from session
         public string getUserRole()
         {
             string role = (string)HttpContext.Session.GetString("Role");

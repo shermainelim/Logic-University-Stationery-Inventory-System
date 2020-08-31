@@ -34,6 +34,8 @@ namespace Ben_Project.Controllers
             _dbContext = logicContext;
             _filterService = new UserRoleFilterService();
         }
+        // Author: Joe, Saw, Lance
+        //Get user role from session
         public string getUserRole()
         {
 

@@ -21,7 +21,8 @@ namespace Ben_Project.Controllers
             _filterService = new UserRoleFilterService();
         }
 
-        // Author: KyawThiha, SawHtetKyaw
+        // Author: Kyaw Thiha, Saw, Lance
+        //Get user role from session
         public string getUserRole()
         {
             string role = (string)HttpContext.Session.GetString("Role");
