@@ -25,7 +25,7 @@ namespace Ben_Project.Controllers
             _filterService = new UserRoleFilterService();
         }
 
-        // Author: Joe, Saw, Lance
+        // Author: Kyaw Thiha, Saw Htet Kyaw, Yeo Jia Hui
         //Get user role from session
         public string getUserRole()
         {
@@ -35,7 +35,7 @@ namespace Ben_Project.Controllers
             return role;
         }
 
-        // Author: Benedict, Joe, Saw
+        // Author: Benedict, Kyaw Thiha, Saw Htet Kyaw
         // Displays the login page
         public IActionResult Index()
         {
@@ -56,7 +56,7 @@ namespace Ben_Project.Controllers
             }
         }
         
-        // Author: Benedict, Joe, Saw
+        // Author: Benedict, Kyaw Thiha, Saw Htet Kyaw
         // Allows the user to login
         public IActionResult Login(string username, string hashPasswd)
         {
@@ -138,7 +138,7 @@ namespace Ben_Project.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        // Author: Benedict, Lance
+        // Author: Benedict, Yeo Jia Hui
         // POST API to allow user to login from android
         [HttpPost]
         public string LoginApi([FromBody] LoginDTO input)

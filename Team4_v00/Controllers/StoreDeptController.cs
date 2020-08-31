@@ -22,7 +22,7 @@ namespace Ben_Project.Controllers
             _context = context;
             _filterService = new UserRoleFilterService();
         }
-        // Author: Joe, Saw, Lance
+        // Author: Kyaw Thiha, Saw Htet Kyaw, Yeo Jia Hui
         //Get user role from session
         public string getUserRole()
         {

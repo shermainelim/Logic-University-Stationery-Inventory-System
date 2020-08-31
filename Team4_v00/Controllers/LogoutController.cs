@@ -19,7 +19,7 @@ namespace Ben_Project.Controllers
             _dbContext = context;
         }
 
-        // Author: Benedict, Joe, Saw
+        // Author: Benedict, Kyaw Thiha, Saw Htet Kyaw
         // Logouts the user and clear session data
         public IActionResult Index()
         {
@@ -38,7 +38,7 @@ namespace Ben_Project.Controllers
             return RedirectToAction("Index", "Login");
         }
 
-        // Author: Benedict, Lance
+        // Author: Benedict, Yeo Jia Hui
         // GET API to logout user from android
         public void LogoutApi()
         {

@@ -30,7 +30,7 @@ namespace Ben_Project.Controllers
             _filterService = new UserRoleFilterService();
         }
 
-        // Author: KyawThiha, Saw
+        // Author: KyawThiha, Saw Htet Kyaw
         public string getUserRole()
         {
             string role = (string)HttpContext.Session.GetString("Role");
@@ -381,7 +381,7 @@ namespace Ben_Project.Controllers
             return View(po);
         }
 
-        // Author: Shermaine, Saw
+        // Author: Shermaine, Saw Htet Kyaw
         // 
         public double prediction(int id, int Cat, String IsHoliday, DateTime d)
         {

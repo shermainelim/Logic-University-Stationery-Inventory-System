@@ -26,7 +26,7 @@ namespace Ben_Project.Controllers
             _filterService = new UserRoleFilterService();
         }
 
-        // Author: Lance
+        // Author: Yeo Jia Hui
         // Method to redirect user to his landing page depending on his/her role
         public IActionResult Index()
         {
@@ -47,7 +47,7 @@ namespace Ben_Project.Controllers
             }
         }
 
-        // Author: Saw, Joe
+        // Author: Saw Htet Kyaw, Kyaw Thiha
         // Method to get user role from session
         public string getUserRole()
         {
@@ -56,7 +56,7 @@ namespace Ben_Project.Controllers
             return (string)HttpContext.Session.GetString("Role");
         }
 
-        // Author: Lance, Saw
+        // Author: Yeo Jia Hui, Saw Htet Kyaw
         // Returns a list of delegated employees
         public IActionResult DelegatedEmployeeList()
         {
@@ -105,7 +105,7 @@ namespace Ben_Project.Controllers
             return View(deList);
         }
 
-        // Author: Lance, Saw
+        // Author: Yeo Jia Hui, Saw Htet Kyaw
         // GET API to return a list of delegated employees
         public string DelegatedEmployeeListApi()
         {
@@ -130,7 +130,7 @@ namespace Ben_Project.Controllers
             });
         }
 
-        // Author: Lance, Saw
+        // Author: Yeo Jia Hui, Saw Htet Kyaw
         // GET API to return list of employees
         public string EmployeeListApi()
         {
@@ -155,7 +155,7 @@ namespace Ben_Project.Controllers
             });
         }
 
-        // Author: Lance, Saw
+        // Author: Yeo Jia Hui, Saw Htet Kyaw
         // POST API to allow dept head to select an employee as a delegate
         [HttpPost]
         public void PostSelectedEmp([FromBody] DelagatedEmpFromAndroid input)
@@ -182,7 +182,7 @@ namespace Ben_Project.Controllers
             _dbContext.SaveChanges();
         }
 
-        // Author: Lance, Saw
+        // Author: Yeo Jia Hui, Saw Htet Kyaw
         // POST API to allow dept head to cancel the delegate role of an employee
         [HttpPost]
         public void CancelByAndroid([FromBody] DelegateCRUDdto input)
@@ -200,7 +200,7 @@ namespace Ben_Project.Controllers
             return;
         }
 
-        // Author: Lance, Saw
+        // Author: Yeo Jia Hui, Saw Htet Kyaw
         // Validation logic for employee delegation
         public IActionResult ManageDelegatedEmployee(int id, string flag)
         {
@@ -257,7 +257,7 @@ namespace Ben_Project.Controllers
             return View();
         }
 
-        // Author: Lance, Saw
+        // Author: Yeo Jia Hui, Saw Htet Kyaw
         // return a form to allow dept head to assign an employee as delegate
         public IActionResult CreateNewDelegatedEmployee()
         {
@@ -303,7 +303,7 @@ namespace Ben_Project.Controllers
             return View(newDelegatedEmployee);
         }
 
-        // Author: Lance, Saw
+        // Author: Yeo Jia Hui, Saw Htet Kyaw
         // update an employee as a delegate in the database
         public IActionResult SaveEmployeeDelegation(DelegatedEmployee delegatedEmployee)
         {
@@ -410,7 +410,7 @@ namespace Ben_Project.Controllers
             }
         }
 
-        // Author: Lance, Saw
+        // Author: Yeo Jia Hui, Saw Htet Kyaw
         // Allows the dept head to extend the duration that an employee is a delegate
         public IActionResult ExtendEmployeeDelegation(int Id)
         {

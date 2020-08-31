@@ -21,7 +21,7 @@ namespace Ben_Project.Controllers
             _filterService = new UserRoleFilterService();
         }
 
-        // Author: Kyaw Thiha, Saw, Lance
+        // Author: Kyaw Thiha, Saw Htet Kyaw, Yeo Jia Hui
         //Get user role from session
         public string getUserRole()
         {
@@ -30,7 +30,7 @@ namespace Ben_Project.Controllers
             return (string)HttpContext.Session.GetString("Role");
         }
 
-        // Author: KyawThiha, Lance
+        // Author: KyawThiha, Yeo Jia Hui
         public IActionResult Index()
         {
             if (getUserRole().Equals(""))
@@ -50,7 +50,7 @@ namespace Ben_Project.Controllers
             }
         }
 
-        // Author: KyawThiha, Lance
+        // Author: KyawThiha, Yeo Jia Hui
         //Return the SupplierList
         public IActionResult StoreSupplierList()
         {
@@ -79,7 +79,7 @@ namespace Ben_Project.Controllers
             return View(sList);
         }
 
-        // Author: KyawThiha, Lance
+        // Author: KyawThiha, Yeo Jia Hui
         //Manage the routing to do Create/ Detail / Edit / Delete
         public IActionResult ManageSupplier(int id, String flag)
         {
@@ -121,7 +121,7 @@ namespace Ben_Project.Controllers
             return RedirectToAction("StoreSupplierList");
         }
 
-        // Author: KyawThiha, Lance
+        // Author: KyawThiha, Yeo Jia Hui
         //Create New Supplier
         public IActionResult CreateNewSupplier()
         {
@@ -153,7 +153,7 @@ namespace Ben_Project.Controllers
             return View(newSupplier);
         }
 
-        // Author: KyawThiha, Lance
+        // Author: KyawThiha, Yeo Jia Hui
         // Save for New Supplier
         public IActionResult Save(Supplier supplier)
         {
@@ -196,7 +196,7 @@ namespace Ben_Project.Controllers
             return RedirectToAction("StoreSupplierList");
         }
 
-        // Author: KyawThiha, Lance
+        // Author: KyawThiha, Yeo Jia Hui
         // Supplier Edit
         public IActionResult SupplierEdit(int Id)
         {
@@ -216,7 +216,7 @@ namespace Ben_Project.Controllers
             return View(s);
         }
 
-        // Author: KyawThiha, Lance
+        // Author: KyawThiha, Yeo Jia Hui
         //Show Supplier Detail
         public IActionResult SupplierDetail(int Id)
         {
