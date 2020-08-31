@@ -561,7 +561,7 @@ namespace Ben_Project.Controllers
         public string StoreClerkDisbursementListApi()
         {
             var disbursements = _dbContext.Disbursements
-                .Where(d => d.DisbursementStatus != DisbursementStatus.Acknowledged)
+                .Where(d => d.DisbursementStatus == DisbursementStatus.PendingPacking)
                 .ToList();
 
             var dtos = new List<DisbursementDTO>();
@@ -650,7 +650,7 @@ namespace Ben_Project.Controllers
             var collectionDate = input.DisbursementDate;
 
             // check that date is in the future
-            if (!(collectionDate > DateTime.Now))
+            if (!(collectionDate >= DateTime.Now))
                 return RedirectToAction("StoreClerkDisbursementDetail", "Store", new { id = input.Id });
 
             // add date to all disbursementdetails
@@ -692,7 +692,7 @@ namespace Ben_Project.Controllers
             var collectionDate = input.DisbursementDate;
 
             // check that date is in the future
-            if (!(collectionDate > DateTime.Now))
+            if (!(collectionDate >= DateTime.Now))
                 return;
 
             // add date to all disbursementdetails
