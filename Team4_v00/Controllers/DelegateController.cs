@@ -47,7 +47,7 @@ namespace Ben_Project.Controllers
             }
         }
 
-        // Author: Saw, Joe
+        // Author: Saw, Joe, Lance
         // Method to get user role from session
         public string getUserRole()
         {
