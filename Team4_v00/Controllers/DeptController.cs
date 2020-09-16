@@ -29,7 +29,7 @@ namespace Ben_Project.Controllers
             _filterService = new UserRoleFilterService();
         }
 
-        // Author: Joe, Saw, Lance
+        // Author: Kyaw Thiha, Saw Htet Kyaw, Yeo Jia Hui
         //Get user role from session
         public string getUserRole()
         {
@@ -93,7 +93,7 @@ namespace Ben_Project.Controllers
         }
 
 
-        //Author: Benedict
+        //Author: Benedict, Yeo Jia Hui
         //API to Android, GET Request to return list of requisitions pending approval by Department Head.
         public string DeptHeadRequisitionListApi()
         {
@@ -170,7 +170,7 @@ namespace Ben_Project.Controllers
             });
         }
         
-        // Author: Benedict
+        // Author: Benedict, Yeo Jia Hui
         // API GET Request that shows Requisition Details for the Department Head
         public IActionResult DeptHeadRequisitionDetail(int id)
         {
@@ -237,7 +237,7 @@ namespace Ben_Project.Controllers
             return RedirectToAction("DeptHeadRequisitionList", "Dept");
         }
 
-        // Author: Benedict
+        // Author: Benedict, Yeo Jia Hui
         // Returns a list of requisitions filtered by department of user
         public IActionResult EmployeeRequisitionList()
         {
@@ -270,7 +270,7 @@ namespace Ben_Project.Controllers
             return View(requisitions);
         }
 
-        // Author: Benedict
+        // Author: Benedict, Yeo Jia Hui
         // Displays details of a requisition
         public IActionResult EmployeeRequisitionDetail(int id)
         {
@@ -345,7 +345,7 @@ namespace Ben_Project.Controllers
             }
         }
 
-        // Author: Benedict
+        // Author: Benedict, Yeo Jia Hui
         // API to GET a requisition form that has not been submitted yet by the dept rep
         public string EmployeeRequisitionFormApi()
         {
@@ -538,7 +538,7 @@ namespace Ben_Project.Controllers
             return RedirectToAction("EmployeeRequisitionList", "Dept");
         }
 
-        // Author: Benedict
+        // Author: Benedict, Yeo Jia Hui
         // POST API to create/update a requisition in the database
         [HttpPost]
         public void SaveRequisitionApi([FromBody] DeptRequisitionDTO input)

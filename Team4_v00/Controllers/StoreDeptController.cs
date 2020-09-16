@@ -22,7 +22,7 @@ namespace Ben_Project.Controllers
             _context = context;
             _filterService = new UserRoleFilterService();
         }
-        // Author: Joe, Saw, Lance
+        // Author: Kyaw Thiha, Saw Htet Kyaw, Yeo Jia Hui
         //Get user role from session
         public string getUserRole()
         {
@@ -30,6 +30,7 @@ namespace Ben_Project.Controllers
             if (role == null) return "";
             return role;
         }
+        //Author: Hanh Nguyen
         // GET: StoreDept
         public async Task<IActionResult> Index()
         {
@@ -58,7 +59,7 @@ namespace Ben_Project.Controllers
             
         }
 
-        // Author: Summer
+        // Author: Hanh Nguyen
         // GET: StoreDept/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -94,7 +95,7 @@ namespace Ben_Project.Controllers
             return View(department);
         }
 
-        // Author: Summer
+        // Author: Hanh Nguyen
         // GET: StoreDept/Create
         public IActionResult Create()
         {
@@ -112,7 +113,7 @@ namespace Ben_Project.Controllers
             return View();
         }
 
-        // Author: Summer
+        // Author: Hanh Nguyen
         // POST: StoreDept/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -141,7 +142,7 @@ namespace Ben_Project.Controllers
             return View(department);
         }
 
-        // Author: Summer
+        // Author: Hanh Nguyen
         // GET: StoreDept/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -170,7 +171,7 @@ namespace Ben_Project.Controllers
             return View(department);
         }
 
-        // Author: Summer
+        // Author: Hanh Nguyen
         // POST: StoreDept/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -218,7 +219,7 @@ namespace Ben_Project.Controllers
             return View(department);
         }
 
-        // Author: Summer
+        // Author: Hanh Nguyen
         // GET: StoreDept/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -249,7 +250,7 @@ namespace Ben_Project.Controllers
             return View(department);
         }
 
-        // Author: Summer
+        // Author: Hanh Nguyen
         // POST: StoreDept/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]

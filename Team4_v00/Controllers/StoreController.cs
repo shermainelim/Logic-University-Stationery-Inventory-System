@@ -34,7 +34,7 @@ namespace Ben_Project.Controllers
             _dbContext = logicContext;
             _filterService = new UserRoleFilterService();
         }
-        // Author: Joe, Saw, Lance
+        // Author: Kyaw Thiha, Saw Htet Kyaw, Yeo Jia Hui
         //Get user role from session
         public string getUserRole()
         {
@@ -62,7 +62,7 @@ namespace Ben_Project.Controllers
             }    
         }
 
-        // Author: Saw and Shermaine
+        // Author: Saw Htet Kyaw and Shermaine
         // Azure Machine Learning Web Services, processing the inputs from Razor Page to get demand forecasting quantity in CreateNext View under PO folder.
         public IActionResult Prediction(string item_category, string item_ID, string date, string IsHoliday)
         {
@@ -132,7 +132,7 @@ namespace Ben_Project.Controllers
             return RedirectToAction("Index");
         }
 
-        // Author: Benedict
+        // Author: Benedict, Yeo Jia Hui
         // Returns a list of stocks
         public IActionResult StoreClerkStockList()
         {
@@ -153,7 +153,7 @@ namespace Ben_Project.Controllers
             return View(stocks);
         }
 
-        // Author: Benedict
+        // Author: Benedict, Yeo Jia Hui
         // GET API that returns a list of stocks
         public string StoreClerkStockListApi()
         {
@@ -181,7 +181,7 @@ namespace Ben_Project.Controllers
             return View();
         }
 
-        // Author: Benedict
+        // Author: Benedict, Yeo Jia Hui
         // Returns a list of requisitions pending fulfillment by store clerk
         public IActionResult StoreClerkRequisitionList()
         {
@@ -202,7 +202,7 @@ namespace Ben_Project.Controllers
             return View(requisitions);
         }
 
-        // Author: Benedict
+        // Author: Benedict, Yeo Jia Hui
         // GET API that returns a list of requisitions pending fulfillment by store clerk
         public string StoreClerkRequisitionListApi()
         {
@@ -226,7 +226,7 @@ namespace Ben_Project.Controllers
             });
         }
 
-        // Author: Saw and Shermaine
+        // Author: Saw Htet Kyaw and Shermaine
         // creating API for JSON for Android and used for Bar Chart and filter. 
         public string StoreClerkDisbursementDetailsListApi()
         {
@@ -261,7 +261,7 @@ namespace Ben_Project.Controllers
             //so the final is still O(n). 
         }
 
-        // Author: Benedict
+        // Author: Benedict, Yeo Jia Hui
         // Returns a specific requisition to be fulfilled by the store clerk
         public IActionResult StoreClerkRequisitionFulfillment(int id)
         {
@@ -289,7 +289,7 @@ namespace Ben_Project.Controllers
             return View(disbursement);
         }
 
-        // Author: Benedict
+        // Author: Benedict, Yeo Jia Hui
         // GET API to return a specific requisition to be fulfilled by the store clerk
         public string StoreClerkRequisitionFulfillmentApi(int id)
         {
@@ -323,7 +323,7 @@ namespace Ben_Project.Controllers
             });
         }
 
-        // Author: Benedict
+        // Author: Benedict, Yeo Jia Hui
         // POST API to:
         // Change status of requisition to partial or fulfilled depending on disbursement
         // Create disbursement in database
@@ -429,7 +429,7 @@ namespace Ben_Project.Controllers
             _dbContext.SaveChanges();
         }
 
-        // Author: Benedict
+        // Author: Benedict, Yeo Jia Hui
         // Change status of requisition to partial or fulfilled depending on disbursement
         // Create disbursement in database
         // Create adjustment voucher in database if disbursed qty less than requested qty
@@ -536,7 +536,7 @@ namespace Ben_Project.Controllers
             return RedirectToAction("StoreClerkRequisitionList", "Store");
         }
 
-        // Author: Benedict
+        // Author: Benedict, Yeo Jia Hui
         // Returns a list of disbursements that the store clerk has to send to the depts
         public IActionResult StoreClerkDisbursementList()
         {
@@ -558,7 +558,7 @@ namespace Ben_Project.Controllers
             return View(disbursements);
         }
 
-        // Author: Benedict
+        // Author: Benedict, Lance
         // GET API that returns a list of disbursements that the store clerk has to send to the depts
         public string StoreClerkDisbursementListApi()
         {
@@ -582,7 +582,7 @@ namespace Ben_Project.Controllers
             });
         }
 
-        // Author: Benedict
+        // Author: Benedict, Yeo Jia Hui
         // Returns the details of a specific disbursement
         public IActionResult StoreClerkDisbursementDetail(int id)
         {
@@ -603,7 +603,7 @@ namespace Ben_Project.Controllers
             return View(disbursement);
         }
 
-        // Author: Benedict
+        // Author: Benedict, Yeo Jia Hui
         // GET API that returns the details of a specific disbursement
         public string StoreClerkDisbursementDetailApi(int id)
         {
@@ -629,7 +629,7 @@ namespace Ben_Project.Controllers
             });
         }
 
-        // Author: Benedict
+        // Author: Benedict, Yeo Jia Hui
         // Allows store clerk to select a date for the dept rep to collect the disbursement
         // Sends an email to notify the dept rep of the date of collection of the disbursement and the acknowledgement code
         public IActionResult StoreClerkSaveDisbursementDetail(Disbursement input)
@@ -682,7 +682,7 @@ namespace Ben_Project.Controllers
             return RedirectToAction("StoreClerkDisbursementList", "Store");
         }
 
-        // Author: Benedict
+        // Author: Benedict, Yeo Jia Hui
         // POST API that:
         // Allows store clerk to select a date for the dept rep to collect the disbursement
         // Sends an email to notify the dept rep of the date of collection of the disbursement and the acknowledgement code
@@ -722,7 +722,7 @@ namespace Ben_Project.Controllers
             _dbContext.SaveChanges();
         }
 
-        // Author: Benedict
+        // Author: Benedict, Yeo Jia Hui
         // Returns a form allowing the dept rep to input the acknowledgement code to acknowledge that he/she has received the disbursement
         public IActionResult StoreClerkDisbursementAcknowledgement(int id)
         {
@@ -771,7 +771,7 @@ namespace Ben_Project.Controllers
             return RedirectToAction("StoreClerkDisbursementList", "Store");
         }
 
-        // Author: Benedict
+        // Author: Benedict, Yeo Jia Hui
         // Returns a list of adjustment vouchers
         public IActionResult StoreClerkAdjustmentVoucherList()
         {
@@ -794,7 +794,7 @@ namespace Ben_Project.Controllers
             return View(adjustmentVouchers);
         }
 
-        // Author: Benedict
+        // Author: Benedict, Yeo Jia Hui
         // Returns a list of adjustment vouchers pending issue to the supervisor/manager
         public IActionResult AuthorizeAdjustmentVoucherList()
         {
@@ -819,7 +819,7 @@ namespace Ben_Project.Controllers
             return View(adjustmentVouchers);
         }
 
-        // Author: Benedict
+        // Author: Benedict, Yeo Jia Hui
         // Returns a specific adjustment voucher for store clerk to adjust quantity and/or add reason
         public IActionResult StoreClerkAdjustmentVoucherDetail(int id)
         {
@@ -859,7 +859,7 @@ namespace Ben_Project.Controllers
             return View(adjustmentVoucher);
         }
 
-        // Author: Benedict
+        // Author: Benedict, Yeo Jia Hui
         // Returns a specific adjustment voucher for the supervisor/manager to issue
         public IActionResult AuthorizeAdjustmentVoucherDetail(int id)
         {
@@ -880,7 +880,7 @@ namespace Ben_Project.Controllers
             return View(adjustmentVoucher);
         }
 
-        // Author: Benedict
+        // Author: Benedict, Yeo Jia Hui
         // Updates a specific adjustment voucher in the database
         public IActionResult SaveAdjustmentVoucher(AdjustmentVoucher adjustmentVoucher)
         {
@@ -932,7 +932,7 @@ namespace Ben_Project.Controllers
             return RedirectToAction("StoreClerkAdjustmentVoucherList", "Store");
         }
 
-        // Author: Benedict
+        // Author: Benedict, Yeo Jia Hui
         // Deletes a specific adjustment voucher from the database
         public IActionResult DeleteAdjustmentVoucher(int id)
         {
@@ -959,7 +959,7 @@ namespace Ben_Project.Controllers
             return RedirectToAction("StoreClerkAdjustmentVoucherList", "Store");
         }
 
-        // Author: Benedict
+        // Author: Benedict, Yeo Jia Hui
         // Allows the supervisor/manager to issue an adjustment voucher
         // Adjusts the stock qty according to the issued adjustment voucher
         public IActionResult IssueAdjustmentVoucher(AdjustmentVoucher adjustmentVoucher)
@@ -1006,7 +1006,7 @@ namespace Ben_Project.Controllers
             return RedirectToAction("AuthorizeAdjustmentVoucherList", "Store");
         }
 
-        // Author: Saw and Shermaine
+        // Author: Saw Htet Kyaw and Shermaine
         // to generate Bar Chart from database with Chart.js
         public IActionResult BarChart()
         {
@@ -1059,7 +1059,7 @@ namespace Ben_Project.Controllers
             return View();
         }
 
-        // Author: Saw and Shermaine
+        // Author: Saw Htet Kyaw and Shermaine
         // Adding Filters to the Bar Chart to render only relevant information based on Stationery Name, Start and End Date and Departments
         public ActionResult BarChartFilter(string IsHoliday2, DateTime startDate, DateTime endDate)
         {
