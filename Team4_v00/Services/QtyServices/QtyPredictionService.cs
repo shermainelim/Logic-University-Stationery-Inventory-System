@@ -55,7 +55,7 @@ namespace Ben_Project.Services.QtyServices
                     }
                 };
 
-                const string apiKey = "G+THPwarr2qvfXLEZ3CAgRoUbnTISb/PooHueQOXo2VBmxdx0ybVHDlQHuBmgLYH0ycIOvbH5hqjmZ08mLUBHg=="; // Replace this with the API key for the web service
+                const string apiKey = ""; // Replace this with the API key for the web service
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", apiKey);
                 client.BaseAddress = new Uri("https://ussouthcentral.services.azureml.net/workspaces/9c7eacb777ca45079d3a311454a48511/services/c284dfa711c8462488effaea2d008d1f/execute?api-version=2.0&format=swagger");
 
