@@ -2,7 +2,7 @@
 
 Link: https://alogicuniversity.nusteamfour.online/ 
 
-Presentation: 
+Presentation: https://youtu.be/if__-PNynGk 
 
 Mobile Version: https://github.com/ltm-ben/TeamFourAndroid 
 
