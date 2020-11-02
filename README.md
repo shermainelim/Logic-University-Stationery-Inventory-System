@@ -1,6 +1,6 @@
 # Logic University Stationery eStore with Machine Learning Integration for Demand Forecasting (Web and Mobile)
 
-Link: https://alogicuniversity.nusteamfour.online/ 
+Link: https://logicuniversity.nusteamfour.online/
 
 Presentation: https://youtu.be/if__-PNynGk 
 
